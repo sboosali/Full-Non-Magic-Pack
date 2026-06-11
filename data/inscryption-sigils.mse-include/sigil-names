@@ -105,6 +105,3 @@ choice:
 	choice: Sinkhole
 	choice: Tidal Lock
 	choice: VR
-choice:
-	name: Custom
-	choice: none

@@ -1,8 +1,8 @@
 # Tribe Images
 
 choice images:
-	Base Game Avian: /inscryption-tribes.mse-include/tribeicon_avian.png
-	Base Game Canine: /inscryption-tribes.mse-include/tribeicon_canine.png
-	Base Game Hooved: /inscryption-tribes.mse-include/tribeicon_hooved.png
-	Base Game Insect: /inscryption-tribes.mse-include/tribeicon_insect.png
-	Base Game Reptile: /inscryption-tribes.mse-include/tribeicon_reptile.png
+	Base Game Avian: script: set_alpha("/inscryption-tribes.mse-include/tribeicon_avian.png", alpha:0.5)
+	Base Game Canine: script: set_alpha("/inscryption-tribes.mse-include/tribeicon_canine.png", alpha:0.5)
+	Base Game Hooved: script: set_alpha("/inscryption-tribes.mse-include/tribeicon_hooved.png", alpha:0.5)
+	Base Game Insect: script: set_alpha("/inscryption-tribes.mse-include/tribeicon_insect.png", alpha:0.5)
+	Base Game Reptile: script: set_alpha("/inscryption-tribes.mse-include/tribeicon_reptile.png", alpha:0.5)

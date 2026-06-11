@@ -28,7 +28,7 @@ depends on:
 
 card width: 125
 card height: 190
-card dpi: 150
+card dpi: 50
 
 ############################################## Card fields
 card style:
@@ -40,8 +40,6 @@ card style:
 		width: 125
 		z index: 0
 		render style: image
-		mask: bg.png
-		default: regular
 		choice images:
 			regular: card_empty.png
 			rare: card_empty_rare.png
@@ -62,47 +60,47 @@ card style:
 			size: 15
 
 	casting cost 1:
-		right: 123
-		top: 8
-		width: 64
-		height: 64
+		right: 118
+		top: 32
+		width: 20
+		height: 20
 		alignment: middle center
-		z index: 3
+		z index: 13
 		render style: image
 		include file: /inscryption-costs.mse-include/costs
-
+		popup style: in place
 	casting cost 2:
-		right: 123
-		top: 35
-		width: 64
-		height: 64
+		right: 118
+		top: 52
+		width: 20
+		height: 20
 		alignment: middle center
 		z index: 3
 		render style: image
 		include file: /inscryption-costs.mse-include/costs
 	casting cost 3:
-		right: 123
-		top: 62
-		width: 64
-		height: 64
+		right: 118
+		top: 72
+		width: 20
+		height: 20
 		alignment: middle center
 		z index: 3
 		render style: image
 		include file: /inscryption-costs.mse-include/costs
 	casting cost 4:
-		right: 123
-		top: 89
-		width: 64
-		height: 64
+		right: 118
+		top: 92
+		width: 20
+		height: 20
 		alignment: middle center
 		z index: 3
 		render style: image
 		include file: /inscryption-costs.mse-include/costs
 	tribe symbol:
-		left: -4
-		top: 2.4
-		height: 62.1
-		width: 51.6
+		left: 0
+		top: 0
+		height: 62
+		width: 52
 		z index: 3
 		render style: image
 		alignment: top left
@@ -117,8 +115,8 @@ card style:
 
 	##################### sigils
 	sigil single:
-		left: 
-		top:
+		left: 35
+		top: 135
 		width: 49
 		height: 49
 		z index: 2

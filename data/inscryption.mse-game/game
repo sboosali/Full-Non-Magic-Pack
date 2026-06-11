@@ -28,6 +28,9 @@ card field:
 	type: text
 	name: creature name
 	description: The name of the card.
+	card list visible: true
+	card list name: Name
+	card list column: 1
 card field:
 	type: choice
 	name: casting cost 1
