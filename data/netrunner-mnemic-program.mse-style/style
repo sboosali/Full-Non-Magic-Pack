@@ -2,35 +2,30 @@
 game: netrunner
 full name: Android Netrunner
 short name: ANR
-installer group: netrunner/mnemic style/runner program
+installer group: Netrunner/MNeMiC templates/Runner Programs
 icon: preview.jpg
 position hint: -2
 
 version: 2026-09
-depends on:
-	package: netrunner.mse-game
-	version: 2026-09
-depends on:
-	package: vs-common.mse-include
-	version: 2008-01-03
-depends on:
-	package: vs-standard-arrow.mse-symbol-font
-	version: 2008-01-03
+depends on: netrunner.mse-game 2026-09
+depends on: netrunner-common.mse-include 2026-09
+depends on: vs-standard-arrow.mse-symbol-font 0.0
+
+##############################################################
 
 card background: white
 card width: 375
 card height: 523
 card dpi: 150
 
-############################################################## Extra scripts
+##############################################################
 init script:
 	card_shape := { "old" }
-############################################################## Set info fields
-############################################################## Extra style
+##############################################################
 styling field:
 	type: package choice
 	name: text box symbols
-	match: vs-standard-*.mse-symbol-font
+	match: netrunner-*-symbols.mse-symbol-font
 	initial: vs-standard-arrow.mse-symbol-font
 styling field:
 	type: boolean
@@ -47,7 +42,7 @@ styling field:
 	name: edition
 	description: Is the set a 1st Edition?
 	initial: no
-############################################################## Card fields
+##############################################################
 card style:
 	############################# Background stuff
 	card type:
@@ -127,10 +122,7 @@ card style:
 		width: 45
 		render style: image
 		choice images:
-			Marvel:	/vs-common.mse-include/marvel.png
-			DC-new:	/vs-common.mse-include/dcnew.png
-			DC-old:	/vs-common.mse-include/dcold.png
-			Hellboy: /vs-common.mse-include/hellboy.png
+			Marvel:	/netrunner-common.mse-include/marvel.png
 			Other...: { set.custom_logo }
 		z index: 3
 	edition:
@@ -140,7 +132,7 @@ card style:
 		width: 34
 		render style: image
 		choice images:
-			first edition: /vs-common.mse-include/first-edition.png
+			first edition: /netrunner-common.mse-include/first-edition.png
 		z index: 3
 		visible: { styling.edition }
 	############################# Type Bar
@@ -233,10 +225,10 @@ card style:
 		z index: 3
 		render style: image hidden
 		choice images:
-			common:	  /vs-common.mse-include/rarity-common.png
-			uncommon: /vs-common.mse-include/rarity-uncommon.png
-			rare:	  /vs-common.mse-include/rarity-rare.png
-			promo:    /vs-common.mse-include/rarity-promo.png
+			common:	  /netrunner-common.mse-include/rarity-common.png
+			uncommon: /netrunner-common.mse-include/rarity-uncommon.png
+			rare:	  /netrunner-common.mse-include/rarity-rare.png
+			promo:    /netrunner-common.mse-include/rarity-promo.png
 	############################# Affiliation
 	team full:
 		left: 23
@@ -289,9 +281,9 @@ card style:
 		z index: 4
 		render style: image list
 		choice images:
-			flight: /vs-common.mse-include/flight.png
-			ongoing: /vs-common.mse-include/ongoing.png
-			range: /vs-common.mse-include/range.png
+			flight: /netrunner-common.mse-include/flight.png
+			ongoing: /netrunner-common.mse-include/ongoing.png
+			range: /netrunner-common.mse-include/range.png
 		direction: vertical
 		spacing: 33
 	############################# Text box
@@ -343,7 +335,7 @@ card style:
 		height: 80
 		visible: { styling.watermarkings }
 		render style: image
-		include file: /vs-common.mse-include/watermarks
+		include file: /netrunner-common.mse-include/watermarks
 		z index: 4
 	############################# Attack/defence
 	attack:
@@ -419,5 +411,5 @@ extra card style:
 		z index: 8
 		render style: image
 		choice images:
-			foil: /vs-common.mse-include/foil.png
+			foil: /netrunner-common.mse-include/foil.png
 		visible: { styling.foils }

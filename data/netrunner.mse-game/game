@@ -1,27 +1,24 @@
 ﻿mse version: 2.5.6
 full name: Android Netrunner
 short name: ANR
-installer group: netrunner/game files
+installer group: Netrunner/Game files
 icon: preview.jpg
 position hint: -2
 
 version: 2026-09
-depends on:
-	package: vs-common.mse-include
-	version: 2008-01-03
+depends on: netrunner-common.mse-include 2026-09
 
-############################################################## 
+##############################################################
 
 init script: include file: script
 
-############################################################## Lots of lists
+##############################################################
 
 include file: card_fields
 include file: set_fields
-include file: statistics
-include file: packs
-include file: keywords
-include file: word_lists
-include file: auto_replace
+# include file: keywords
+# include file: word_lists
+# include file: auto_replace
+# include file: statistics
 
 ##############################################################
