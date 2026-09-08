@@ -17,7 +17,7 @@ init script: include file: script
 include file: card_fields
 include file: set_fields
 # include file: keywords
-# include file: word_lists
+include file: word_lists
 # include file: auto_replace
 # include file: statistics
 

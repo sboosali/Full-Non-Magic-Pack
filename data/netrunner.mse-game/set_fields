@@ -84,11 +84,11 @@ default set style:
 			size: 16
 		render style: both
 		choice images:
-			Marvel: /vs-common.mse-include/marvel.png
-			DC-new:	/vs-common.mse-include/dcnew.png
-			DC-old: /vs-common.mse-include/dcold.png
-			Hellboy: /vs-common.mse-include/hellboy.png
-			Other...: /vs-common.mse-include/other.png
+			Marvel: /netrunner-common.mse-include/marvel.png
+			DC-new:	/netrunner-common.mse-include/dcnew.png
+			DC-old: /netrunner-common.mse-include/dcold.png
+			Hellboy: /netrunner-common.mse-include/hellboy.png
+			Other...: /netrunner-common.mse-include/other.png
 	custom logo:
 		width: 30
 		height: 30

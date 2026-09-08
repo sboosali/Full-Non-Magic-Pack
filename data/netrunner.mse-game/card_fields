@@ -317,7 +317,7 @@ card field:
 card field:
 	type: choice
 	name: watermark
-	include file: /vs-common.mse-include/watermark-names
+	include file: /netrunner-common.mse-include/watermark-names
 	editable: false
 	description: The Watermark for this set.
 ############################# Atack / Defense
@@ -400,12 +400,12 @@ card field:
 	name: affiliation
 	editable: false
 	initial: none
-	include file: /vs-common.mse-include/watermark-names
+	include file: /netrunner-common.mse-include/watermark-names
 	description: First affiliation icon for the card.
 card field:
 	type: choice
 	name: affiliation2
 	editable: false
 	initial: none
-	include file: /vs-common.mse-include/dual-affiliation
+	include file: /netrunner-common.mse-include/dual-affiliation
 	description: Second affiliation icon for the card.
