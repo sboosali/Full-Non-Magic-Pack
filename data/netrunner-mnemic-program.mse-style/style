@@ -44,6 +44,23 @@ styling field:
 	initial: no
 ##############################################################
 card style:
+	######################################
+	faction:
+		left:   0
+		top:    0
+		width:  750
+		height: 1050
+		z index: -2
+		render style: both
+		popup style:  in place
+		choice images:
+			anarch:   RunnerProgramDefaultAnarch.png
+			criminal: RunnerProgramDefaultCriminal.png
+			shaper:   RunnerProgramDefaultShaper.png
+			neutral:  RunnerProgramDefaultNeutral-Runner.png
+			apex:     RunnerProgramDefaultApex.png
+			adam:     RunnerProgramDefaultAdam.png
+			sunny:    RunnerProgramDefaultSunny.png
 	############################# Background stuff
 	card type:
 		left:	0
