@@ -1,21 +1,36 @@
-﻿
-############################################################# Extra Statistics
+﻿##############################
+
 statistics dimension:
-	name: keywords
-	position hint: 1000
-	script: keyword_usage(unique:true)
-	show empty: false
-	split list: true
-	icon: stats/keywords.png
-statistics dimension:
-	name: style
-	position hint: 1001
-	script: stylesheet.short_name
-	icon: stats/stylesheet.png
-statistics dimension:
-	name: text length (words)
-	position hint: 100
-	script: word_count(to_text(card.rule_text))
-	numeric: true
-	bin size: 5
-	icon: stats/text_length.png
+	name: faction
+	#
+	script: card.faction
+	position hint: 00
+	#
+	group: anarch
+	group: criminal
+	group: shaper
+	group: neutral-runner
+	group: haas_bioroid
+	group: jinteki
+	group: nbn
+	group: weyland
+	group: neutral-corp
+	#group: adam
+	#group: apex
+	#group: sunny
+	# ^ commented out; hide minifactions by default.
+	colors:
+		haas_bioroid : rgb(138, 43, 226)
+		jinteki      : rgb(220, 20, 60)
+		nbn          : rgb(255, 140, 0)
+		weyland      : rgb(0,   100, 0)
+		neutral-corp   : rgb(128, 128, 128)
+		neutral-runner : rgb(192, 192, 192)
+		anarch   : rgb(255, 69,  0)
+		criminal : rgb(65,  105, 225)
+		shaper   : rgb(50,  205, 50)
+		adam    : rgb(167, 156, 89)
+		apex    : rgb(140, 72, 71)
+		sunny   : rgb(120, 97, 150)
+
+##############################

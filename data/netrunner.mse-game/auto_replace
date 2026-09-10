@@ -1,41 +1,37 @@
-﻿
-############################################################## Auto replace
-# Do we need categories?
-#auto replace category: text box
-#auto replace category: copyright
-#auto replace category: everywhere
+﻿##############################
+
 auto replace:
-	match: (C)
-	replace: ©
+	match   : --
+	replace : →
+	#match:   ->
+
 auto replace:
-	match: CR
-	replace: ©
+	match   : ==
+	replace : <sym>subroutine</sym> 
+	#match:   =>
+	#replace: ↳
+	#replace: ⤷
+
 auto replace:
-	match: AE
-	replace: Æ
-	whole word: false
+	match   : *
+	replace : •
+
+# 
+
 auto replace:
-	match: TM
-	replace: ™
-	whole word: false
+	match   : inf
+	replace : ∞
+
+# 
+
 auto replace:
-	match: --
-	replace: —
+	match   : $1
+	replace : 1<sym>credit</sym>
+
 auto replace:
-	# note the spaces
-	match:
-		 - 
-	replace:
-		 — 
-auto replace:
-	match: `
-	replace: •
-auto replace:
-	match: ::
-	replace: •
-auto replace:
-	match: @
-	replace: <sym>@</sym>
-auto replace:
-	match: ~
-	replace: CARDNAME
+	match   : $15
+	replace : 15<sym>credit</sym>
+
+# 
+
+##############################

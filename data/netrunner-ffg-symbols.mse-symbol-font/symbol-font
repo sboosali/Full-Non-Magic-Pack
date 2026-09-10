@@ -1,0 +1,97 @@
+mse version: 2.0.0
+installer group: anr/symbol-font
+
+image font size: 33
+symbol:
+	code: ssclick
+	image: click.png
+	regex: true
+	draw text: 1
+	text font: 
+		name: Times New Roman
+		color: (255,255,255)
+		size: 0.9
+symbol:
+	code: sscredit
+	image: credit.png
+	regex: true
+	draw text: 1
+	text font: 
+		name: Times New Roman
+		color: (255,255,255)
+		size: 0.9
+symbol:
+	code: ssLink
+	image: link.png
+	regex: true
+	draw text: 1
+	text font: 
+		name: Times New Roman
+		color: (255,255,255)
+		size: 0.9
+symbol:
+	code: ssMU1
+	image: MU1.png
+	regex: true
+	draw text: 1
+	text font: 
+		name: Times New Roman
+		color: (255,255,255)
+		size: 0.9
+symbol:
+	code: ssMU2
+	image: MU2.png
+	regex: true
+	draw text: 1
+	text font: 
+		name: Times New Roman
+		color: (255,255,255)
+		size: 0.9
+symbol:
+	code: ssMU3
+	image: MU3.png
+	regex: true
+	draw text: 1
+	text font: 
+		name: Times New Roman
+		color: (255,255,255)
+		size: 0.9
+symbol:
+	code: ssRecurrent
+	image: recurrent.png
+	regex: true
+	draw text: 1
+	text font: 
+		name: Times New Roman
+		color: (255,255,255)
+		size: 0.9
+symbol:
+	code: ssSub
+	image: sub.png
+	regex: true
+	draw text: 1
+	text font: 
+		name: Times New Roman
+		color: (255,255,255)
+		size: 0.9
+symbol:
+	code: ssTrash
+	image: trash.png
+	regex: true
+	draw text: 1
+	text font: 
+		name: Times New Roman
+		color: (255,255,255)
+		size: 0.9
+##############################################################
+# Insert-symbol menu
+insert symbol menu:
+	item:ssclick
+	item:sscredit
+	item:ssLink
+	item:ssMU1
+	item:ssMU2
+	item:ssMU3
+	item:ssRecurrent
+	item:ssSub
+	item:ssTrash

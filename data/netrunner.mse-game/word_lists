@@ -1,236 +1,113 @@
-﻿
-############################################################## Word lists
+﻿##############################
 
 word list:
-	name: affiliation1
-	word:
-		name: DC
-		word:
-			name: A-E
-			word: ANTI-MATTER
-			word: ARKHAM INMATES
-			word: BIRDS OF PREY
-			word: CHECKMATE
-			word: CRISIS
-			word: DARKSEID'S ELITE
-			word: DEATHSTROKE
-			word: DOOM PATROL
-			word: EMERALD ENEMIES
-		word:
-			name: F-J
-			word: FEARSOME FIVE
-			word: FUTURE FOES
-			word: GOTHAM KNIGHTS
-			word: GREEN LANTERN
-			word: INJUSTICE GANG
-			word: JLA
-			word: JLI
-			word: JSA
-		word:
-			name: K-O
-			word: LEAGUE OF ASSASSINS
-			word: LEGIONNAIRES
-			word: MANHUNTERS
-			word: NEW GODS
-			word: OUTSIDERS
-		word:
-			name: P-T
-			word: RANN
-			word: REVENGE SQUAD
-			word: SECRET SIX
-			word: SHADOWPACT
-			word: SPEED FORCE
-			word: SQUADRON SUPREME
-			word: TEAM SUPERMAN
-			word: TEEN TITANS
-			word: THANAGAR
-		word:
-			name: U-Z
-			word: VILLAINS UNITED
-	word:
-		name: Marvel
-		word:
-			name: A-E
-			word: ALPHA FLIGHT
-			word: ASGARDIANS
-			word: ATLANTIS
-			word: AVENGERS
-			word: BROTHERHOOD
-			word: CRIME LORDS
-			word: DEFENDERS
-			word: DOOM
-			word: EXILES
-		word:
-			name: F-J
-			word: FANTASTIC FOUR
-			word: HERALDS OF GALACTUS
-			word: HEROES OF EARTH
-			word: HELLFIRE CLUB
-			word: HORSEMEN OF APOCALYPSE
-			word: INFINITY WATCH
-			word: INHUMANS
-			word: INVADERS
-		word:
-			name: K-O
-			word: KANG COUNCIL
-			word: KREE
-			word: MARAUDERS
-			word: MARVEL DEFENDERS
-			word: MARVEL KNIGHTS
-			word: MASTERS OF EVIL
-			word: MORLOCKS
-			word: NEGATIVE ZONE
-			word: NEXTWAVE
-			word: NOVA CORPS
-		word:
-			name: P-T
-			word: PHALANX
-			word: RUNAWAYS
-			word: SENTINELS
-			word: THE SHI'AR
-			word: SHIELD
-			word: SINISTER SYNDICATE
-			word: SKRULL
-			word: SPIDER-FRIENDS
-			word: THUNDERBOLTS
-		word:
-			name: U-Z
-			word: UNDERWORLD
-			word: UNITED FRONT
-			word: VILLAINS OF EARTH
-			word: X-FACTOR
-			word: X-FORCE
-			word: X-MEN
-			word: X-STATIX
-			word: WARBOUND
-			word: WEAPON X
-			word: WILD PACK
-	word:
-		name: Other
-		word: B.P.R.D.
-		word: THULE SOCIETY
-	word: EQUIPMENT
-	word: LOCATION
-	word: PLOT TWIST
-	word: PLANET
-	word:
-		name: Your Affiliations
-		word:
-			script: all_affiliations()
-			line below: true
-word list:
-	name: affiliation2
-	word:
-		name: DC
-		word:
-			name: A-E
-			word: ANTI-MATTER
-			word: ARKHAM INMATES
-			word: BIRDS OF PREY
-			word: CHECKMATE
-			word: CRISIS
-			word: DARKSEID'S ELITE
-			word: DEATHSTROKE
-			word: DOOM PATROL
-			word: EMERALD ENEMIES
-		word:
-			name: F-J
-			word: FEARSOME FIVE
-			word: FUTURE FOES
-			word: GOTHAM KNIGHTS
-			word: GREEN LANTERN
-			word: INJUSTICE GANG
-			word: JLA
-			word: JLI
-			word: JSA
-		word:
-			name: K-O
-			word: LEAGUE OF ASSASSINS
-			word: LEGIONNAIRES
-			word: MANHUNTERS
-			word: NEW GODS
-			word: OUTSIDERS
-		word:
-			name: P-T
-			word: RANN
-			word: REVENGE SQUAD
-			word: SECRET SIX
-			word: SHADOWPACT
-			word: SPEED FORCE
-			word: SQUADRON SUPREME
-			word: TEAM SUPERMAN
-			word: TEEN TITANS
-			word: THANAGAR
-		word:
-			name: U-Z
-			word: VILLAINS UNITED
-	word:
-		name: Marvel
-		word:
-			name: A-E
-			word: ALPHA FLIGHT
-			word: ASGARDIANS
-			word: ATLANTIS
-			word: AVENGERS
-			word: CRIME LORDS
-			word: DEFENDERS
-			word: DOOM
-			word: EXILES
-		word:
-			name: F-J
-			word: FANTASTIC FOUR
-			word: HERALDS OF GALACTUS
-			word: HEROES OF EARTH
-			word: HELLFIRE CLUB
-			word: HORSEMEN OF APOCALYPSE
-			word: INFINITY WATCH
-			word: INHUMANS
-			word: INVADERS
-		word:
-			name: K-O
-			word: KANG COUNCIL
-			word: KREE
-			word: MARAUDERS
-			word: MARVEL DEFENDERS
-			word: MARVEL KNIGHTS
-			word: MASTERS OF EVIL
-			word: MORLOCKS
-			word: NEGATIVE ZONE
-			word: NEXTWAVE
-			word: NOVA CORPS
-		word:
-			name: P-T
-			word: PHALANX
-			word: RUNAWAYS
-			word: SENTINELS
-			word: THE SHI'AR
-			word: SHIELD
-			word: SINISTER SYNDICATE
-			word: SKRULL
-			word: SPIDER-FRIENDS
-			word: THUNDERBOLTS
-		word:
-			name: U-Z
-			word: UNDERWORLD
-			word: UNITED FRONT
-			word: VILLAINS OF EARTH
-			word: X-FACTOR
-			word: X-FORCE
-			word: X-MEN
-			word: X-STATIX
-			word: WARBOUND
-			word: WEAPON X
-			word: WILD PACK
-	word:
-		name: Other
-		word: B.P.R.D.
-		word: THULE SOCIETY
-	word: EQUIPMENT
-	word: LOCATION
-	word: PLOT TWIST
-	word: PLANET
-	word:
-		name: Your Affiliations
-		word:
-			script: all_affiliations()
-			line below: true
+	name: subtype
+
+	word: Academic
+	word: AI
+	word: AP
+	word: Advertisement
+	word: Alliance
+	word: Ambush
+	word: Barrier
+	word: Beanstalk
+	word: Bioroid
+	word: Black Ops
+	word: Bomb
+	word: Caïssa
+	word: Cast
+	word: Character
+	word: Chip
+	word: Clan
+	word: Clone
+	word: Cloud
+	word: Code Gate
+	word: Companion
+	word: Condition
+	word: Connection
+	word: Console
+	word: Consumer-grade
+	word: Corp
+	word: Corporation
+	word: Current
+	word: Cybernetic
+	word: Cyborg
+	word: Daemon
+	word: Decoder
+	word: Deep Net
+	word: Deflector
+	word: Department
+	word: Destroyer
+	word: Deva
+	word: Digital
+	word: Directive
+	word: Division
+	word: Double
+	word: Enforcer
+	word: Executive
+	word: Expansion
+	word: Expendable
+	word: Facility
+	word: Fracter
+	word: G-mod
+	word: Gear
+	word: Genetics
+	word: Government
+	word: Grail
+	word: Gray Ops
+	word: Harmonic
+	word: Hostile
+	word: Icebreaker
+	word: Industrial
+	word: Initiative
+	word: Job
+	word: Killer
+	word: Liability
+	word: Link
+	word: Location
+	word: Lockdown
+	word: Mandate
+	word: Megacorp
+	word: Mod
+	word: Morph
+	word: Mythic
+	word: NEXT
+	word: Natural
+	word: Observer
+	word: Off-site
+	word: Orgcrime
+	word: Police Department
+	word: Political
+	word: Priority
+	word: Psi
+	word: Public
+	word: Region
+	word: Remote
+	word: Reprisal
+	word: Research
+	word: Ritzy
+	word: Run
+	word: Sabotage
+	word: Security
+	word: Security Protocol
+	word: Seedy
+	word: Sensie
+	word: Sentry
+	word: Source
+	word: Stealth
+	word: Subsidiary
+	word: Sysop
+	word: Terminal
+	word: Tracer
+	word: Transaction
+	word: Trap
+	word: Triple
+	word: Trojan
+	word: Unorthodox
+	word: Unsubstantiated
+	word: Vehicle
+	word: Virtual
+	word: Virus
+	word: Weapon
+
+##############################

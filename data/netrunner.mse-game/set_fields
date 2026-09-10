@@ -1,101 +1,116 @@
 ﻿
-############################################################## Set fields
+##############################
+
 set field:
 	type: info
-	name: Set Information
+	name: Set Info
+
 set field:
 	type: text
 	name: title
-	description: This information will not appear on the card.
+	description: Set Title (e.g. "Neuromancer"). Can't be an official set.
+
 set field:
 	type: text
 	name: description
 	multi line: true
-	description: This information will not appear on the card.
+	description: Your set's design goals, novel mechanics, its world-building, what motivated you, whether it's been playtested, any changelogs, and so on.
+
+##############################
+
 set field:
 	type: info
-	name: Set Logo Options
-set field:
-	type: choice
-	name: logo
-	choice: none
-	choice: Marvel
-	choice: DC-new
-	choice: DC-old
-	choice: Hellboy
-	choice: Other...
-	initial: none
-	save value: true
-	description: The logo for the company.
-set field:
-	type: image
-	name: custom logo
-	save value: true
-	description: This is where you load custom logos that will appear on all your cards.
-set field:
-	type: info
-	name: Other Default Options
+	name: Set Metadata
+
 set field:
 	type: text
 	name: code
-	description: Recommended only 3 Capital digits. Will appear before card number. ex: MOR-1
+	description: Set Code (e.g. "neur"); 3-5 letters/numbers. Can't shadow an official set.
+
 set field:
 	type: text
-	name: artist
-	description: Editting this will set 1 artist for all the cards and will appear in the illustrator area.
+	name: index
+	description: Set Index (e.g. "69"). Can't shadow an official set (n.b. Vantage Point was at "36").
+
+set field:
+	type: symbol
+	name: logo
+	#initial: "MagnumOpus.png"
+	description: Set Logo (symbol). Shown in cards’ footer. (By default, the alchemical "Magnum Opus" symbol.)
+
+set field:
+	type: choice
+	name: language
+	initial: "en-US"
+	choice: "en-US"
+	choice: "fr-FR"
+	description: Language code (e.g. "fr-FR") of all text name/rules/flavor/typeline/etc American English ("en-US") by default. [please help with localization!]
+
 set field:
 	type: text
 	name: copyright
-	description: Copytight information. This information will appear in the copyright area on the card.
+	description: Copyright information (e.g. "CC0 2026 Gilliam Bibson"): the designer(s) of this set. Illustrators have separate attribution on each card.
+
+##############################
+
 set field:
-	type: choice
-	name: set rarity
-	choice: common
-	choice: uncommon
-	choice: rare
-	choice: promo
-	initial: none
-	description: Set the rarity for all cards in the set.
+	type: info
+	name: Set Styling
+
+set field:
+	type: package choice
+	name: textbox symbols
+	match: netrunner-*-symbols.mse-symbol-font
+	initial: netrunner-mnemic-symbols.mse-symbol-font
+	description: Game symbols (the [credit] diamond, [click] clock, [trash] can, etc).
+
+set field:
+	type: text
+	name: subtypes
+	description: Extra subtypes, to be auto-emboldened; a comma-separated value (e.g. "Nanotech, SimStim, Black ICE, Jockey,").
+
+##############################
+
+set field:
+	type: info
+	name: Set Editing
+
 set field:
 	type: multiple choice
 	name: automatic reminder text
-	choice: real
-	choice: custom
-	initial: custom
-	# Convert from older mse versions
-	script:
-		if value == "yes" then "real, custom"
-		else if value == "no" then ""
-		else value
-	description: For which kinds of keywords should reminder text be added by default? Note: you can enable/disable reminder text by right clicking the keyword.
+	initial: action, flag, phrase, 
+	choice: action
+	choice: official
+	choice: flag
+	choice: ability
+	choice: phrase
+	choice: rule
+	description: For which "keyword modes" should reminder text be auto-expanded? (You can still toggle reminder text on/off by right clicking a keyword on any card.)
+
 set field:
 	type: boolean
 	name: automatic card numbers
 	initial: yes
-	description: Should card numbers be shown on the cards?
-############################# Default style
+	description: Show card number (e.g. "001") on each card's footer?
+
+##############################
+
 default set style:
+
 	title:
 		padding left: 2
 		font:
-			size: 14
-	logo:
+			size: 12
+
+	description:
 		font:
-			size: 16
-		render style: both
-		choice images:
-			Marvel: /netrunner-common.mse-include/marvel.png
-			DC-new:	/netrunner-common.mse-include/dcnew.png
-			DC-old: /netrunner-common.mse-include/dcold.png
-			Hellboy: /netrunner-common.mse-include/hellboy.png
-			Other...: /netrunner-common.mse-include/other.png
-	custom logo:
-		width: 30
-		height: 30
-	title:
-		padding left: 2
-		font:
-			size: 16
+			size: 8
+
+	textbox symbols:
+		#render style: both
+
 	automatic reminder text:
 		render style: checklist
 		direction: vertical
+
+##############################
