@@ -1,13 +1,13 @@
 mse version: 2.5.6
 version: 2026-09
-short name: MNeMiC's Icons
+short name: MNeMiC's FFG Icons
 position hint: -2
-installer group: Netrunner/Symbol fonts/MNeMiC
+installer group: Netrunner/Symbol fonts/FFG
 icon: preview.png
 
 ##############################
 
-image font size: 16
+image font size: 6
 horizontal space: 2
 
 ##############################
@@ -17,7 +17,7 @@ insert symbol menu:
 	item: recurring
 	item: click
 	item: trash
-	item: sub
+	item: subroutine
 	item:
 		type: line
 	item: interrupt
@@ -111,18 +111,21 @@ symbol:
 ##############################
 
 symbol:
-	code  :     ([0-9XYZ])mu
-	regex:     true
-	draw text: 1
+	code  : mu
+	image : MU.png
 
-	image : mu.png
+symbol:
+	code      : ([0-9XYZ])mu
+	regex     : true
+	draw text : 1
+	image     : MU.png
 
-	#enabled: { symbol_mu() == "mnemic" }
+	enabled: { true }
 
 	text font: 
 		name:  Bank Gothic Medium
 		size:  0.9
-		color: (255,255,255)
+		color: rgb(255,255,255)
 
 	text margin left:   0.0
 	text margin right:  0.0
@@ -158,7 +161,7 @@ symbol:
 ##############################
 
 symbol:
-	code  : haas
+	code  : haas-bioroid
 	image : HB.png
 
 # 

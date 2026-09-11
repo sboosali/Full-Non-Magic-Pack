@@ -70,7 +70,7 @@ card field:
 	card list name    : FAC
 	card list column  : 0401
 	card list visible : true
-	card list width   : 10
+	card list width   : 100
 	choice colors cardlist:
 		haas-bioroid : rgb(138, 43, 226)
 		jinteki      : rgb(220, 20, 60)
@@ -99,7 +99,7 @@ card field:
 card field:
 	type: choice
 	name: influence
-	initial: "0"
+	initial: 0
 	choice:
 		name: 5
 		type: radio
@@ -121,21 +121,79 @@ card field:
 	card list name    : INF
 	card list column  : 0402
 	card list visible : true
-	card list width   : 10
+	card list width   : 40
 	description: The influence cost (0–5).
 
 ############################## 
 
 card field:
 	type: text
-	name: name
+	name: title
 	identifying: true
 	multi line: false
 	show statistics: false
 	card list name    : Name
 	card list column  : 0101
 	card list visible : true
-	card list width   : 100
+	card list width   : 150
 	description: The card name.
+
+# # # # # # # # # # # # # # # 
+
+card field:
+	type: choice
+	name: unique
+	initial: no
+	choice: unique
+	choice: no
+	card list name    : ◆
+	card list visible : true
+	card list column  : 0901
+	card list width   : 40
+	description: Whether the installable card is unique (⬩). (Identities/Events/Operations are neither unique nor non-unique.)
+
+##############################
+
+card field:
+	type: text
+	name: cardtype
+	multi line: false
+	script: to_upper(value)
+	show statistics: false
+	card list name    : Card-Type
+	card list visible : true
+	card list column  : 0301
+	card list width   : 100
+	description: The card’s (single) card-type.
+
+# # # # # # # # # # # # # # # 
+
+card field:
+	type: text
+	name: subtypes
+	multi line: false
+	card list name    : Sub-Types
+	card list visible : true
+	card list column  : 0302
+	card list width   : 200
+	description: The card’s (zero-or-more) subtypes; hyphen-separated (e.g. "Icebreaker - AI - Virus").
+
+##############################
+
+card field:
+	type: text
+	name: text
+	multi line: true
+	show statistics: false
+	description: Rules text, sharing the textbox with any flavor text (press down/up arrows to move between them). You can search your set for fields with any abbreviation: e.g. "x:run", since "(te)x(t)" is a distinct subsequence (while "t:run" matches the typeline/etc as well as the textbox).
+
+##############################
+
+card field:
+	type: text
+	name: footer
+	multi line: true
+	show statistics: false
+	description: The set logo, the card’s code (number in its set), and its illustrator, designer, copyright, etc information.
 
 ##############################

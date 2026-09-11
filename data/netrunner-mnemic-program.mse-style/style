@@ -27,10 +27,6 @@ card background: white
 styling field:
 	type: text
 	name: textbox font size
-	# initial:   12
-	# increment: 1
-	# minimum:   4
-	# maximum:   32
 	description: Defaults to 12 if empty.
 
 ##############################################################
@@ -42,8 +38,8 @@ card style:
 		width  : 750
 		height : 1050
 		z index: -2
-		render style: both
-		popup style:  in place
+		render style : both
+		popup style  : in place
 		choice images:
 			anarch   : RunnerProgramDefaultAnarch.png
 			criminal : RunnerProgramDefaultCriminal.png
@@ -54,32 +50,31 @@ card style:
 			neutral-runner : RunnerProgramDefaultNeutral-Runner.png
 
 	influence:
-		left : 
-		top  : 
-		width  : 
-		height : 
+		left : 691
+		top  : 735
+		right  : 750
+		bottom : 980
 		z index : 3
-		angle   : 90
 		tab index: 9
 		render style : both
 		popup style  : in place
 		choice images:
-			5: /netrunner-mnemic.mse-include/IconInfluence5.png
-			4: /netrunner-mnemic.mse-include/IconInfluence4.png
-			3: /netrunner-mnemic.mse-include/IconInfluence3.png
-			2: /netrunner-mnemic.mse-include/IconInfluence2.png
-			1: /netrunner-mnemic.mse-include/IconInfluence1.png
-			0: /netrunner-mnemic.mse-include/IconInfluence0.png
+			5: /netrunner-mnemic-common.mse-include/IconInfluence5.png
+			4: /netrunner-mnemic-common.mse-include/IconInfluence4.png
+			3: /netrunner-mnemic-common.mse-include/IconInfluence3.png
+			2: /netrunner-mnemic-common.mse-include/IconInfluence2Vertical.png
+			1: /netrunner-mnemic-common.mse-include/IconInfluence1.png
+			0: /netrunner-mnemic-common.mse-include/IconInfluence0.png
 
 	art:
 		left : 0
 		top  : 0
 		width  : 750
-		height : 465
+		height : 480
 		z index: 1
 		mask: TemplateRunnerProgram.png
 
-	name:
+	title:
 		left : 40
 		top  : 485
 		width  : 550
@@ -91,3 +86,81 @@ card style:
 			name: Trajan Pro Bold
 			size: 32
 
+	unique:
+		left : 10
+		top  : 480
+		width  : 20
+		height : 64
+		z index: 2
+		alignment: center middle
+		render style : image
+		popup style  : dropdown
+		tab index: 8
+		choice images:
+			unique: /netrunner-mnemic-symbols.mse-symbol-font/UNIQUE.png
+
+	cardtype:
+		left : 50
+		top  : 545
+		right  : 235
+		bottom : 620
+		z index: 3
+		alignment: right middle shrink-overflow
+		font:
+			name: Monkirta Pursuit NC
+			size: 24
+
+	subtypes:
+		left : 235
+		top  : 545
+		right  : 750
+		bottom : 620
+		z index: 2
+		alignment: left middle shrink-overflow
+		tab index: 2
+		font:
+			name: Gill Sans
+			size: 20
+			scale down to: 12
+
+	text:
+		left : 75
+		top  : 620
+		width  : 590
+		height : 370
+		z index: 2
+		tab index: 3
+
+		line height hard: 1.4
+		font:
+			name: Minion Pro
+			size: { if match(styling.textbox_font_size, match: "[1-9][0-9][0-9]") then to_int(styling.textbox_font_size) else 24 }
+			scale down to: 12
+		symbol font:
+			name: netrunner-mnemic-symbols
+			size: 6
+
+
+
+	footer:
+		left : 0
+		top  : 991
+		right  : 750
+		bottom : 1050
+		z index: 3
+		tab index: 10
+		font:
+			name: Arial Regular
+			size: 8
+
+##############################
+
+		# padding left   : 20
+		# padding top    : 25
+		# padding right  : 0
+		# padding bottom : 30
+
+		# padding left   : 7
+		# padding top    : 25
+		# padding right  : 130
+		# padding bottom : 30

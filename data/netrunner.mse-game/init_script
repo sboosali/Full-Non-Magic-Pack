@@ -1,4 +1,111 @@
-﻿
+﻿##############################
+# Utilities (needed by init_script itself):
+# # # # # # # # # # # # # # # 
+
+
+
+# # # # # # # # # # # # # # # 
+
+split_text_by_comma := split_text@(match: ",", include_empty: false)
+
+# 
+
+# Parses "x,y ,  z," into ["x", "y", "z"].
+
+from_csv := {
+
+	xs := split_text_by_comma(input)
+	ys := for each x in xs do (
+		trim(x)
+	)
+
+	ys
+}
+
+# # # # # # # # # # # # # # # 
+
+join := {
+	n := length(input)-1
+
+	if n < 0 then ""
+
+	else for i from 0 to n do (
+		s := if i == n then "" else sep
+		input[i] + s
+	)
+}@(sep: ",")
+
+#
+
+# Dumps ["x", "y", "z"] into "x,y,z".
+
+to_csv := join@(sep:",")
+
+##############################
+# Formatting:
+# # # # # # # # # # # # # # # 
+# Embolden:
+# # # # # # # # # # # # # # # 
+
+#TODO
+all_subtypes := {
+
+	from_csv( "barrier, sentry, code gate," )
+
+}
+
+# 
+
+subtype_rx := {
+
+	"\\b({ join( all_subtypes(), sep: "|") })\\b"
+
+}
+
+# # # # # # # # # # # # # # # 
+
+embolden_subtypes := replace@(match: subtype_rx(), replace: "<b>\\1</b>")
+
+# # # # # # # # # # # # # # # 
+
+embolden_activation_costs := replace@(match: "^([a-z0-9_+<>-]+ → )?([^:\\n]+:)", replace: "<b>\\2</b>")
+
+# # # # # # # # # # # # # # # 
+# Italicize:
+# # # # # # # # # # # # # # # 
+
+italicize_parentheticals := replace@(match: "([^)\\n]*)", replace: "<i>\\1</i>")
+
+##############################
+
+format_rules_text :=
+	remove_tag@(tag: "<b>")
+	+
+	embolden_subtypes
+	+
+	embolden_activation_costs
+	+
+	remove_tag@(tag: "<i>")
+	+
+	italicize_parentheticals
+	+
+	curly_quotes
+
+##############################
+# Dropdowns (word-list):
+# # # # # # # # # # # # # # # 
+
+tag_word_list := {
+
+	name := name + (if language!="" then "-{language}" else "")
+	
+	"<word-list-{name}>{ input }</word-list-{name}>"
+
+}@(name: "subtype", language: "")
+
+# # # # # # # # # # # # # # # 
+
+
 ##############################
 # Enums:
 # # # # # # # # # # # # # # # 
