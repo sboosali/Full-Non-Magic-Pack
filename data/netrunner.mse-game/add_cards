@@ -1,0 +1,83 @@
+
+##############################
+
+add cards script:
+	name: &Program
+	script:
+		[ new_card([ type: "program", memory: "1",
+		  stylesheet: "netrunner-runner-program.mse-style" ])
+		]
+
+##############################
+
+add cards script:
+	name: &Breaker Cycle
+	script: new_breaker_cycle()
+
+# 
+
+new_breaker_cycle := {
+
+	fracter := new_card([ type: "Program", memory: 1, strength: 1, subtypes: "Icebreaker - Fracter", text: "Interface → 1<sym>credit</sym>: Break 1 barrier subroutine.\n1<sym>credit</sym>: +1 strength.", stylesheet: "netrunner-runner-event.mse-style" ])
+	killer := new_card([ type: "Program", memory: 1, strength: 1, subtypes: "Icebreaker - Killer", text: "Interface → 1<sym>credit</sym>: Break 1 sentry subroutine.\n1<sym>credit</sym>: +1 strength.", stylesheet: "netrunner-runner-event.mse-style" ])
+	decoder := new_card([ type: "Program", memory: 1, strength: 1, subtypes: "Icebreaker - Decoder", text: "Interface → 1<sym>credit</sym>: Break 1 code gate subroutine.\n1<sym>credit</sym>: +1 strength.", stylesheet: "netrunner-runner-event.mse-style" ])
+
+	# NB. this relation is symmetric. 
+	#add_link(input: fracter, linked_card: killer, selected_relation: "cycle", linked_relation: "cycle")
+	#add_link(input: killer, linked_card: decoder, selected_relation: "cycle", linked_relation: "cycle")
+	#add_link(input: decoder, linked_card: fracter, selected_relation: "cycle", linked_relation: "cycle")
+
+	[ fracter, killer, decoder ]
+}
+
+##############################
+
+add cards script:
+	name: &Fracter
+	script:
+		[ new_card([ type: "Program", memory: 1, strength: 1, subtypes: "Icebreaker - Fracter",
+		  text: "Interface → 1<sym>credit</sym>: Break 1 <b>barrier</b> subroutine.\n1<sym>credit</sym>: +1 strength.",
+		  stylesheet: "netrunner-runner-program.mse-style" ])
+		]
+
+# 
+
+add cards script:
+	name: &Killer
+	script:
+		[ new_card([ type: "Program", memory: 1, strength: 1, subtypes: "Icebreaker - Killer",
+		  text: "Interface → 1<sym>credit</sym>: Break 1 <b>sentry</b> subroutine.\n1<sym>credit</sym>: +1 strength.",
+		  stylesheet: "netrunner-runner-program.mse-style" ])
+		]
+
+# 
+
+add cards script:
+	name: &Decoder
+	script:
+		[ new_card([ type: "Program", memory: 1, strength: 1, subtypes: "Icebreaker - Decoder",
+		  text: "Interface → 1<sym>credit</sym>: Break 1 <b>code gate</b> subroutine.\n1<sym>credit</sym>: +1 strength.",
+		  stylesheet: "netrunner-runner-program.mse-style" ])
+		]
+
+##############################
+
+add cards script:
+	name: &Virus (Program)
+	script:
+		[ new_card([ type: "Program", memory: 1, strength: "-", subtypes: "Virus",
+		  text: "When you install this program, place 3 virus counters on it.\nOnce per turn → Hosted virus counter: ",
+		  stylesheet: "netrunner-runner-program.mse-style" ])
+		]
+
+# 
+
+add cards script:
+	name: &Trojan (Program)
+	script:
+		[ new_card([ type: "Program", memory: 1, strength: "-", subtypes: "Trojan",
+		  text: "Install only on a piece of ice.\n",
+		  stylesheet: "netrunner-runner-program.mse-style" ])
+		]
+
+##############################

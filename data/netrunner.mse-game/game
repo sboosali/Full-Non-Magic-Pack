@@ -18,7 +18,8 @@ include file: card_fields
 include file: set_fields
 # include file: keywords
 # include file: word_lists
-# include file: auto_replace
+#include file: auto_replace
+#include file: add_cards
 # include file: statistics
 
 ##############################################################

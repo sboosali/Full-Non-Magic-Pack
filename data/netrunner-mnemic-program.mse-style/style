@@ -32,39 +32,24 @@ styling field:
 ##############################################################
 
 card style:
+
+
 	faction:
 		left : 0
 		top  : 0
 		width  : 750
 		height : 1050
-		z index: -2
-		render style : both
+		z index: 0
+		render style : image
 		popup style  : in place
 		choice images:
-			anarch   : RunnerProgramDefaultAnarch.png
-			criminal : RunnerProgramDefaultCriminal.png
-			shaper   : RunnerProgramDefaultShaper.png
-			apex     : RunnerProgramDefaultApex.png
-			adam     : RunnerProgramDefaultAdam.png
-			sunny    : RunnerProgramDefaultSunny.png
+			anarch         : RunnerProgramDefaultAnarch.png
+			criminal       : RunnerProgramDefaultCriminal.png
+			shaper         : RunnerProgramDefaultShaper.png
 			neutral-runner : RunnerProgramDefaultNeutral-Runner.png
-
-	influence:
-		left : 691
-		top  : 735
-		right  : 750
-		bottom : 980
-		z index : 3
-		tab index: 9
-		render style : both
-		popup style  : in place
-		choice images:
-			5: /netrunner-mnemic-common.mse-include/IconInfluence5.png
-			4: /netrunner-mnemic-common.mse-include/IconInfluence4.png
-			3: /netrunner-mnemic-common.mse-include/IconInfluence3.png
-			2: /netrunner-mnemic-common.mse-include/IconInfluence2Vertical.png
-			1: /netrunner-mnemic-common.mse-include/IconInfluence1.png
-			0: /netrunner-mnemic-common.mse-include/IconInfluence0.png
+			apex           : RunnerProgramDefaultApex.png
+			adam           : RunnerProgramDefaultAdam.png
+			sunny          : RunnerProgramDefaultSunny.png
 
 	art:
 		left : 0
@@ -74,12 +59,30 @@ card style:
 		z index: 1
 		mask: TemplateRunnerProgram.png
 
+	influence:
+		left : 691
+		top  : 735
+		width  : 42
+		height : 210
+		z index : 3
+		tab index: 9
+		render style : image
+		popup style  : in place
+		choice images:
+			5: /netrunner-mnemic-common.mse-include/IconInfluence5Vertical.png
+			4: /netrunner-mnemic-common.mse-include/IconInfluence4Vertical.png
+			3: /netrunner-mnemic-common.mse-include/IconInfluence3Vertical.png
+			2: /netrunner-mnemic-common.mse-include/IconInfluence2Vertical.png
+			1: /netrunner-mnemic-common.mse-include/IconInfluence1Vertical.png
+			0: /netrunner-mnemic-common.mse-include/IconInfluence0Vertical.png
+
+
 	title:
 		left : 40
 		top  : 485
 		width  : 550
 		height : 55
-		z index: 2
+		z index: 3
 		alignment: left bottom
 		tab index: 1
 		font:
@@ -91,13 +94,14 @@ card style:
 		top  : 480
 		width  : 20
 		height : 64
-		z index: 2
+		z index: 3
 		alignment: center middle
 		render style : image
 		popup style  : dropdown
 		tab index: 8
 		choice images:
 			unique: /netrunner-mnemic-symbols.mse-symbol-font/UNIQUE.png
+
 
 	cardtype:
 		left : 50
@@ -115,7 +119,7 @@ card style:
 		top  : 545
 		right  : 750
 		bottom : 620
-		z index: 2
+		z index: 3
 		alignment: left middle shrink-overflow
 		tab index: 2
 		font:
@@ -123,15 +127,15 @@ card style:
 			size: 20
 			scale down to: 12
 
+
 	text:
 		left : 75
 		top  : 620
 		width  : 590
 		height : 370
 		z index: 2
+		line height hard : 1.4
 		tab index: 3
-
-		line height hard: 1.4
 		font:
 			name: Minion Pro
 			size: { if match(styling.textbox_font_size, match: "[1-9][0-9][0-9]") then to_int(styling.textbox_font_size) else 24 }
@@ -141,13 +145,12 @@ card style:
 			size: 6
 
 
-
 	footer:
 		left : 0
 		top  : 991
 		right  : 750
 		bottom : 1050
-		z index: 3
+		z index: 2
 		tab index: 10
 		font:
 			name: Arial Regular
