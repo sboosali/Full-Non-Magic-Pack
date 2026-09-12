@@ -1,150 +1,210 @@
-﻿############################################################## Keywords
-############################# Keyword rules
+﻿
+##############################
 
 has keywords: true
 
-keyword match script: text_filter(value)
+keyword match script: format_reminder_text(value)
+
+# # # # # # # # # # # # # # # 
 
 keyword mode:
+	name: action
 	is default: true
-	name: custom
-	description: Custom keywords.
+	description: Custom keyword actions, with reminder text at end-of-line.
+
+# 
+
 keyword mode:
-	name: real
-	description: Actual keywords.
+	name: official
+	description: Official keyword actions (e.g. `Sabotage N`, `Charge …`, `Identify your mark`).
+
+# 
+
+keyword mode:
+	name: flag
+	description: Flags/Gates (e.g. `Threat N → …`). Case-sensitive, between start-of-line and a right-arrow.
+
+# 
+
+keyword mode:
+	name: ability
+	description: MtG-style “keyword abilities” (e.g. `Hidden`). At start-of-line, in a comma-separated list.
+
+# 
+
+keyword mode:
+	name: phrase
+	description: Custom “keyword phrases” (e.g. `unique (⬥)`). Reminder text follows immediately afterwards.
+
+# 
+
+keyword mode:
+	name: flavor
+	description: MtG-style “ability words” (e.g. `Noise Punk — …`). Case-sensitive, between start-of-line and an em-dash.
+
+# 
+
+keyword mode:
+	name: rule
+	description: "Keyword" actions that are intrinsic game rules (e.g. `Purge virus counters.`). Reminder text is hidden by default.
+
+##############################
 
 keyword parameter type:
 	name: number
-	match: [0-9XYZ?!]+
-keyword parameter type:
-	name: action
-	match: 
-		[^
-		(.,]+
-keyword parameter type:
-	name: name
-	match:
-		[^
-		(.,]+
+	match: [0-9XYZN]
+	refer script:
+		name: normal
+		description: Matches a natural number (positive integer) or a “variable letter” (X,Y,Z,N). e.g. (1,2,3,X).
+		script: \{{input}\}
+	refer script:
+		name: as words
+		description: e.g. (one, two, three, X)
+		script: \{english_number({input})\}
+	refer script:
+		name: as words, use "a" for 1
+		description: e.g. (a, two, three)
+		script: \{english_number_a({input})\}
+	refer script:
+		name: as words, use "" for 1
+		description: e.g. (, two, three)
+		script: \{english_number_multiple({input})\}
+	refer script:
+		name: as ordinal words
+		description: e.g. (first, second, third)
+		script: \{english_number_ordinal({input})\}
 
-############################# All VS System keywords
+##############################
+
 keyword:
-	keyword: Concealed—Optional
-	match: Concealed—Optional
-	mode: real
-	reminder: This card may come into play in the hidden area.
+	keyword: Threat
+	match: Threat <atom-param>number</atom-param>
+	mode: flag
+	reminder: This ability is active if any player has {param1} or more agenda points.
+
+# # # # # # # # # # # # # # # 
+
 keyword:
-	keyword: Concealed
-	match: Concealed 
-	mode: real
-	reminder: This card comes into play in the hidden area.
+	keyword: Sabotage
+	match: sabotage <atom-param>number</atom-param> →
+	mode: official
+	reminder: The Corp trashes {param1} cards of their choice from HQ { if (param1.value=="1") then "or" then "and/or" } the top of R&D.
+
+# # # # # # # # # # # # # # # 
+
 keyword:
-	keyword: Loyalty—Reveal
-	match: Loyalty—Reveal
-	mode: real
-	reminder: If you don’t control a character that shares an affiliation with this character, then as an additional cost to recruit this character, reveal a character card from your hand or resource row that shares an affiliation with this character.
+	keyword: Mark
+	match: identify your mark
+	mode: official
+	reminder: If you don’t have a mark, a random central server becomes your mark for this turn.
+
+# # # # # # # # # # # # # # # 
+
 keyword:
-	keyword: Loyalty
-	match: Loyalty 
-	mode: real
-	reminder: Recruit this character only if you control a character that shares at least one team affiliation with this character.
+	keyword: Charge
+	match: charge
+	mode: official
+	reminder: Add 1 power counter to a card that already has one.
+
+# # # # # # # # # # # # # # # 
+
 keyword:
-	keyword: Evasion
-	match: Evasion
-	mode: real
-	reminder: Stun this character -> Recover this character at the start of the recovery phase this turn.
+	keyword: Threat-Level
+	match: 
+	mode: official
+	reminder: The threat level is the greatest number of agenda points a single player has.
+
+# # # # # # # # # # # # # # # 
+
 keyword:
-	keyword: Invulnerability
-	match: Invulnerability
-	mode: real
-	reminder: Whenever this character becomes stunned, you do not take stun damage. Breakthrough is applied normally.
+	keyword: Psi
+	match: play a Psi Game
+	mode: official
+	reminder: Players secretly bid 0–2<sym>credit</sym>. Then each player reveals and spends their bid.
+
+# # # # # # # # # # # # # # # 
+
 keyword:
-	keyword: Cosmic—Surge:
-	match: Cosmic—Surge: <atom-param>action</atom-param>
-	mode: real
-	reminder: This character does not come into play with a cosmic counter. At the start of the recovery phase each turn, put a cosmic counter on this character.
-keyword:
-	keyword: Cosmic:
-	match: Cosmic: <atom-param>action</atom-param>
-	mode: real
-	reminder: This character comes into play with a cosmic counter on it. While this character has a cosmic counter on it, it has this ability in addition to any other text it has.
-keyword:
-	keyword: Cosmic
-	match: Cosmic
-	mode: real
-	reminder: This character comes into play with a cosmic counter on it.
-keyword:
-	keyword: Boost
-	match: Boost <atom-param>number</atom-param>
-	mode: real
-	reminder: As an additional cost to play this card, you may pay its boost cost. If you pay, this card has this this this ability in addition to any other text it has this turn.
-keyword:
-	keyword: Willpower
-	match: Willpower <atom-param>number</atom-param>
-	mode: real
-	reminder: This character has willpower equal to <param1>.
-keyword:
-	keyword: Leader:
-	match: Leader: <atom-param>action</atom-param>
-	mode: real
-	reminder: The designated characters are affected by this text.
-keyword:
-	keyword: Ally:
-	match: Ally: <atom-param>action</atom-param>
-	mode: real
-	reminder: This character's ally power is activated whenever a character becomes powered-up.
+	keyword: 
+	match: 
+	mode: official
+	reminder: 
+
+# # # # # # # # # # # # # # # 
+
+#keyword:
+#	keyword: 
+#	match: 
+#	mode: official
+#	reminder: 
+
+##############################
+
 keyword:
 	keyword: Unique
-	match: Unique
-	mode: real
-	reminder: You may only have one copy of this card in play at a time.
+	match: unique
+	mode: phrase
+	reminder: <sym>unique</sym>
+	#reminder: ⬥
+
+##############################
+
 keyword:
-	keyword: Ongoing:
-	match: Ongoing <atom-param>action</atom-param>
-	mode: real
-	reminder: As long as this card remains face-up in your resource row, this text is active.
+	keyword: Purging
+	match: purge virus counters
+	mode: game
+	reminder: Remove all virus counters from installed cards.
+
+# # # # # # # # # # # # # # # 
+
 keyword:
-	keyword: Reservist
-	match: Reservist
-	mode: real
-	reminder: You may recruit this card from your resource row. If you do, you may put a card from your hand face down into your resource row.
+	keyword: Exposing
+	match: expose
+	mode: game
+	reminder: Reveal an unrezzed card.
+
+# # # # # # # # # # # # # # # 
+
 keyword:
-	keyword: Press
-	match: Press
-	mode: real
-	reminder: When you recruit this card, your next character costs 1 less to recruit this turn for each press card you recruited this turn, but no less than 1.
+	keyword: Bypassing
+	match: bypass
+	mode: game
+	reminder: Pass that ice. No subroutines or further “when encountered” abilities resolve.
+
+# # # # # # # # # # # # # # # 
+
 keyword:
-	keyword: Terraform
-	match: Terraform
-	mode: real
-	reminder: Reveal this card -> You may return a face-down resource you control to its owner's hand. If you do, put this card face-down into your resource row. Use this power only if this card is in your hand and only during your recruit step.
+	keyword: Trojan text
+	match: Install only on a piece of ice.
+	mode: game
+	reminder: If the host ice is uninstalled, this program is trashed.
+
+# # # # # # # # # # # # # # # 
+
+#keyword:
+#	keyword: 
+#	match: 
+#	mode: game
+#	reminder: 
+
+##############################
+
 keyword:
-	keyword: Transferable
-	match: Transferable
-	mode: real
-	reminder: At the start of the formation step, you may transfer this card.
+	keyword: Hidden
+	match: hidden
+	mode: ability
+	reminder: Install <b>hidden</b> resources facedown. You may turn them faceup any time you could use an ability.
+	notes:
+		(ONR)
+
+##############################
+
 keyword:
-	keyword: Vengeance:
-	match: Vengeance: <atom-param>action</atom-param>
-	mode: real
-	reminder: This ability is activated whenever this character is stunned.
-keyword:
-	keyword: Backup:
-	match: Backup: <atom-param>action</atom-param>
-	mode: real
-	reminder: This ability can only be used during the build phase.
-keyword:
-	keyword: Dual Loyalty
-	match: Dual Loyalty
-	mode: real
-	reminder: Recruit this card only if both its printed affiliations are among the affiliations of characters you control.
-keyword:
-	keyword: Substitute
-	match: Substitute
-	mode: real
-	reminder: Reveal this card -> You may remove from the game a ready character you control with cost greater than or equal to the cost of this card. If you do, put this card into play. Use only if this card is in your hand and only during your recruit step." 
-keyword:
-	keyword: Insanity:
-	match: Insanity: <atom-param>action</atom-param>
-	mode: real
-	reminder: You may not have more than one copy of this card in your deck.
+	keyword: Cache
+	match: cache
+	mode: custom
+	reminder: Set a cached card aside facedown. Until the end of your action phase, you may play or install it, paying all costs.
+	notes:
+		e.g. "Look at the top 3 cards of your stack. Cache one of them and remove the rest from the game. (Set it aside facedown. Until the end of your turn, you may play or install it, paying all costs.)"
+
+##############################

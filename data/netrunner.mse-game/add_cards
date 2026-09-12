@@ -5,7 +5,7 @@ add cards script:
 	name: &Program
 	script:
 		[ new_card([ type: "program", memory: "1",
-		  stylesheet: "netrunner-runner-program.mse-style" ])
+			stylesheet: "netrunner-runner-program.mse-style" ])
 		]
 
 ##############################
@@ -13,22 +13,6 @@ add cards script:
 add cards script:
 	name: &Breaker Cycle
 	script: new_breaker_cycle()
-
-# 
-
-new_breaker_cycle := {
-
-	fracter := new_card([ type: "Program", memory: 1, strength: 1, subtypes: "Icebreaker - Fracter", text: "Interface → 1<sym>credit</sym>: Break 1 barrier subroutine.\n1<sym>credit</sym>: +1 strength.", stylesheet: "netrunner-runner-event.mse-style" ])
-	killer := new_card([ type: "Program", memory: 1, strength: 1, subtypes: "Icebreaker - Killer", text: "Interface → 1<sym>credit</sym>: Break 1 sentry subroutine.\n1<sym>credit</sym>: +1 strength.", stylesheet: "netrunner-runner-event.mse-style" ])
-	decoder := new_card([ type: "Program", memory: 1, strength: 1, subtypes: "Icebreaker - Decoder", text: "Interface → 1<sym>credit</sym>: Break 1 code gate subroutine.\n1<sym>credit</sym>: +1 strength.", stylesheet: "netrunner-runner-event.mse-style" ])
-
-	# NB. this relation is symmetric. 
-	#add_link(input: fracter, linked_card: killer, selected_relation: "cycle", linked_relation: "cycle")
-	#add_link(input: killer, linked_card: decoder, selected_relation: "cycle", linked_relation: "cycle")
-	#add_link(input: decoder, linked_card: fracter, selected_relation: "cycle", linked_relation: "cycle")
-
-	[ fracter, killer, decoder ]
-}
 
 ##############################
 

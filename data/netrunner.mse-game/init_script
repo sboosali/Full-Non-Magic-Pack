@@ -1,26 +1,44 @@
-﻿##############################
-# Utilities (needed by init_script itself):
+﻿
+##############################
+# Constants:
+##############################
+
+official_subtypes := [
+	"Academic", "AI", "AP", "Advertisement", "Alliance", "Ambush",
+	"Barrier", "Beanstalk", "Bioroid", "Black Ops", "Bomb", "Caïssa",
+	"Cast", "Character", "Chip", "Clan", "Clone", "Cloud", "Code Gate",
+	"Companion", "Condition", "Connection", "Console", "Consumer-grade",
+	"Corporation", "Current", "Cybernetic", "Cyborg", "Daemon",
+	"Decoder", "Deep Net", "Deflector", "Department", "Destroyer",
+	"Deva", "Digital", "Directive", "Division", "Double", "Enforcer",
+	"Executive", "Expansion", "Expendable", "Facility", "Fracter",
+	"G-mod", "Gear", "Genetics", "Government", "Grail", "Gray Ops",
+	"Harmonic", "Hostile", "Icebreaker", "Industrial", "Initiative",
+	"Job", "Killer", "Liability", "Link", "Location", "Lockdown",
+	"Mandate", "Megacorp", "Mod", "Morph", "Mythic", "NEXT", "Natural",
+	"Observer", "Off-site", "Orgcrime", "Police Department", "Political",
+	"Priority", "Psi", "Public", "Region", "Remote", "Reprisal",
+	"Research", "Ritzy", "Run", "Sabotage", "Security", "Seedy",
+	"Sensie", "Sentry", "Source", "Stealth", "Subsidiary", "Sysop",
+	"Terminal", "Tracer", "Transaction", "Trap", "Triple", "Trojan",
+	"Unorthodox", "Unsubstantiated", "Vehicle", "Virtual", "Virus",
+	"Weapon"
+]
+
 # # # # # # # # # # # # # # # 
 
+ambiguous_subtypes := [
+	"Sabotage"
+]
 
+##############################
+# Utilities:
+##############################
 
-# # # # # # # # # # # # # # # 
+# e.g. from_csv ("x,y ,  z,")
+#   == ["x", "y", "z"]
 
-split_text_by_comma := split_text@(match: ",", include_empty: false)
-
-# 
-
-# Parses "x,y ,  z," into ["x", "y", "z"].
-
-from_csv := {
-
-	xs := split_text_by_comma(input)
-	ys := for each x in xs do (
-		trim(x)
-	)
-
-	ys
-}
+from_csv := split_text@(match: "[ ]*,[ ]*", include_empty: false)
 
 # # # # # # # # # # # # # # # 
 
@@ -35,59 +53,186 @@ join := {
 	)
 }@(sep: ",")
 
-#
+# # # # # # # # # # # # # # # 
 
-# Dumps ["x", "y", "z"] into "x,y,z".
+# Joins ["x", "y", "z"] into "x,y,z".
 
 to_csv := join@(sep:",")
 
 ##############################
-# Formatting:
+
+# e.g. split_subtypes( "Icebreaker -   AI   - Virus -" )
+#   == [ "Icebreaker", "AI", "Virus" ]
+
+split_subtypes := split_text@(
+	match: "[ ]+-([ ]+|$)",
+	include_empty: false
+)
+
 # # # # # # # # # # # # # # # 
-# Embolden:
+
+# Joins [ "Icebreaker", "AI", Virus" ] into "Icebreaker - AI - Virus".
+
+dump_subtypes := join@(sep:" - ")
+
+##############################
+# Enums:
 # # # # # # # # # # # # # # # 
 
 #TODO
-all_subtypes := {
+is_runner_card := { true }
+is_corp_card   := { false }
 
-	from_csv( "barrier, sentry, code gate," )
+# # # # # # # # # # # # # # # 
 
+
+##############################
+# Validation:
+# # # # # # # # # # # # # # # 
+
+only_numerals := filter_text@(match: "(?i)^[0-9X-Z]+") + to_upper
+
+##############################
+# Sorting:
+# # # # # # # # # # # # # # # 
+
+# Sorts "X" before "0"/"1"/etc and "-" after (for costs/strengths/points/etc, up to 1000).
+# 
+# e.g. compare_numeral("3")
+#   == "B+003"
+# 
+
+compare_numeral := {
+	s := to_text(input)
+	n := to_number(s) or else false
+
+	if s=="X" or s=="Y" or s=="Z"
+	then "A" + s
+
+	else if n != false
+	then "B" + to_string(n, format: "+03d")
+
+	else if s=="-"
+	then "C"
+
+	else "Z"
 }
 
-# 
+##############################
+# Formatting:
+##############################
+# Bold:
+
+# Collects any custom subtypes implicitly written in the set or
+# explicitly registered in the Set Info panel, as well as the official subtypes.
+
+all_subtypes := {
+
+	xs := official_subtypes
+	ys := from_csv(set.subtypes)
+	zs := custom_subtypes()
+
+	subtypes := sort_list(xs + ys + zs, remove_duplicates: true)
+	subtypes := ambiguous_subtypes (subtypes)
+	subtypes
+}
+
+# # # # # # # # # # # # # # # 
+
+custom_subtypes := {
+	for each card in set do
+		subtypes := split_subtypes(to_text(card.subtypes))
+		subtypes
+}
+
+# # # # # # # # # # # # # # # 
 
 subtype_rx := {
 
-	"\\b({ join( all_subtypes(), sep: "|") })\\b"
+	"\\b({ join(all_subtypes(), sep: "|") })\\b"
 
 }
 
 # # # # # # # # # # # # # # # 
 
-embolden_subtypes := replace@(match: subtype_rx(), replace: "<b>\\1</b>")
+embolden_subtypes := {
+	replace(input,
+
+		replace: "<b>\\1</b>",
+		match: subtype_rx()
+
+	)
+}
 
 # # # # # # # # # # # # # # # 
 
-embolden_activation_costs := replace@(match: "^([a-z0-9_+<>-]+ → )?([^:\\n]+:)", replace: "<b>\\2</b>")
+embolden_activation_costs := replace@(
 
-# # # # # # # # # # # # # # # 
-# Italicize:
-# # # # # # # # # # # # # # # 
+	replace: "<b>\\1</b>",
+	match: "^(?:[a-z0-9_+<>-]+ → )?([^:\\n]+:)"
 
-italicize_parentheticals := replace@(match: "([^)\\n]*)", replace: "<i>\\1</i>")
+)
 
 ##############################
+# Italics:
+
+reminder_rx := "\\([^\\)\\n]*\\)"
+
+# # # # # # # # # # # # # # # 
+
+italicize_parentheticals := replace@(match: reminder_rx, replace: "<i>\\0</i>")
+
+italicize_reminder_text  := italicize_parentheticals
+
+# e.g. "[click]" → "<sym>click</sym>"
+
+##############################
+# Symbols:
+
+expand_symbols := replace@(
+	replace: "<sym>\\1</sym>",
+	match: "\\[([_a-zA-Z0-9]+)\\]"
+)
+
+##############################
+# Format:
 
 format_rules_text :=
+
+	expand_symbols
+	+
+
 	remove_tag@(tag: "<b>")
 	+
 	embolden_subtypes
 	+
 	embolden_activation_costs
 	+
+
 	remove_tag@(tag: "<i>")
 	+
 	italicize_parentheticals
+	+
+
+	curly_quotes
+
+# # # # # # # # # # # # # # # 
+
+format_flavor_text :=
+
+	remove_tag@(tag: "<i-flavor>")
+	+
+	{ "<i-flavor>" + input + "</i-flavor>" }
+	+
+	curly_quotes
+
+# # # # # # # # # # # # # # # 
+
+# 
+
+format_reminder_text :=
+
+	expand_symbols
 	+
 	curly_quotes
 
@@ -103,15 +248,36 @@ tag_word_list := {
 
 }@(name: "subtype", language: "")
 
+##############################
+# Configuration:
 # # # # # # # # # # # # # # # 
 
+# e.g. 
+#	size: { parse_number(styling.textbox_font_size, default: 24) }
+#
+
+parse_number := {
+
+	to_number(trim(input)) or else default
+
+}@(default: 0)
 
 ##############################
-# Enums:
+# add_cards_script:
 # # # # # # # # # # # # # # # 
 
-#TODO
-is_runner_card := { true }
-is_corp_card   := { false }
+new_breaker_cycle := {
+
+	fracter := new_card([ type: "Program", memory: 1, strength: 1, subtypes: "Icebreaker - Fracter", text: "Interface → 1<sym>credit</sym>: Break 1 barrier subroutine.\n1<sym>credit</sym>: +1 strength.",   stylesheet: "netrunner-runner-event.mse-style" ])
+	killer  := new_card([ type: "Program", memory: 1, strength: 1, subtypes: "Icebreaker - Killer",  text: "Interface → 1<sym>credit</sym>: Break 1 sentry subroutine.\n1<sym>credit</sym>: +1 strength.",    stylesheet: "netrunner-runner-event.mse-style" ])
+	decoder := new_card([ type: "Program", memory: 1, strength: 1, subtypes: "Icebreaker - Decoder", text: "Interface → 1<sym>credit</sym>: Break 1 code gate subroutine.\n1<sym>credit</sym>: +1 strength.", stylesheet: "netrunner-runner-event.mse-style" ])
+
+	# NB. this relation is symmetric. 
+	#add_link(input: fracter, linked_card: killer, selected_relation: "cycle", linked_relation: "cycle")
+	#add_link(input: killer, linked_card: decoder, selected_relation: "cycle", linked_relation: "cycle")
+	#add_link(input: decoder, linked_card: fracter, selected_relation: "cycle", linked_relation: "cycle")
+
+	[ fracter, killer, decoder ]
+}
 
 ##############################

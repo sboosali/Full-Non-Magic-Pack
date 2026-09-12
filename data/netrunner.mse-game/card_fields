@@ -1,4 +1,5 @@
-﻿##############################
+﻿
+##############################
 
 card field:
 	type: choice
@@ -185,7 +186,62 @@ card field:
 	name: text
 	multi line: true
 	show statistics: false
-	description: Rules text, sharing the textbox with any flavor text (press down/up arrows to move between them). You can search your set for fields with any abbreviation: e.g. "x:run", since "(te)x(t)" is a distinct subsequence (while "t:run" matches the typeline/etc as well as the textbox).
+	description: Rules text, sharing the textbox with any flavor text (press down/up arrows to move between them). You can search your set for fields with any abbreviation (e.g. "x:run", since "(te)x(t)" is a distinct subsequence).
+	script:
+		stylesheet
+		format_rules_text(value)
+
+# # # # # # # # # # # # # # # 
+
+card field:
+	type: text
+	name: flavor
+	multi line: true
+	script:
+		stylesheet
+		format_flavor_text(value)
+	description: Flavor text, sharing the textbox with any rules text (press up/down arrows to move between them).
+
+##############################
+
+card field:
+	type: text
+	name: cost
+	multi line: false
+	card list name:    💲$$$
+	card list visible: true
+	card list column:  0201
+	card list width:   40
+	script: only_numerals(value)
+	sort script: compare_numeral(value)
+	description: The play/rez/install cost (in credits).
+
+# # # # # # # # # # # # # # # 
+
+card field:
+	type: text
+	name: strength
+	multi line: false
+	card list name    : STR
+	card list visible : true
+	card list column  : 0501
+	card list width   : 10
+	script      : only_numerals(value)
+	sort script : compare_numeral(value)
+	description: The base strength of ICE/Icebreakers. Can be "X". Should be "-" for nom-Icebreaker Programs.
+
+# # # # # # # # # # # # # # # 
+
+card field:
+	type: text
+	name: memory
+	card list name    : MU
+	card list visible : true
+	card list column  : 0502
+	card list width   : 10
+	script      : only_numerals(value)
+	sort script : compare_numeral(value)
+	description: Programs’ memory usage (mostly 1, 2, or 0).
 
 ##############################
 

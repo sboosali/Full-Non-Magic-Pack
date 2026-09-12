@@ -1,7 +1,7 @@
 ﻿mse version: 2.5.6
 game: netrunner
-full name: Android Netrunner
-short name: ANR
+full name: NR Program
+short name: Runner/Program [Netrunner]
 installer group: Netrunner/MNeMiC templates/Runner Programs
 icon: preview.jpg
 position hint: -2
@@ -9,14 +9,14 @@ position hint: -2
 version: 2026-09
 depends on: netrunner.mse-game 2026-09
 depends on: netrunner-mnemic-common.mse-include 2026-09
-#depends on: netrunner-mnemic-symbols.mse-symbol-font 2026-09
+depends on: netrunner-ffg-symbols.mse-symbol-font 2026-09
 
 ##############################################################
 
 card dpi: 300
 card width: 750
 card height: 1046
-card background: white
+card background: black
 
 # card dpi: 150
 # card width: 375
@@ -100,7 +100,7 @@ card style:
 		popup style  : dropdown
 		tab index: 8
 		choice images:
-			unique: /netrunner-mnemic-symbols.mse-symbol-font/UNIQUE.png
+			unique: /netrunner-ffg-symbols.mse-symbol-font/UNIQUE.png
 
 
 	cardtype:
@@ -138,11 +138,51 @@ card style:
 		tab index: 3
 		font:
 			name: Minion Pro
-			size: { if match(styling.textbox_font_size, match: "[1-9][0-9][0-9]") then to_int(styling.textbox_font_size) else 24 }
+			size: { parse_number(styling.textbox_font_size, default: 24) }
 			scale down to: 12
 		symbol font:
-			name: netrunner-mnemic-symbols
-			size: 6
+			name: { set.textbox_symbols }
+			size: 24
+
+
+	cost:
+		left : 55
+		top  : 63
+		width  : 56
+		height : 56
+		z index: 3
+		alignment: center middle
+		tab index: 5
+		font:
+			name  : BankGothicBT-Medium
+			size  : 64
+			color : rgb(255, 255, 255)
+
+	memory:
+		left : 186
+		top  : 36
+		width  : 38
+		height : 38
+		z index: 3
+		alignment: center middle
+		tab index: 6
+		font:
+			name : BankGothicBT-Medium
+			size : 36
+			color  : rgb(102, 102, 102)
+			weight : bold
+
+	strength:
+		left : 0
+		top  : 915
+		width  : 152
+		height : 77
+		z index: 3
+		alignment: center middle
+		tab index: 7
+		font:
+			name: BankGothicBT-Medium
+			size: 64
 
 
 	footer:
@@ -156,6 +196,7 @@ card style:
 			name: Arial Regular
 			size: 8
 
+
 ##############################
 
 		# padding left   : 20
@@ -167,3 +208,4 @@ card style:
 		# padding top    : 25
 		# padding right  : 130
 		# padding bottom : 30
+

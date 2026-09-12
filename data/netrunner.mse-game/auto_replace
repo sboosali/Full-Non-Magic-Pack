@@ -13,6 +13,13 @@ auto replace:
 	#replace: ⤷
 
 auto replace:
+	match   : =-
+	replace: ↳
+auto replace:
+	match   : -=
+	replace: ⤷
+
+auto replace:
 	match   : *
 	replace : •
 
@@ -26,7 +33,7 @@ auto replace:
 
 auto replace:
 	match   : $1
-	replace : 1<sym>credit</sym>
+	replace : 1<atom><sym>credit</sym></atom>
 
 auto replace:
 	match   : $15

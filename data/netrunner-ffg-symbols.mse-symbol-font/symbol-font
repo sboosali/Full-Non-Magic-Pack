@@ -7,7 +7,7 @@ icon: preview.png
 
 ##############################
 
-image font size: 6
+image font size: 50
 horizontal space: 2
 
 ##############################
@@ -20,19 +20,31 @@ insert symbol menu:
 	item: subroutine
 	item:
 		type: line
-	item: interrupt
+	item:
+		name: interrupt
+		label: Interrupt (!)
 	item: link
-	item: mu
+	item:
+		name: mu
+		label: MU
+	item:
+		name: MU1..MU3
+		type: submenu
+		item: 1mu
+		item: 2mu
+		item: 3mu
 	item:
 		type: line
 	item:
 		name: (Corp factions)
 		type: submenu
 		item:
-			name: haas
-			label: haas-bioroid
+			name: haas-bioroid
+			label: Haas-Bioroid
 		item: jinteki
-		item: nbn
+		item:
+			name: nbn
+			label: NBN
 		item: weyland
 		item: neutral
 		item:
@@ -123,8 +135,8 @@ symbol:
 	enabled: { true }
 
 	text font: 
-		name:  Bank Gothic Medium
-		size:  0.9
+		name:  BankGothicBT-Medium
+		size:  8
 		color: rgb(255,255,255)
 
 	text margin left:   0.0

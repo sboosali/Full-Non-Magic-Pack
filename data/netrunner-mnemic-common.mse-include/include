@@ -2,9 +2,5 @@
 full name: Images for MNeMiC templates
 version: 2026-09
 
-depends on: netrunner-mnemic-symbols.mse-symbol-font 2026-09
+depends on: netrunner-ffg-symbols.mse-symbol-font 2026-09
 
-# This file doesn't do anything, other files in this directory can be included
-# in game/style files:
-#    watermarks		Includes references to the watermark images, to be used in a style file
-# 

@@ -61,8 +61,10 @@ set field:
 	type: package choice
 	name: textbox symbols
 	match: netrunner-*-symbols.mse-symbol-font
-	initial: netrunner-mnemic-symbols.mse-symbol-font
+	initial: /netrunner-ffg-symbols.mse-symbol-font
 	description: Game symbols (the [credit] diamond, [click] clock, [trash] can, etc).
+
+# set.textbox_symbols
 
 set field:
 	type: text
