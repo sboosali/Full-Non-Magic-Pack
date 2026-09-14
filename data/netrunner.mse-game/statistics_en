@@ -1,0 +1,182 @@
+﻿
+##############################
+# Faction:
+# # # # # # # # # # # # # # # 
+
+statistics dimension:
+	name: faction
+	script: card.faction
+	position hint: 00
+	show empty: false
+	#
+	group: anarch
+	group: criminal
+	group: shaper
+	group: neutral-runner
+	group: haas_bioroid
+	group: jinteki
+	group: nbn
+	group: weyland
+	group: neutral-corp
+	# hide minifactions by default.
+	#group: adam
+	#group: apex
+	#group: sunny
+	colors:
+		haas-bioroid : rgb(138, 43, 226)
+		jinteki      : rgb(220, 20, 60)
+		nbn          : rgb(255, 140, 0)
+		weyland      : rgb(0,   100, 0)
+		neutral-corp   : rgb(128, 128, 128)
+		neutral-runner : rgb(192, 192, 192)
+		anarch   : rgb(255, 69,  0)
+		criminal : rgb(65,  105, 225)
+		shaper   : rgb(50,  205, 50)
+		adam    : rgb(167, 156, 89)
+		apex    : rgb(140, 72, 71)
+		sunny   : rgb(120, 97, 150)
+
+# # # # # # # # # # # # # # # 
+
+statistics dimension:
+	name: influence
+	script: card.influence
+	position hint: 01
+	numeric: true
+	show empty: false
+	group: 5
+	group: 4
+	group: 3
+	group: 2
+	group: 1
+	group: 0
+	colors:
+		0:   rgb(0,0,0)
+		1:   rgb(51,51,51)
+		2:   rgb(102,102,102)
+		3:   rgb(153,153,153)
+		4:   rgb(204,204,204)
+		5:   rgb(255,255,255)
+
+##############################
+# Costs:
+# # # # # # # # # # # # # # # 
+
+statistics dimension:
+	name: cost
+	script: numeral_stat((card.cost or else ""), maximum: 10)
+	position hint: 20
+	numeric: false
+	show empty: false
+	group: 0
+	group: 1
+	group: 2
+	group: 3
+	group: 4
+	group: 5
+	group: 6
+	group: 7
+	group: 8
+	group: 9
+	group: 10+
+	group: X
+	colors:
+		0   : rgb(0,20,0)
+		1   : rgb(0,40,0)
+		2   : rgb(0,60,0)
+		3   : rgb(0,80,0)
+		4   : rgb(0,100,0)
+		5   : rgb(0,120,0)
+		6   : rgb(0,140,0)
+		7   : rgb(0,160,0)
+		8   : rgb(0,180,0)
+		9   : rgb(0,200,0)
+		10+ : rgb(0,220,0)
+		X   : rgb(0,20,0)
+
+##############################
+# Programs:
+# # # # # # # # # # # # # # # 
+
+statistics dimension:
+	name: program strength
+	script:
+		if is_program()
+		then numeral_stat((card.strength or else ""), maximum: 4)
+		else ""
+	position hint: 110
+	numeric: false
+	show empty: false
+	group: 0
+	group: 1
+	group: 2
+	group: 3
+	group: 4+
+	colors:
+		0   : rgb(255,159,149)
+		1   : rgb(255,117,102)
+		2   : rgb(255,71,52)
+		3   : rgb(255,39,15)
+		4+  : rgb(235,23,0)
+		X   : rgb(0,0,0)
+	description: 
+
+# NB. {numeric:false} because "X" isn't a number.
+
+# # # # # # # # # # # # # # # 
+
+statistics dimension:
+	name: program memory
+	script:
+		if is_program()
+		then numeral_stat((card.memory or else ""), maximum: 2)
+		else ""
+	position hint: 111
+	numeric: false
+	show empty: false
+	group: 0
+	group: 1
+	group: 2
+	colors:
+		1  : rgb(0,0,51)
+		2+ : rgb(0,0,204)
+	description: 
+
+# # # # # # # # # # # # # # # 
+
+statistics dimension:
+	name: program type
+	script:
+		if is_program()
+		then subtypes_stat()
+		else ""
+	position hint: 112
+	show empty: false
+	group: Icebreaker
+	group: Virus
+	group: 
+	group: 
+	description: Non-"breaker-type" Program subtypes.
+
+
+
+# # # # # # # # # # # # # # # 
+
+statistics dimension:
+	name: primary breaker type
+	script: to_csv(filter_primary_breaker_subtypes(split_subtypes(card.subtypes)))
+	position hint: 113
+	show empty: false
+	split list: true
+	group: Fracter
+	group: Killer
+	group: Decoder
+	group: AI
+	colors:
+		Fracter : rgb(255, 69,  0)
+		Killer  : rgb(65,  105, 225)
+		Decoder : rgb(50,  205, 50)
+		AI      : rgb(192, 192, 192)
+	description: The four primary Icebreaker subtypes.
+
+##############################

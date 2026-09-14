@@ -1,0 +1,101 @@
+﻿
+##############################
+
+has keywords: true
+
+keyword match script: format_reminder_text(value)
+
+##############################
+
+keyword mode:
+	name: action
+	is default: true
+	description: Custom keyword actions, with reminder text at end-of-line.
+
+keyword mode:
+	name: official
+	description: Official keyword actions (e.g. `Sabotage N`, `Charge …`, `Identify your mark`).
+
+keyword mode:
+	name: rule
+	description: "Keyword" actions that are intrinsic game rules (e.g. `Purge virus counters.`). Reminder text is hidden by default.
+
+##############################
+
+keyword parameter type:
+	name: number
+	match: [0-9XYZN]
+	refer script:
+		name: normal
+		description: Matches a natural number (positive integer) or a “variable letter” (X,Y,Z,N). e.g. (1,2,3,X).
+		script: \{{input}\}
+	refer script:
+		name: as words
+		description: e.g. (one, two, three, X)
+		script: \{english_number({input})\}
+	refer script:
+		name: as words, use "a" for 1
+		description: e.g. (a, two, three)
+		script: \{english_number_a({input})\}
+	refer script:
+		name: as words, use "" for 1
+		description: e.g. (, two, three)
+		script: \{english_number_multiple({input})\}
+	refer script:
+		name: as ordinal words
+		description: e.g. (first, second, third)
+		script: \{english_number_ordinal({input})\}
+
+# # # # # # # # # # # # # # # 
+
+keyword parameter type:
+	name: word
+	match: [A-Za-z0-9_-]+
+
+# # # # # # # # # # # # # # # 
+
+keyword parameter type:
+	name: deck
+	match: (R&D|(the|your|their) stack)
+
+keyword parameter type:
+	name: hand
+	match: (HQ|(the|your|their) grip)
+
+keyword parameter type:
+	name: pile
+	match: (Archives|(the|your|their) heap)
+
+##############################
+
+keyword:
+	keyword: Sabotage
+	match: sabotage <atom-param>number</atom-param>
+	mode: official
+	reminder: The Corp trashes {param1} card(s) of their choice from HQ { if (param1.value=="1") then "or" else "and/or" } the top of R&D.
+
+# # # # # # # # # # # # # # # 
+
+keyword:
+	keyword: Bypassing
+	match: bypass
+	mode: rule
+	reminder: Pass that ice. No subroutines or further "when encountered" abilities resolve.
+
+##############################
+
+#TODO
+
+#keyword:
+#	keyword: Hustle
+#	match: hustle <atom-param>number</atom-param>
+#	mode: action
+#	reminder: 
+
+#keyword:
+#	keyword: Cache
+#	match: cache
+#	mode: action
+#	reminder: Set a cached card aside facedown. Until the end of your action phase, you may play or install it, paying all costs.
+
+##############################

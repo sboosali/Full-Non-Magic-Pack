@@ -3,42 +3,53 @@
 auto replace:
 	match   : --
 	replace : →
-	#match:   ->
-
-auto replace:
-	match   : ==
-	replace : <sym>subroutine</sym> 
-	#match:   =>
-	#replace: ↳
-	#replace: ⤷
-
-auto replace:
-	match   : =-
-	replace: ↳
-auto replace:
-	match   : -=
-	replace: ⤷
+#	match  : ->
 
 auto replace:
 	match   : *
 	replace : •
 
-# 
-
 auto replace:
-	match   : inf
+	match   : INF
 	replace : ∞
 
-# 
-
 auto replace:
-	match   : $1
-	replace : 1<atom><sym>credit</sym></atom>
-
-auto replace:
-	match   : $15
-	replace : 15<sym>credit</sym>
-
-# 
+	match   : MIN
+	replace : −
 
 ##############################
+
+auto replace:
+	match   : ==
+	replace : <sym>subroutine</sym>
+#	match  : =>
+
+##############################
+
+auto replace:
+	match   : C
+	replace : <atom><sym>credit</sym></atom>
+
+auto replace:
+	match   : 1c
+	replace : 1<sym>credit</sym>
+
+##############################
+
+auto replace:
+	match   : r2
+	replace : 2<sym>recurring</sym> (When you rez this <atom-this-type>card</atom-this-type> and <b-auto>before</b-auto> your turn begins, refill to 2 hosted credits.)
+#	replace : 2<sym>recurring</sym> (When you rez this <atom-this-type>card</atom-this-type> and before your turn begins, refill to { param1 } hosted credit{ if param1=="1" then "" else "s" }.)\nYou can spend hosted credits 
+
+auto replace:
+	match   : rr2
+	replace : (When you rez this <atom-this-type>card</atom-this-type> and before your turn begins, refill to 2 hosted credits.)
+
+##############################
+
+auto replace:
+	match   : ccc
+	replace : When you install this <atom-this-type>card</atom-this-type>, load _<sym>credit</sym> onto it. When it is empty, trash it.
+
+##############################
+

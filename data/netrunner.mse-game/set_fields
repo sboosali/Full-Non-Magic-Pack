@@ -41,9 +41,9 @@ set field:
 set field:
 	type: choice
 	name: language
-	initial: "en-US"
-	choice: "en-US"
-	choice: "fr-FR"
+	initial: en-US
+	choice: en-US
+	choice: fr-FR
 	description: Language code (e.g. "fr-FR") of all text name/rules/flavor/typeline/etc American English ("en-US") by default. [please help with localization!]
 
 set field:

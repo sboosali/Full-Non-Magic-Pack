@@ -28,13 +28,13 @@ keyword mode:
 
 keyword mode:
 	name: ability
-	description: MtG-style “keyword abilities” (e.g. `Hidden`). At start-of-line, in a comma-separated list.
+	description: “Keyword abilities” (e.g. `Dividends 1`, `Hidden`). At start-of-line, in a comma-separated list.
 
 # 
 
 keyword mode:
 	name: phrase
-	description: Custom “keyword phrases” (e.g. `unique (⬥)`). Reminder text follows immediately afterwards.
+	description: “Keyword phrases” (e.g. `unique (⬥)`). Reminder text follows immediately afterwards.
 
 # 
 
@@ -74,6 +74,18 @@ keyword parameter type:
 		description: e.g. (first, second, third)
 		script: \{english_number_ordinal({input})\}
 
+# 
+
+keyword parameter type:
+	name: word
+	match: [A-Za-z0-9_-]+
+
+# 
+
+keyword parameter type:
+	name: deck
+	match: (R&D|(the|your|their) stack)
+
 ##############################
 
 keyword:
@@ -88,7 +100,7 @@ keyword:
 	keyword: Sabotage
 	match: sabotage <atom-param>number</atom-param> →
 	mode: official
-	reminder: The Corp trashes {param1} cards of their choice from HQ { if (param1.value=="1") then "or" then "and/or" } the top of R&D.
+	reminder: The Corp trashes {param1} cards of their choice from HQ { if (param1.value=="1") then "or" else "and/or" } the top of R&D.
 
 # # # # # # # # # # # # # # # 
 
@@ -110,7 +122,7 @@ keyword:
 
 keyword:
 	keyword: Threat-Level
-	match: 
+	match: the threat level
 	mode: official
 	reminder: The threat level is the greatest number of agenda points a single player has.
 
@@ -152,7 +164,7 @@ keyword:
 keyword:
 	keyword: Purging
 	match: purge virus counters
-	mode: game
+	mode: rule
 	reminder: Remove all virus counters from installed cards.
 
 # # # # # # # # # # # # # # # 
@@ -160,7 +172,7 @@ keyword:
 keyword:
 	keyword: Exposing
 	match: expose
-	mode: game
+	mode: rule
 	reminder: Reveal an unrezzed card.
 
 # # # # # # # # # # # # # # # 
@@ -168,7 +180,7 @@ keyword:
 keyword:
 	keyword: Bypassing
 	match: bypass
-	mode: game
+	mode: rule
 	reminder: Pass that ice. No subroutines or further “when encountered” abilities resolve.
 
 # # # # # # # # # # # # # # # 
@@ -176,7 +188,7 @@ keyword:
 keyword:
 	keyword: Trojan text
 	match: Install only on a piece of ice.
-	mode: game
+	mode: rule
 	reminder: If the host ice is uninstalled, this program is trashed.
 
 # # # # # # # # # # # # # # # 
@@ -184,7 +196,7 @@ keyword:
 #keyword:
 #	keyword: 
 #	match: 
-#	mode: game
+#	mode: rule
 #	reminder: 
 
 ##############################
@@ -194,7 +206,7 @@ keyword:
 	match: hidden
 	mode: ability
 	reminder: Install <b>hidden</b> resources facedown. You may turn them faceup any time you could use an ability.
-	notes:
+	rules:
 		(ONR)
 
 ##############################
@@ -202,9 +214,9 @@ keyword:
 keyword:
 	keyword: Cache
 	match: cache
-	mode: custom
+	mode: action
 	reminder: Set a cached card aside facedown. Until the end of your action phase, you may play or install it, paying all costs.
-	notes:
+	rules:
 		e.g. "Look at the top 3 cards of your stack. Cache one of them and remove the rest from the game. (Set it aside facedown. Until the end of your turn, you may play or install it, paying all costs.)"
 
 ##############################

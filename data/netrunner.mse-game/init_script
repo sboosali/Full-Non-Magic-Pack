@@ -3,7 +3,7 @@
 # Constants:
 ##############################
 
-official_subtypes := [
+_official_subtypes := [
 	"Academic", "AI", "AP", "Advertisement", "Alliance", "Ambush",
 	"Barrier", "Beanstalk", "Bioroid", "Black Ops", "Bomb", "Caïssa",
 	"Cast", "Character", "Chip", "Clan", "Clone", "Cloud", "Code Gate",
@@ -27,9 +27,21 @@ official_subtypes := [
 
 # # # # # # # # # # # # # # # 
 
-ambiguous_subtypes := [
+_ambiguous_subtypes := [
 	"Sabotage"
 ]
+
+ambiguous_subtypes := {
+	for each s in _ambiguous_subtypes do [s]
+}
+
+# # # # # # # # # # # # # # # 
+
+supported_symbols := [
+	"credit", "recurring", "click", "trash", "subroutine", "mu", "link", "interrupt", "unique", "anarch", "criminal", "shaper", "neutral", "haas-bioroid", "jinteki", "nbn", "weyland", "agenda_points", "advancement_requirement", "rez", "deck"
+]
+
+#TODO extract from symbol-font
 
 ##############################
 # Utilities:
@@ -76,6 +88,18 @@ split_subtypes := split_text@(
 dump_subtypes := join@(sep:" - ")
 
 ##############################
+
+# e.g. 
+#	size: { parse_number(styling.textbox_font_size, default: 24) }
+#
+
+parse_number := {
+
+	to_number(trim(to_text(input))) or else default
+
+}@(default: 0)
+
+##############################
 # Enums:
 # # # # # # # # # # # # # # # 
 
@@ -85,12 +109,432 @@ is_corp_card   := { false }
 
 # # # # # # # # # # # # # # # 
 
+#TODO
+side_of := {
+	"runner"
+}
+
+##############################
+
+is_program := { true }
+
+# # # # # # # # # # # # # # # 
+
+normalize_type := {
+
+	input := to_lower(input)
+
+	input
+}@(side: "")
+
+# # # # # # # # # # # # # # # 
+#TODO
+card_type_of := {
+
+	"program"
+
+}
+
+##############################
+
+is_primary_breaker_subtype := {
+	case normalize_type(input) of
+
+	"fracter" : true,
+	"killer"  : true,
+	"decoder" : true,
+
+	else: false
+}
+
+# 
+
+filter_primary_breaker_subtypes := {
+
+	filter_list(input, filter: is_primary_breaker_subtype)
+
+}
+
+##############################
+
+# Returns from a {package_choice:} the basename "...-ffg-..." or "...-nsg-...".
+
+normalize_symbol_font := replace@(
+	replace: "netrunner-\\1-symbols",
+	match: ".*netrunner-([a-zA-Z0-9-]+)-symbols\\.mse-symbol-font.*"
+)
+
+##############################
+
+
 
 ##############################
 # Validation:
 # # # # # # # # # # # # # # # 
 
 only_numerals := filter_text@(match: "(?i)^[0-9X-Z]+") + to_upper
+
+##############################
+# Dropdowns (word-list):
+# # # # # # # # # # # # # # # 
+
+# e.g. tag_word_list("B", name: "ice-type", language: "en")
+#   == "<word-list-ice-type-en>B</word-list-ice-type-en>
+#
+# Used by the {card.subtypes} field. For example,
+# to complete "B(arrier)" or "B(ioroid)" from a "B".
+#
+
+tag_word_list := {
+
+	name := name + (if language!="" then "-{language}" else "")
+	
+	"<word-list-{name}>{ input }</word-list-{name}>"
+
+}@(name: "subtype", language: "")
+
+#TODO localize
+
+##############################
+
+# Lets the user type over an empty(?) final(?) dropdown in the subtypes field.
+
+#TODO but how? 
+#TODO necessary? 
+#TODO the VS game also uses hyphen-separated subtypes
+
+typing_over_subtypes :=
+	replace@(match: " -$", replace: "")
+
+#space_to_wltags := replace(match: "( +|<soft> </soft>)", replace: { "</word-list-{ list_type }>{ _1 }<word-list-{ list_type }>" })
+
+remove_leading_spaces := replace@(match: "^ +", replace: "")
+
+remove_trailing_soft_tags := replace@(match: "<soft>.*?</soft>$", replace: "")
+
+replace_soft_tags_with_spaces := replace@(match: "<soft>.*?</soft>", replace: " ")
+
+# # # # # # # # # # # # # # # 
+
+format_single_program_subtype :=
+	remove_tag@(tag: "<word-list-")
+#	+ typing_over_subtypes
+	+ tag_word_list@(name: "program-type")
+
+# # # # # # # # # # # # # # # 
+
+format_program_type := {
+
+	input := remove_tag(input, tag: "<word-list")
+	input := remove_trailing_soft_tags(input)
+	input := replace_soft_tags_with_spaces(input)
+#	input := typing_over_subtypes(input)
+
+	input
+}
+
+##############################
+# Editors ("smart" fields / multi-fields):
+# # # # # # # # # # # # # # # 
+
+textbox_editor := combined_editor@(
+
+	field1: card.text,
+	field2: card.flavor,
+
+	separator: "<line>\n</line>")
+
+# # # # # # # # # # # # # # # 
+
+# A subtype can have both spaces (e.g. "Black Ops") and hyphens in it (e.g. "Consumer-grade"), so multiple subtypes are separated by a spaced-hyphen (e.g. "Operation: Black Ops - Reprisal" or "Hardware: Console - Consumer-grade").
+
+subtypes_editor := combined_editor@(
+
+	field1: card.subtype1,
+	field2: card.subtype2,
+	field3: card.subtype3,
+	field4: card.subtype4,
+	field5: card.subtype5,
+
+	separator: " - ",
+
+	hide_when_empty   : true,
+	soft_before_empty : true)
+
+##############################
+# Formatting (Bold):
+# # # # # # # # # # # # # # # 
+
+is_subtype_unambiguous := {
+	position(of: [input], in: ambiguous_subtypes()) > -1
+}
+# NB. position(of: STRING, in: LIST_OF_STRING) has a bug.
+
+keep_unambiguous_subtypes := filter_list@(
+	filter: is_subtype_unambiguous
+)
+
+# Collects any custom subtypes implicitly written in the set or
+# explicitly registered in the Set Info panel, as well as the official subtypes.
+
+all_subtypes := {
+
+	xs := official_subtypes()
+	ys := from_csv(set.subtypes)
+	zs := custom_subtypes()
+
+	subtypes := sort_list(xs + ys + zs, remove_duplicates: true)
+	#TODO-BUGGY subtypes := keep_unambiguous_subtypes(subtypes)
+	subtypes
+}
+
+# # # # # # # # # # # # # # # 
+
+official_subtypes := {
+	_official_subtypes
+}
+
+# # # # # # # # # # # # # # # 
+
+custom_subtypes := {
+	for each card in set do
+		split_subtypes(to_text(card.subtypes))
+}
+
+# # # # # # # # # # # # # # # 
+
+subtype_rx := {
+	subtypes := all_subtypes()
+
+	"\\b({ join(subtypes, sep: "|") })\\b"
+}
+
+# # # # # # # # # # # # # # # 
+
+embolden_subtypes := {
+	replace(input,
+
+		replace: "<b>\\1</b>",
+		match: "(?i){ subtype_rx() }"
+
+	)
+}
+
+# # # # # # # # # # # # # # # 
+
+embolden_activation_costs := replace@(
+
+	replace: "<b>\\1</b>",
+	match: "^(?:[a-z0-9_+<>-]+ → )?([^:\\n]+:)"
+
+)
+
+##############################
+# Formatting (Italics):
+# # # # # # # # # # # # # # # 
+
+reminder_rx := "\\([^\\)\\n]*\\)"
+
+# # # # # # # # # # # # # # # 
+
+italicize_parentheticals := replace@(match: reminder_rx, replace: "<i>\\0</i>")
+
+italicize_reminder_text  := italicize_parentheticals
+
+##############################
+# Formatting (Symbols):
+# # # # # # # # # # # # # # # 
+
+supported_symbols_rx := "({ join(supported_symbols, sep: "|") })"
+
+#
+
+# e.g. "[click]" → "<sym>click</sym>"
+
+expand_symbols := replace@(
+	replace: "<sym>\\1</sym>",
+	match: "\\[{ supported_symbols_rx }\\]"
+)
+
+# e.g. "[click]" → "<sym>click</sym>"
+
+##############################
+# Formatting (Keywords):
+# # # # # # # # # # # # # # # 
+
+reminderize := {
+
+	reminder := if expand then "<atom-reminder-{ mode }> ({ reminder })</atom-reminder-{ mode }>" else ""
+
+	keyword + reminder
+
+}@(mode: "action", expand: true, keyword: "",  reminder: "")
+
+# # # # # # # # # # # # # # # 
+
+combine_keyword_with_reminder_text := {
+
+	keyword := "<nospellcheck>{ keyword }</nospellcheck>"
+	reminder := process_english_hints(reminder)
+
+	if (mode == "action")
+	then reminderize(keyword: keyword, reminder: reminder, mode: "action", expand: expand)
+
+	else	
+	""
+}
+
+# # # # # # # # # # # # # # # 
+
+nr_expand_keywords := expand_keywords@(
+
+	default_expand: { chosen(choice: mode, set.automatic_reminder_text) },
+
+	condition: { (not used_placeholders) },
+
+	combine: { "{keyword}<atom-reminder-{mode}> ({reminder})</atom-reminder-{mode}>" })
+#	combine_keyword_with_reminder_text0)
+
+# # # # # # # # # # # # # # # 
+
+# Find the nearest period or end-of-line, skipping abbreviation periods.
+
+end_of_sentence_rx := "[.]([ ]+|$)"
+
+#TODO
+# end_of_sentence_rx := "(?<!…)[.]"
+
+##############################
+# Formatting (card_field):
+# # # # # # # # # # # # # # # 
+
+format_rules_text :=
+
+	expand_symbols
+	+
+
+	remove_tag@(tag: "<b>")
+	+
+	embolden_subtypes
+	+
+	embolden_activation_costs
+	+
+
+	nr_expand_keywords
+	+
+
+	remove_tag@(tag: "<i>")
+	+
+	italicize_parentheticals
+	+
+
+	curly_quotes
+
+# # # # # # # # # # # # # # # 
+
+format_flavor_text :=
+
+	remove_tag@(tag: "<i-flavor>")
+	+
+	{ "<i-flavor>" + input + "</i-flavor>" }
+	+
+	curly_quotes
+
+# # # # # # # # # # # # # # # 
+
+# 
+
+format_reminder_text :=
+
+	expand_symbols
+	+
+	process_english_hints
+	+
+	curly_quotes
+
+##############################
+# Dropdowns (word-list):
+# # # # # # # # # # # # # # # 
+
+tag_word_list := {
+
+	name := name + (if language!="" then "-{language}" else "")
+	
+	"<word-list-{name}>{ input }</word-list-{name}>"
+
+}@(name: "subtype", language: "")
+
+##############################
+# JSON:
+# # # # # # # # # # # # # # # 
+
+##############################
+# Unicode:
+# # # # # # # # # # # # # # # 
+
+asciify_a := replace@(replace: "a", match: "(?i)[áàâäāãåậăąǎǟǡǻȁȃȧẚạảấầẩẫậắằẳẵặḁ]")
+
+asciify_e := replace@(replace: "e", match: "(?i)[éèêëē]")
+asciify_i := replace@(replace: "i", match: "(?i)[íìîïī]")
+asciify_o := replace@(replace: "o", match: "(?i)[óòôöōõø]")
+asciify_u := replace@(replace: "u", match: "(?i)[úùûüū]")
+
+asciify_c := replace@(replace: "c", match: "(?i)[ç]")
+asciify_n := replace@(replace: "n", match: "(?i)[ñ]")
+asciify_y := replace@(replace: "y", match: "(?i)[ý]")
+
+asciify_ss := replace@(replace: "ss", match: "(?i)[ß]")
+asciify_ae := replace@(replace: "ue", match: "(?i)[ü]")
+asciify_oe := replace@(replace: "oe", match: "(?i)[ö]")
+asciify_ue := replace@(replace: "ue", match: "(?i)[ü]")
+
+# asciify_ := 
+
+# # # # # # # # # # # # # # # 
+
+# Strip accents/etc.
+#
+# e.g. asciify("Brân 1.0")
+#   == "Bran 1.0"
+#
+
+asciify :=
+
+	asciify_a
+	+
+	asciify_e
+	+
+	asciify_i
+	+
+	asciify_o
+	+
+	asciify_u
+
+	+
+	asciify_c
+	+
+	asciify_n
+	+
+	asciify_y
+
+	+
+	asciify_ss
+	+
+	asciify_ae
+	+
+	asciify_oe
+	+
+	asciify_ue
+
+# # # # # # # # # # # # # # # 
+
+# Drop "non-letter" characters.
+#
+# e.g. letterify("M.I.C.")
+#   == "MIC"
+#
+
+letterify := replace@(replace: "", match: "(?i)^[a-z]")
 
 ##############################
 # Sorting:
@@ -119,151 +563,98 @@ compare_numeral := {
 }
 
 ##############################
-# Formatting:
+
+strip_article := replace@(replace: "", match: "(?i)^(The) ")
+
+# # # # # # # # # # # # # # # 
+
+compare_name :=
+
+	to_lower
+	+
+	strip_article
+	+
+	asciify
+	+
+	letterify
+
 ##############################
-# Bold:
+# /keywords:
+# # # # # # # # # # # # # # # 
 
-# Collects any custom subtypes implicitly written in the set or
-# explicitly registered in the Set Info panel, as well as the official subtypes.
 
-all_subtypes := {
 
-	xs := official_subtypes
-	ys := from_csv(set.subtypes)
-	zs := custom_subtypes()
+##############################
+# /statistics
+# # # # # # # # # # # # # # # 
 
-	subtypes := sort_list(xs + ys + zs, remove_duplicates: true)
-	subtypes := ambiguous_subtypes (subtypes)
-	subtypes
+match_variable_numeral := match@(match: "[XYZ]")
+
+# # # # # # # # # # # # # # # 
+
+# Parse a numeral string (e.g. "1", "X", "   ") into a nonnegative integer (e.g. 1, "X", or "" (resp.)), if able.
+
+parse_numeral := {
+
+	n := parse_number(card.cost) or else -1
+
+	if n>=0
+	then n
+
+	else if match_variable_numeral(input)
+	then input
+
+	else ""
 }
 
 # # # # # # # # # # # # # # # 
 
-custom_subtypes := {
-	for each card in set do
-		subtypes := split_subtypes(to_text(card.subtypes))
-		subtypes
+# Convert a numeral string (e.g. "1", "X", "   ") to a cost number (e.g. 1, 0, or -1 (resp.)).
+
+convert_numeral := {
+
+	n := parse_number(card.cost) or else -1
+
+	if n>=0
+	then n
+
+	else if match_variable_numeral(input)
+	then 0
+
+	else -1
+}
+
+##############################
+
+stat_cost := {
+	parse_numeral(card.cost)
+}
+
+##############################
+
+subtypes_stat := {
+	to_csv(split_subtypes(card.subtypes))
 }
 
 # # # # # # # # # # # # # # # 
 
-subtype_rx := {
+# e.g. numeral_stat("6", maximum: 5)
+#   == "5+"
 
-	"\\b({ join(all_subtypes(), sep: "|") })\\b"
+numeral_stat := {
 
-}
+	s := parse_numeral()
+	n := to_number(s) or else -1
+	m := to_number(maximum) or else -1
 
-# # # # # # # # # # # # # # # 
+	if (maximum >= 0) and (n >= maximum)
+	then "{maximum}+"
+	else s
 
-embolden_subtypes := {
-	replace(input,
-
-		replace: "<b>\\1</b>",
-		match: subtype_rx()
-
-	)
-}
-
-# # # # # # # # # # # # # # # 
-
-embolden_activation_costs := replace@(
-
-	replace: "<b>\\1</b>",
-	match: "^(?:[a-z0-9_+<>-]+ → )?([^:\\n]+:)"
-
-)
+}@(maximum: 20)
 
 ##############################
-# Italics:
-
-reminder_rx := "\\([^\\)\\n]*\\)"
-
-# # # # # # # # # # # # # # # 
-
-italicize_parentheticals := replace@(match: reminder_rx, replace: "<i>\\0</i>")
-
-italicize_reminder_text  := italicize_parentheticals
-
-# e.g. "[click]" → "<sym>click</sym>"
-
-##############################
-# Symbols:
-
-expand_symbols := replace@(
-	replace: "<sym>\\1</sym>",
-	match: "\\[([_a-zA-Z0-9]+)\\]"
-)
-
-##############################
-# Format:
-
-format_rules_text :=
-
-	expand_symbols
-	+
-
-	remove_tag@(tag: "<b>")
-	+
-	embolden_subtypes
-	+
-	embolden_activation_costs
-	+
-
-	remove_tag@(tag: "<i>")
-	+
-	italicize_parentheticals
-	+
-
-	curly_quotes
-
-# # # # # # # # # # # # # # # 
-
-format_flavor_text :=
-
-	remove_tag@(tag: "<i-flavor>")
-	+
-	{ "<i-flavor>" + input + "</i-flavor>" }
-	+
-	curly_quotes
-
-# # # # # # # # # # # # # # # 
-
-# 
-
-format_reminder_text :=
-
-	expand_symbols
-	+
-	curly_quotes
-
-##############################
-# Dropdowns (word-list):
-# # # # # # # # # # # # # # # 
-
-tag_word_list := {
-
-	name := name + (if language!="" then "-{language}" else "")
-	
-	"<word-list-{name}>{ input }</word-list-{name}>"
-
-}@(name: "subtype", language: "")
-
-##############################
-# Configuration:
-# # # # # # # # # # # # # # # 
-
-# e.g. 
-#	size: { parse_number(styling.textbox_font_size, default: 24) }
-#
-
-parse_number := {
-
-	to_number(trim(input)) or else default
-
-}@(default: 0)
-
-##############################
-# add_cards_script:
+# /add_cards_script:
 # # # # # # # # # # # # # # # 
 
 new_breaker_cycle := {

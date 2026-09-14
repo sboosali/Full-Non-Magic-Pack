@@ -4,7 +4,7 @@
 card field:
 	type: choice
 	name: faction
-	initial: neutral
+	default: "neutral-{ side_of(card) }"
 	choice:
 		name: haas
 		type: radio
@@ -55,19 +55,7 @@ card field:
 		name: sunny
 		type: radio
 		enabled: { is_runner_card() }
-	choice colors:
-		haas-bioroid : rgb(138, 43, 226)
-		jinteki      : rgb(220, 20, 60)
-		nbn          : rgb(255, 140, 0)
-		weyland      : rgb(0,   100, 0)
-		neutral-corp  : rgb(128, 128, 128)
-		neutral-runner: rgb(192, 192, 192)
-		anarch   : rgb(255, 69, 0)
-		criminal : rgb(65, 105, 225)
-		shaper   : rgb(50, 205, 50)
-		adam : rgb(167, 156, 89)
-		apex : rgb(140, 72, 71)
-		sunny : rgb(120, 97, 150)
+	show statistics: false
 	card list name    : FAC
 	card list column  : 0401
 	card list visible : true
@@ -86,6 +74,12 @@ card field:
 		apex : rgb(140, 72, 71)
 		sunny : rgb(120, 97, 150)
 	description: The faction.
+
+# # # # # # # # # # # # # # # 
+
+card field:
+	type: image
+	name: corners
 
 # # # # # # # # # # # # # # # 
 
@@ -119,6 +113,7 @@ card field:
 	choice:
 		name: 0
 		type: radio
+	show statistics: false
 	card list name    : INF
 	card list column  : 0402
 	card list visible : true
@@ -147,6 +142,7 @@ card field:
 	initial: no
 	choice: unique
 	choice: no
+	show statistics: false
 	card list name    : ◆
 	card list visible : true
 	card list column  : 0901
@@ -159,7 +155,7 @@ card field:
 	type: text
 	name: cardtype
 	multi line: false
-	script: to_upper(value)
+	default: to_upper(card_type_of()) + ": "
 	show statistics: false
 	card list name    : Card-Type
 	card list visible : true
@@ -173,8 +169,9 @@ card field:
 	type: text
 	name: subtypes
 	multi line: false
+	show statistics: false
 	card list name    : Sub-Types
-	card list visible : true
+	card list visible : false
 	card list column  : 0302
 	card list width   : 200
 	description: The card’s (zero-or-more) subtypes; hyphen-separated (e.g. "Icebreaker - AI - Virus").
@@ -186,10 +183,10 @@ card field:
 	name: text
 	multi line: true
 	show statistics: false
-	description: Rules text, sharing the textbox with any flavor text (press down/up arrows to move between them). You can search your set for fields with any abbreviation (e.g. "x:run", since "(te)x(t)" is a distinct subsequence).
 	script:
 		stylesheet
 		format_rules_text(value)
+	description: Rules text, sharing the textbox with any flavor text (press down/up arrows to move between them). You can search your set for fields with any abbreviation (e.g. "x:run", since "(te)x(t)" is a distinct subsequence).
 
 # # # # # # # # # # # # # # # 
 
@@ -197,10 +194,24 @@ card field:
 	type: text
 	name: flavor
 	multi line: true
+	show statistics: false
 	script:
 		stylesheet
 		format_flavor_text(value)
 	description: Flavor text, sharing the textbox with any rules text (press up/down arrows to move between them).
+
+# # # # # # # # # # # # # # # 
+
+card field:
+	type: text
+	name: textbox
+	multi line: true
+	save value: false
+	show statistics: false
+	script: textbox_editor()
+	description: The textbox, containing both rules text and flavor text. You can search your set for fields with any abbreviation (e.g. "x:run", since "(te)x(t)" is a distinct subsequence).
+
+# Uses {combined_editor()} because the flavor text comes (if present) a line below the rules text (not at the bottom of the textbox).
 
 ##############################
 
@@ -208,7 +219,8 @@ card field:
 	type: text
 	name: cost
 	multi line: false
-	card list name:    💲$$$
+	show statistics: false
+	card list name:    $$$
 	card list visible: true
 	card list column:  0201
 	card list width:   40
@@ -222,6 +234,7 @@ card field:
 	type: text
 	name: strength
 	multi line: false
+	show statistics: false
 	card list name    : STR
 	card list visible : true
 	card list column  : 0501
@@ -235,6 +248,7 @@ card field:
 card field:
 	type: text
 	name: memory
+	show statistics: false
 	card list name    : MU
 	card list visible : true
 	card list column  : 0502
