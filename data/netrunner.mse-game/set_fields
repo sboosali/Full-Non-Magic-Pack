@@ -55,6 +55,17 @@ set field:
 
 set field:
 	type: info
+	name: Set Mechanics
+
+set field:
+	type: text
+	name: extra subtypes
+	description: Extra subtypes that will be be auto-emboldened; a comma-separated value (e.g. "Nanotech, SimStim, Black ICE, Jockey,").
+
+##############################
+
+set field:
+	type: info
 	name: Set Styling
 
 set field:
@@ -64,12 +75,11 @@ set field:
 	initial: /netrunner-ffg-symbols.mse-symbol-font
 	description: Game symbols (the [credit] diamond, [click] clock, [trash] can, etc).
 
-# set.textbox_symbols
-
 set field:
-	type: text
-	name: subtypes
-	description: Extra subtypes, to be auto-emboldened; a comma-separated value (e.g. "Nanotech, SimStim, Black ICE, Jockey,").
+	type: boolean
+	name: color subtypes
+	initial: no
+	description: Whether  should be colored as their associated faction, for visual clarity. e.g. The word "barrier" becomes dark-green like Weyland (such as in the rules-text of Fracters).
 
 ##############################
 
@@ -109,7 +119,6 @@ default set style:
 			size: 8
 
 	textbox symbols:
-		#render style: both
 
 	automatic reminder text:
 		render style: checklist

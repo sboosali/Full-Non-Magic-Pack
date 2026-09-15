@@ -4,9 +4,25 @@
 card field:
 	type: choice
 	name: faction
+
 	default: "neutral-{ side_of(card) }"
+	default name: "Neutral"
+
 	choice:
-		name: haas
+		name: anarch
+		type: radio
+		enabled: { is_runner_card() }
+	choice:
+		name: criminal
+		type: radio
+		enabled: { is_runner_card() }
+	choice:
+		name: shaper
+		type: radio
+		enabled: { is_runner_card() }
+
+	choice:
+		name: haas-bioroid
 		type: radio
 		enabled: { is_corp_card() }
 	choice:
@@ -21,28 +37,7 @@ card field:
 		name: weyland
 		type: radio
 		enabled: { is_corp_card() }
-	choice:
-		name: neutral-corp
-		type: radio
-		enabled: { is_corp_card() }
-		line below: true
-	choice:
-		name: anarch
-		type: radio
-		enabled: { is_runner_card() }
-	choice:
-		name: criminal
-		type: radio
-		enabled: { is_runner_card() }
-	choice:
-		name: shaper
-		type: radio
-		enabled: { is_runner_card() }
-	choice:
-		name: neutral-runner
-		type: radio
-		enabled: { is_runner_card() }
-		line below: true
+
 	choice:
 		name: adam
 		type: radio
@@ -55,6 +50,7 @@ card field:
 		name: sunny
 		type: radio
 		enabled: { is_runner_card() }
+
 	show statistics: false
 	card list name    : FAC
 	card list column  : 0401
@@ -65,14 +61,15 @@ card field:
 		jinteki      : rgb(220, 20, 60)
 		nbn          : rgb(255, 140, 0)
 		weyland      : rgb(0,   100, 0)
-		neutral-corp  : rgb(128, 128, 128)
-		neutral-runner: rgb(192, 192, 192)
+		neutral-corp   : rgb(128, 128, 128)
+		neutral-runner : rgb(192, 192, 192)
 		anarch   : rgb(255, 69, 0)
 		criminal : rgb(65, 105, 225)
 		shaper   : rgb(50, 205, 50)
-		adam : rgb(167, 156, 89)
-		apex : rgb(140, 72, 71)
+		adam  : rgb(167, 156, 89)
+		apex  : rgb(140, 72, 71)
 		sunny : rgb(120, 97, 150)
+
 	description: The faction.
 
 # # # # # # # # # # # # # # # 

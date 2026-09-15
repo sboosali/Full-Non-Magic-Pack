@@ -40,8 +40,23 @@ ambiguous_subtypes := {
 supported_symbols := [
 	"credit", "recurring", "click", "trash", "subroutine", "mu", "link", "interrupt", "unique", "anarch", "criminal", "shaper", "neutral", "haas-bioroid", "jinteki", "nbn", "weyland", "agenda_points", "advancement_requirement", "rez", "deck"
 ]
-
 #TODO extract from symbol-font
+
+# # # # # # # # # # # # # # # 
+
+faction_rgbs := [
+	haas_bioroid: "#8a2be2",
+	jinteki:      "#dc143c",
+	nbn:          "#ff8c00",
+	weyland:      "#006400",
+	neutral:      "#808080",
+	anarch:       "#ff4500",
+	criminal:     "#4169e1",
+	shaper:       "#32cd32",
+	adam:         "#a79c59",
+	apex:         "#8c4847",
+	sunny:        "#786196"
+]
 
 ##############################
 # Utilities:
@@ -113,6 +128,79 @@ is_corp_card   := { false }
 side_of := {
 	"runner"
 }
+
+# # # # # # # # # # # # # # # 
+
+# e.g. side_of( type: "program" )
+#   == "runner"
+#
+# e.g. side_of( faction: "haas-bioroid" )
+#   == "corp"
+#
+# e.g. side_of( type: "identity" )
+#   == ""
+#
+# e.g. side_of( faction: "neutral" )
+#   == ""
+#
+
+side_of := {
+
+	t_side := case normalize_type(type) of
+
+		"event":    "runner",
+		"program":  "runner",
+		"hardware": "runner",
+		"resource": "runner",
+
+		"operation": "corp",
+		"agenda":    "corp",
+		"ice":       "corp",
+		"asset":     "corp",
+		"upgrade":   "corp",
+
+		"identity": "",  # both
+
+		else: ""		 # noncards (Counters/Tokens/Refsheets/etc):
+
+	f_side := case normalize_faction(faction) of
+
+		"anarch"  : "runner",
+		"criminal": "runner",
+		"shaper"  : "runner",
+
+		"haas-bioroid" : "corp",
+		"jinteki": "corp",
+		"nbn"    : "corp",
+		"weyland": "corp",
+
+		"neutral-runner": "runner",
+		"neutral-corp":   "corp",
+		"neutral":        "",
+		else     : ""
+
+	if t_side!="" then t_side else f_side
+
+}@(
+  type: "",
+  faction: ""
+)
+
+##############################
+
+normalize_faction := {
+
+	input := to_lower(input)
+	input := replace(input, match: "[_ ]", replace: "-")
+
+	case input of
+		"haas" : "haas-bioroid",
+		"hb"   : "haas-bioroid",
+		"weyland-consortium" : "weyland",
+		"wc"                 : "weyland",
+		"sunny-lebeau": "sunny",
+		else: input
+}@(side: "")
 
 ##############################
 
@@ -193,8 +281,6 @@ tag_word_list := {
 
 }@(name: "subtype", language: "")
 
-#TODO localize
-
 ##############################
 
 # Lets the user type over an empty(?) final(?) dropdown in the subtypes field.
@@ -214,7 +300,16 @@ remove_trailing_soft_tags := replace@(match: "<soft>.*?</soft>$", replace: "")
 
 replace_soft_tags_with_spaces := replace@(match: "<soft>.*?</soft>", replace: " ")
 
-# # # # # # # # # # # # # # # 
+##############################
+#TODO
+
+tag_subtype_dropdowns := {
+
+	input
+
+}
+
+##############################
 
 format_single_program_subtype :=
 	remove_tag@(tag: "<word-list-")
@@ -234,7 +329,7 @@ format_program_type := {
 }
 
 ##############################
-# Editors ("smart" fields / multi-fields):
+# combined_editor:
 # # # # # # # # # # # # # # # 
 
 textbox_editor := combined_editor@(
@@ -261,6 +356,18 @@ subtypes_editor := combined_editor@(
 	hide_when_empty   : true,
 	soft_before_empty : true)
 
+# # # # # # # # # # # # # # # 
+
+footer_editor := combined_editor@(
+
+	prefix    : "illus. ",
+	field1    : card.illustrator,
+	separator : "  |  ",
+	field2    : card.designer,
+
+	hide_when_empty   : true,
+	soft_before_empty : true)
+
 ##############################
 # Formatting (Bold):
 # # # # # # # # # # # # # # # 
@@ -280,7 +387,7 @@ keep_unambiguous_subtypes := filter_list@(
 all_subtypes := {
 
 	xs := official_subtypes()
-	ys := from_csv(set.subtypes)
+	ys := from_csv(set.extra_subtypes)
 	zs := custom_subtypes()
 
 	subtypes := sort_list(xs + ys + zs, remove_duplicates: true)
@@ -340,6 +447,18 @@ reminder_rx := "\\([^\\)\\n]*\\)"
 italicize_parentheticals := replace@(match: reminder_rx, replace: "<i>\\0</i>")
 
 italicize_reminder_text  := italicize_parentheticals
+
+##############################
+# Formatting (Color):
+# # # # # # # # # # # # # # # 
+
+color_subtypes := {
+	
+	input := replace(input, replace: "<color:{ faction_rgbs.weyland }>\\1</color>", match: "(?i)\\b(barrier)\\b")
+
+
+	input
+}
 
 ##############################
 # Formatting (Symbols):
@@ -405,30 +524,113 @@ end_of_sentence_rx := "[.]([ ]+|$)"
 # end_of_sentence_rx := "(?<!…)[.]"
 
 ##############################
+# Formatting (Spellchecking):
+# # # # # # # # # # # # # # # 
+
+nr_extra_valid_words_english := {
+
+	false
+
+}
+
+# # # # # # # # # # # # # # # 
+
+nr_check_spelling_english := check_spelling@(
+	language         : "en_US",
+	extra_dictionary : "/netrunner.mse-game/netrunner",
+	extra_match      : nr_extra_valid_words_english
+)
+
+# # # # # # # # # # # # # # # 
+
+nr_check_spelling := {
+
+	#if set.spellcheck==true then
+	nr_check_spelling_english(input)
+	#else input
+
+}
+
+##############################
+
+nr_mistemplatings := [
+
+	"brain damage"
+
+]
+
+# # # # # # # # # # # # # # # 
+
+nr_check_templating := {
+
+	for each regex in nr_mistemplatings do (
+
+		input := replace(input, match: regex, replace: "<error-templating>\\1</error-templating>")
+
+	)
+
+	input
+}
+
+##############################
+
+match_error := match@(match:"<error")
+
+# # # # # # # # # # # # # # # 
+
+card_has_error := {
+
+	match_error(card.text)
+	or
+	(card.illustrator == "" and card.art != "")
+
+}
+
+##############################
 # Formatting (card_field):
+# # # # # # # # # # # # # # # 
+
+detag_bold     := remove_tag@(tag: "<b-")
+detag_italics  := remove_tag@(tag: "<i-")
+detag_atom     := remove_tag@(tag: "<atom-")
+detag_wordlist := remove_tag@(tag: "<word-list-")
+detag_error    := remove_tag@(tag: "<error")
+detag_color    := remove_tag@(tag: "<color")
+# detag_    := remove_tag@(tag: "<")
+
 # # # # # # # # # # # # # # # 
 
 format_rules_text :=
 
-	expand_symbols
+	detag_bold
 	+
+	detag_italics
+	+
+	detag_error
+	+
+	detag_color
 
-	remove_tag@(tag: "<b>")
 	+
 	embolden_subtypes
 	+
 	embolden_activation_costs
 	+
+	{ if set.color_subtypes then color_subtypes(input) else input }
+	+
 
 	nr_expand_keywords
 	+
-
-	remove_tag@(tag: "<i>")
-	+
 	italicize_parentheticals
 	+
+	#relocate_reminder_text
+	#+
 
 	curly_quotes
+	+
+
+	nr_check_spelling
+	#+
+	#nr_check_templating
 
 # # # # # # # # # # # # # # # 
 
@@ -442,6 +644,14 @@ format_flavor_text :=
 
 # # # # # # # # # # # # # # # 
 
+format_subtypes :=
+
+	detag_wordlist
+	+
+	tag_subtype_dropdowns
+
+# # # # # # # # # # # # # # # 
+
 # 
 
 format_reminder_text :=
@@ -451,22 +661,6 @@ format_reminder_text :=
 	process_english_hints
 	+
 	curly_quotes
-
-##############################
-# Dropdowns (word-list):
-# # # # # # # # # # # # # # # 
-
-tag_word_list := {
-
-	name := name + (if language!="" then "-{language}" else "")
-	
-	"<word-list-{name}>{ input }</word-list-{name}>"
-
-}@(name: "subtype", language: "")
-
-##############################
-# JSON:
-# # # # # # # # # # # # # # # 
 
 ##############################
 # Unicode:
@@ -534,7 +728,7 @@ asciify :=
 #   == "MIC"
 #
 
-letterify := replace@(replace: "", match: "(?i)^[a-z]")
+letterify := filter_text@(match: "[a-zA-Z0-9]")
 
 ##############################
 # Sorting:
@@ -577,6 +771,12 @@ compare_name :=
 	asciify
 	+
 	letterify
+
+##############################
+# Analysis:
+# # # # # # # # # # # # # # # 
+
+
 
 ##############################
 # /keywords:
@@ -670,5 +870,55 @@ new_breaker_cycle := {
 
 	[ fracter, killer, decoder ]
 }
+
+##############################
+# JSON:
+# # # # # # # # # # # # # # # 
+
+card_from_nrdb_json := {
+
+	title    := input.title or else ""
+	subtitle := input.subtitle or else ""
+
+	type     := input.card_type_id or else input.type_code or else input.card_type or else input.type or else input.kind or else ""
+	subtypes := (input.subtypes) or else (input.keywords) or else ""
+
+	side      := input.side_id or else input.side_code or else input.side or else ""
+	faction   := input.faction_id or else input.faction_code or else input.faction or else "neutral"
+	influence := input.influence_cost or else input.faction_cost or else input.influence or else "0"
+
+	cost     := to_string(input.cost) or else to_string(input.play_cost) or else to_string(input.install_cost) or else to_string(input.rez_cost) or else ""
+	trash    := to_string(input.trash_cost) or else to_string(input.trash) or else ""
+	memory   := to_string(input.memory_cost) or else ""
+	strength := to_string(input.strength) or else ""
+
+	agenda_points           := to_string(input.agenda_point_value) or else ""
+	advancement_requirement := to_string(input.advancement_requirement) or else ""
+
+	unique     := input.is_unique or else input.uniqueness or else false
+	deck_limit := to_int(input.deck_limit) or else 3
+
+	text := input.rules_text or else input.text or else ""
+
+	#
+
+	flavor      := input.flavor_text or else input.flavor or else ""
+	illustrator := input.illustrator or else ""
+	#  := input.notes or else ""
+
+	#
+
+	fields := [ name: title, cost: cost, memory: memory, type: type, subtypes: subtypes, faction: faction, influence: influence, side: side, unique: unique, text: text, subtitle: subtitle ]
+
+	fields := fields + (if deck_limit == 3 then [] else [ deck_limit: input.deck_limit ])
+
+	new_card(fields)
+}
+
+##############################
+# etc:
+# # # # # # # # # # # # # # # 
+
+
 
 ##############################

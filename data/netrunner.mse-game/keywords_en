@@ -72,7 +72,7 @@ keyword:
 	keyword: Sabotage
 	match: sabotage <atom-param>number</atom-param>
 	mode: official
-	reminder: The Corp trashes {param1} card(s) of their choice from HQ { if (param1.value=="1") then "or" else "and/or" } the top of R&D.
+	reminder: The Corp trashes {param1} card{ if (param1.value=="1") then "" else "s" } of their choice from HQ { if (param1.value=="1") then "or" else "and/or" } the top of R&D.
 
 # # # # # # # # # # # # # # # 
 

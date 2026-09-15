@@ -47,15 +47,6 @@ card style:
 			adam           : RunnerProgramDefaultAdam.png
 			sunny          : RunnerProgramDefaultSunny.png
 
-	corners:
-		left : 0
-		top  : 0
-		width  : 750
-		height : 1050
-		z index: 4
-		mask: /netrunner-mnemic-common.mse-include/corner_mask.png
-
-
 	art:
 		left : 0
 		top  : 0
@@ -63,7 +54,6 @@ card style:
 		height : 480
 		z index: 1
 		mask: artbox_mask.png
-		#default: nr_default_image(width: , height: , faction: card.faction, type: card.type)
 
 	influence:
 		left : 691
@@ -135,10 +125,14 @@ card style:
 
 
 	text:
-		left : 75
+		left : 50
 		top  : 620
-		width  : 590
+		width  : 615
 		height : 370
+		padding left   : 25
+		padding right  : 25
+		# padding top    : 25
+		# padding bottom : 30
 		z index: 2
 		tab index: 3
 		#mask: textbox_mask.png
@@ -153,33 +147,23 @@ card style:
 
 
 	cost:
-		left : 55
-		top  : 63
-		width  : 56
-		height : 56
+		left : 0
+		top  : 0
+		width  : 170
+		height : 170
+		padding left   : 55
+		padding top    : 63
+		padding right  : 59
+		padding bottom : 51
 		z index: 3
-		alignment: center middle shrink-overflow
+		alignment: center middle
 		tab index: 5
 		font:
 			name: BankGothicBT-Medium
 			size          : 64
-			scale down to : 32
+			#scale down to : 48
 			#max width: 0.5
 			color: rgb(255, 255, 255)
-
-	strength:
-		left : 0
-		top  : 915
-		width  : 152
-		height : 77
-		z index: 3
-		alignment: center middle shrink-overflow
-		tab index: 7
-		font:
-			name: BankGothicBT-Medium
-			size          : 64
-			scale down to : 48
-			#max width: 0.5
 
 	memory:
 		left : 186
@@ -195,6 +179,20 @@ card style:
 			color  : rgb(102, 102, 102)
 			weight : bold
 
+	strength:
+		left : 0
+		top  : 915
+		width  : 152
+		height : 77
+		z index: 3
+		alignment: center middle shrink-overflow
+		tab index: 7
+		font:
+			name: BankGothicBT-Medium
+			size          : 64
+			scale down to : 48
+			#max width: 0.5
+
 
 	footer:
 		left : 0
@@ -202,18 +200,15 @@ card style:
 		right  : 750
 		bottom : 1050
 		z index: 2
+		alignment: left middle
 		tab index: 10
 		font:
-			name: Arial Regular
-			size: 8
+			name: Arial Narrow
+			size: 16
+			color  : rgb(255, 255, 255)
 
 
 ##############################
-
-		# padding left   : 20
-		# padding top    : 25
-		# padding right  : 0
-		# padding bottom : 30
 
 		# padding left   : 7
 		# padding top    : 25
