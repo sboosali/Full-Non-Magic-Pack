@@ -86,10 +86,10 @@ card style:
 			size: 32
 
 	unique:
-		left : 10
-		top  : 480
-		width  : 20
-		height : 64
+		left : 0
+		top  : 485
+		width  : 40
+		height : 55
 		z index: 3
 		alignment: center middle
 		render style : image

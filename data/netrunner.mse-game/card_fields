@@ -123,7 +123,6 @@ card field:
 	type: text
 	name: title
 	identifying: true
-	multi line: false
 	show statistics: false
 	card list name    : Name
 	card list column  : 0101
@@ -151,7 +150,6 @@ card field:
 card field:
 	type: text
 	name: cardtype
-	multi line: false
 	default: to_upper(card_type_of()) + ": "
 	show statistics: false
 	card list name    : Card-Type
@@ -165,7 +163,6 @@ card field:
 card field:
 	type: text
 	name: subtypes
-	multi line: false
 	show statistics: false
 	card list name    : Sub-Types
 	card list visible : false
@@ -215,7 +212,6 @@ card field:
 card field:
 	type: text
 	name: cost
-	multi line: false
 	show statistics: false
 	card list name:    $$$
 	card list visible: true
@@ -230,7 +226,6 @@ card field:
 card field:
 	type: text
 	name: strength
-	multi line: false
 	show statistics: false
 	card list name    : STR
 	card list visible : true

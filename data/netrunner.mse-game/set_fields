@@ -35,21 +35,19 @@ set field:
 set field:
 	type: symbol
 	name: logo
-	#initial: "MagnumOpus.png"
 	description: Set Logo (symbol). Shown in cards’ footer. (By default, the alchemical "Magnum Opus" symbol.)
+#	initial: "MagnumOpus.png"
 
 set field:
-	type: choice
-	name: language
-	initial: en-US
-	choice: en-US
-	choice: fr-FR
-	description: Language code (e.g. "fr-FR") of all text name/rules/flavor/typeline/etc American English ("en-US") by default. [please help with localization!]
+	type: text
+	name: designer
+	description: The designer(s) of this set (e.g. "Gilliam Bibson"). Illustrators have separate attribution on each card.
 
 set field:
 	type: text
 	name: copyright
-	description: Copyright information (e.g. "CC0 2026 Gilliam Bibson"): the designer(s) of this set. Illustrators have separate attribution on each card.
+	description: Under what copyright the cards themselves should be licensed (e.g. "CC0 2026"). Abbreviated: e.g. "CC0" for public domain, "©" for all rights reserved, etc.
+#	initial: CC0
 
 ##############################
 
@@ -66,7 +64,7 @@ set field:
 
 set field:
 	type: info
-	name: Set Styling
+	name: Card Styling
 
 set field:
 	type: package choice
@@ -77,9 +75,15 @@ set field:
 
 set field:
 	type: boolean
+	name: automatic card numbers
+	initial: yes
+	description: Show card number (e.g. "001") on each card's footer?
+
+set field:
+	type: boolean
 	name: color subtypes
 	initial: no
-	description: Whether  should be colored as their associated faction, for visual clarity. e.g. The word "barrier" becomes dark-green like Weyland (such as in the rules-text of Fracters).
+	description: Color the words "barrier"/"sentry"/"code gate" as their associated faction, for visual clarity. e.g. "Barrier" becomes dark-green like Weyland (such as in the rules-text of Fracters).
 
 ##############################
 
@@ -100,10 +104,12 @@ set field:
 	description: For which "keyword modes" should reminder text be auto-expanded? (You can still toggle reminder text on/off by right clicking a keyword on any card.)
 
 set field:
-	type: boolean
-	name: automatic card numbers
-	initial: yes
-	description: Show card number (e.g. "001") on each card's footer?
+	type: multiple choice
+	name: checking
+	initial: check spelling, check templating
+	choice: check spelling
+	choice: check templating
+	description: Mark mis-spellings and/or mis-templatings (with a wavy red underline). e.g. the word "token" in the phrase "advancement token" (which should be "counter").
 
 ##############################
 
@@ -118,10 +124,13 @@ default set style:
 		font:
 			size: 8
 
-	textbox symbols:
-
 	automatic reminder text:
 		render style: checklist
 		direction: vertical
+
+	checking:
+		render style: checklist
+		direction: vertical
+
 
 ##############################

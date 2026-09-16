@@ -452,13 +452,13 @@ italicize_reminder_text  := italicize_parentheticals
 # Formatting (Color):
 # # # # # # # # # # # # # # # 
 
-color_subtypes := {
-	
-	input := replace(input, replace: "<color:{ faction_rgbs.weyland }>\\1</color>", match: "(?i)\\b(barrier)\\b")
+color_barrier  := replace@(replace: "<color:{ faction_rgbs.weyland }>\\1</color>", match: "(?i)\\b(barrier)\\b")
+color_sentry   := replace@(replace: "<color:{ faction_rgbs.jinteki }>\\1</color>", match: "(?i)\\b(sentry)\\b")
+color_codegate := replace@(replace: "<color:{ faction_rgbs.nbn }>\\1</color>", match: "(?i)\\b(code gate)\\b")
 
+# # # # # # # # # # # # # # # 
 
-	input
-}
+color_subtypes := color_ := color_barrier + color_sentry + color_codegate
 
 ##############################
 # Formatting (Symbols):
@@ -553,23 +553,36 @@ nr_check_spelling := {
 
 ##############################
 
-nr_mistemplatings := [
+# e.g. "brain(?= damage)" means: match "brain damage" but only mark "brain".
+# n.b. the "(?=)" is a "lookahead assertion".
+#
 
-	"brain damage"
+mistemplatings := [
 
+	"illicit",
+
+	"brain(?= damage)",
+	"(?<=draw )(a|one|two|three|four|five)(?= cards?)",
+	"(?<=virus )token|(?<=power )token|(?<=advancement )token|(?<=agenda )token",
+
+	"can be advanced"
 ]
 
 # # # # # # # # # # # # # # # 
 
-nr_check_templating := {
+# Mark obsolete rules-text and common mis-templatings.
+#
+# e.g. "When this resource is installed" (-> "When you install this resource").
+# e.g. the "Illicit" subtype (-> "Liability"), "brain damage" (-> "core damage"), "advancement token" (-> "advancement counter"), and so on.
+# e.g. the "Illicit" subtype ("Liability"), "brain damage" ("core damage"), "advancement token" ("advancement counter"), and so on.
+#
 
-	for each regex in nr_mistemplatings do (
+check_templating := {
 
-		input := replace(input, match: regex, replace: "<error-templating>\\1</error-templating>")
+	mistemplating_rx := "\\b" + join(mistemplatings, sep:"\\b|\\b") + "\\b"
 
-	)
+	replace(input, match: mistemplating_rx, replace: "<error-templating>\\0</error-templating>")
 
-	input
 }
 
 ##############################
@@ -625,12 +638,12 @@ format_rules_text :=
 	#relocate_reminder_text
 	#+
 
-	curly_quotes
+	{ if chosen(set.checking, choice: "check spelling") then nr_check_spelling(input) else input }
+	+
+	{ if chosen(set.checking, choice: "check templating") then check_templating(input) else input }
 	+
 
-	nr_check_spelling
-	#+
-	#nr_check_templating
+	curly_quotes
 
 # # # # # # # # # # # # # # # 
 

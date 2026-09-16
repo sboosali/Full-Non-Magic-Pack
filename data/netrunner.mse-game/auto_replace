@@ -27,12 +27,8 @@ auto replace:
 ##############################
 
 auto replace:
-	match   : C
-	replace : <atom><sym>credit</sym></atom>
-
-auto replace:
 	match   : 1c
-	replace : 1<sym>credit</sym>
+	replace : 1<atom-symbol><sym>credit</sym></atom-symbol>
 
 ##############################
 
