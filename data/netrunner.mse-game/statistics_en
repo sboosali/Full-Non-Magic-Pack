@@ -7,8 +7,8 @@ statistics dimension:
 	name: faction
 	script: card.faction
 	position hint: 00
+
 	show empty: false
-	#
 	group: anarch
 	group: criminal
 	group: shaper
@@ -22,6 +22,7 @@ statistics dimension:
 	#group: adam
 	#group: apex
 	#group: sunny
+
 	colors:
 		haas-bioroid : rgb(138, 43, 226)
 		jinteki      : rgb(220, 20, 60)
@@ -42,14 +43,16 @@ statistics dimension:
 	name: influence
 	script: card.influence
 	position hint: 01
+
 	numeric: true
-	show empty: false
+	show empty: true
 	group: 5
 	group: 4
 	group: 3
 	group: 2
 	group: 1
 	group: 0
+
 	colors:
 		0:   rgb(0,0,0)
 		1:   rgb(51,51,51)
@@ -66,6 +69,7 @@ statistics dimension:
 	name: cost
 	script: numeral_stat((card.cost or else ""), maximum: 10)
 	position hint: 20
+
 	numeric: false
 	show empty: false
 	group: 0
@@ -80,6 +84,7 @@ statistics dimension:
 	group: 9
 	group: 10+
 	group: X
+
 	colors:
 		0   : rgb(0,20,0)
 		1   : rgb(0,40,0)
@@ -105,6 +110,7 @@ statistics dimension:
 		then numeral_stat((card.strength or else ""), maximum: 4)
 		else ""
 	position hint: 110
+
 	numeric: false
 	show empty: false
 	group: 0
@@ -112,6 +118,7 @@ statistics dimension:
 	group: 2
 	group: 3
 	group: 4+
+
 	colors:
 		0   : rgb(255,159,149)
 		1   : rgb(255,117,102)
@@ -132,6 +139,7 @@ statistics dimension:
 		then numeral_stat((card.memory or else ""), maximum: 2)
 		else ""
 	position hint: 111
+
 	numeric: false
 	show empty: false
 	group: 0
@@ -151,14 +159,15 @@ statistics dimension:
 		then subtypes_stat()
 		else ""
 	position hint: 112
+
 	show empty: false
 	group: Icebreaker
 	group: Virus
 	group: 
 	group: 
-	description: Non-"breaker-type" Program subtypes.
-
-
+	description: Non–"breaker type" Program subtypes.
+	localized description:
+		en_US: Non–"breaker type" Program subtypes.
 
 # # # # # # # # # # # # # # # 
 
@@ -166,6 +175,7 @@ statistics dimension:
 	name: primary breaker type
 	script: to_csv(filter_primary_breaker_subtypes(split_subtypes(card.subtypes)))
 	position hint: 113
+
 	show empty: false
 	split list: true
 	group: Fracter

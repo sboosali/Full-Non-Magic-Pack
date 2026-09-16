@@ -36,7 +36,7 @@ set field:
 	type: symbol
 	name: logo
 	description: Set Logo (symbol). Shown in cards’ footer. (By default, the alchemical "Magnum Opus" symbol.)
-#	initial: "MagnumOpus.png"
+#	default: "MagnumOpus.png"
 
 set field:
 	type: text
@@ -46,19 +46,8 @@ set field:
 set field:
 	type: text
 	name: copyright
+	default: "CC0"
 	description: Under what copyright the cards themselves should be licensed (e.g. "CC0 2026"). Abbreviated: e.g. "CC0" for public domain, "©" for all rights reserved, etc.
-#	initial: CC0
-
-##############################
-
-set field:
-	type: info
-	name: Set Mechanics
-
-set field:
-	type: text
-	name: extra subtypes
-	description: Extra subtypes that will be be auto-emboldened; a comma-separated value (e.g. "Nanotech, SimStim, Black ICE, Jockey,").
 
 ##############################
 
@@ -80,10 +69,27 @@ set field:
 	description: Show card number (e.g. "001") on each card's footer?
 
 set field:
+	type: text
+	name: extra subtypes
+	description: Whitelist of extra subtypes to auto-embolden. Is a comma-separated value (e.g. "Nanotech, SimStim, Black ICE, Jockey,").
+
+set field:
+	type: text
+	name: ambiguous subtypes
+	default: "Run,Sabotage,"
+	description: Blacklist of subtypes to NOT auto-embolden. "Run, Sabotage," by default. n.b. You can still manually bold (or unbold) any words; e.g. for "**run** event".
+
+set field:
 	type: boolean
 	name: color subtypes
 	initial: no
-	description: Color the words "barrier"/"sentry"/"code gate" as their associated faction, for visual clarity. e.g. "Barrier" becomes dark-green like Weyland (such as in the rules-text of Fracters).
+	description: Color the words "barrier"/"sentry"/"code gate" as their associated faction (for visual clarity). e.g. "Barrier" becomes dark-green like Weyland (such as in the rules-text of Fracters).
+
+set field:
+	type: boolean
+	name: enable minifactions
+	initial: no
+	description: Whether the set has Adam/Apex/Sunny.
 
 ##############################
 

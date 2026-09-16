@@ -6,7 +6,7 @@ card field:
 	name: faction
 
 	default: "neutral-{ side_of(card) }"
-	default name: "Neutral"
+	default name: Neutral
 
 	choice:
 		name: anarch
@@ -41,15 +41,15 @@ card field:
 	choice:
 		name: adam
 		type: radio
-		enabled: { is_runner_card() }
+		enabled: { set.enable_minifactions and is_runner_card() }
 	choice:
 		name: apex
 		type: radio
-		enabled: { is_runner_card() }
+		enabled: { set.enable_minifactions and is_runner_card() }
 	choice:
 		name: sunny
 		type: radio
-		enabled: { is_runner_card() }
+		enabled: { set.enable_minifactions and is_runner_card() }
 
 	show statistics: false
 	card list name    : FAC
@@ -123,11 +123,11 @@ card field:
 	type: text
 	name: title
 	identifying: true
-	show statistics: false
 	card list name    : Name
 	card list column  : 0101
 	card list visible : true
 	card list width   : 150
+	show statistics: false
 	description: The card name.
 
 # # # # # # # # # # # # # # # 
@@ -240,13 +240,14 @@ card field:
 card field:
 	type: text
 	name: memory
+	default: if is_program() then "1" else ""
+	script      : only_numerals(value)
+	sort script : compare_numeral(value)
 	show statistics: false
 	card list name    : MU
 	card list visible : true
 	card list column  : 0502
 	card list width   : 10
-	script      : only_numerals(value)
-	sort script : compare_numeral(value)
 	description: Programs’ memory usage (mostly 1, 2, or 0).
 
 ##############################

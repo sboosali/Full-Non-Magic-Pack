@@ -27,16 +27,6 @@ _official_subtypes := [
 
 # # # # # # # # # # # # # # # 
 
-_ambiguous_subtypes := [
-	"Sabotage"
-]
-
-ambiguous_subtypes := {
-	for each s in _ambiguous_subtypes do [s]
-}
-
-# # # # # # # # # # # # # # # 
-
 supported_symbols := [
 	"credit", "recurring", "click", "trash", "subroutine", "mu", "link", "interrupt", "unique", "anarch", "criminal", "shaper", "neutral", "haas-bioroid", "jinteki", "nbn", "weyland", "agenda_points", "advancement_requirement", "rez", "deck"
 ]
@@ -100,7 +90,7 @@ split_subtypes := split_text@(
 
 # Joins [ "Icebreaker", "AI", Virus" ] into "Icebreaker - AI - Virus".
 
-dump_subtypes := join@(sep:" - ")
+join_subtypes := join@(sep: " - ")
 
 ##############################
 
@@ -121,13 +111,7 @@ parse_number := {
 #TODO
 is_runner_card := { true }
 is_corp_card   := { false }
-
-# # # # # # # # # # # # # # # 
-
-#TODO
-side_of := {
-	"runner"
-}
+side_of := { "runner" }
 
 # # # # # # # # # # # # # # # 
 
@@ -144,7 +128,7 @@ side_of := {
 #   == ""
 #
 
-side_of := {
+side_of2 := {
 
 	t_side := case normalize_type(type) of
 
@@ -211,18 +195,21 @@ is_program := { true }
 normalize_type := {
 
 	input := to_lower(input)
+	input := letterify(input)
 
 	input
 }@(side: "")
 
-# # # # # # # # # # # # # # # 
 #TODO
+# # # # # # # # # # # # # # # 
+
 card_type_of := {
 
 	"program"
 
 }
 
+#TODO
 ##############################
 
 is_primary_breaker_subtype := {
@@ -372,10 +359,13 @@ footer_editor := combined_editor@(
 # Formatting (Bold):
 # # # # # # # # # # # # # # # 
 
-is_subtype_unambiguous := {
-	position(of: [input], in: ambiguous_subtypes()) > -1
-}
 # NB. position(of: STRING, in: LIST_OF_STRING) has a bug.
+
+is_subtype_unambiguous := {
+	not chosen(set.ambiguous_subtypes, choice: input)
+}
+
+# 
 
 keep_unambiguous_subtypes := filter_list@(
 	filter: is_subtype_unambiguous
@@ -391,7 +381,8 @@ all_subtypes := {
 	zs := custom_subtypes()
 
 	subtypes := sort_list(xs + ys + zs, remove_duplicates: true)
-	#TODO-BUGGY subtypes := keep_unambiguous_subtypes(subtypes)
+	subtypes := keep_unambiguous_subtypes(subtypes)
+
 	subtypes
 }
 
@@ -421,7 +412,7 @@ subtype_rx := {
 embolden_subtypes := {
 	replace(input,
 
-		replace: "<b>\\1</b>",
+		replace: "<b-auto>\\1</b-auto>",
 		match: "(?i){ subtype_rx() }"
 
 	)
@@ -431,7 +422,7 @@ embolden_subtypes := {
 
 embolden_activation_costs := replace@(
 
-	replace: "<b>\\1</b>",
+	replace: "<b-auto>\\1</b-auto>",
 	match: "^(?:[a-z0-9_+<>-]+ → )?([^:\\n]+:)"
 
 )
@@ -444,7 +435,7 @@ reminder_rx := "\\([^\\)\\n]*\\)"
 
 # # # # # # # # # # # # # # # 
 
-italicize_parentheticals := replace@(match: reminder_rx, replace: "<i>\\0</i>")
+italicize_parentheticals := replace@(match: reminder_rx, replace: "<i-auto>\\0</i-auto>")
 
 italicize_reminder_text  := italicize_parentheticals
 
@@ -511,10 +502,10 @@ nr_expand_keywords := expand_keywords@(
 
 	condition: { (not used_placeholders) },
 
-	combine: { "{keyword}<atom-reminder-{mode}> ({reminder})</atom-reminder-{mode}>" })
+	combine: { "{ keyword }<atom-reminder-{mode}> ({ reminder })</atom-reminder-{mode}>" })
 #	combine_keyword_with_reminder_text0)
 
-# # # # # # # # # # # # # # # 
+##############################
 
 # Find the nearest period or end-of-line, skipping abbreviation periods.
 
@@ -522,6 +513,17 @@ end_of_sentence_rx := "[.]([ ]+|$)"
 
 #TODO
 # end_of_sentence_rx := "(?<!…)[.]"
+
+# # # # # # # # # # # # # # # 
+
+# Keyword actions' reminder-text comes at end-of-sentence (not end-of-line);
+# see Time Bomb.
+#TODO eos not eol
+
+relocate_reminder_text := replace@(
+	replace: "\\2\\1",
+	match: "(<atom-reminder-[^>]+> (?:(?!</kw).*?)</atom-reminder-[^>]+></kw[^>]*>)([^\n]*)"
+)
 
 ##############################
 # Formatting (Spellchecking):
@@ -562,7 +564,7 @@ mistemplatings := [
 	"illicit",
 
 	"brain(?= damage)",
-	"(?<=draw )(a|one|two|three|four|five)(?= cards?)",
+	"(?<=draw )(an?|one|two|three|four|five)(?= cards?)",
 	"(?<=virus )token|(?<=power )token|(?<=advancement )token|(?<=agenda )token",
 
 	"can be advanced"
@@ -579,7 +581,7 @@ mistemplatings := [
 
 check_templating := {
 
-	mistemplating_rx := "\\b" + join(mistemplatings, sep:"\\b|\\b") + "\\b"
+	mistemplating_rx := "(?i)\\b{ join(mistemplatings, sep:"\\b|\\b") }\\b"
 
 	replace(input, match: mistemplating_rx, replace: "<error-templating>\\0</error-templating>")
 
@@ -635,8 +637,8 @@ format_rules_text :=
 	+
 	italicize_parentheticals
 	+
-	#relocate_reminder_text
-	#+
+	relocate_reminder_text
+	+
 
 	{ if chosen(set.checking, choice: "check spelling") then nr_check_spelling(input) else input }
 	+
