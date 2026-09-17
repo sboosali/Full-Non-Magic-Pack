@@ -185,7 +185,7 @@ card style:
 		width  : 152
 		height : 77
 		z index: 3
-		alignment: center middle shrink-overflow
+		alignment: center middle justify-all if-overflow
 		tab index: 7
 		font:
 			name: BankGothicBT-Medium

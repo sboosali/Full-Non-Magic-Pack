@@ -160,29 +160,85 @@ card field:
 
 # # # # # # # # # # # # # # # 
 
+
+##############################
+
 card field:
 	type: text
 	name: subtypes
-	script:
-		stylesheet
-		add_subtype_dropdowns(value, type: card_type_of())
-	show statistics: false
+
+	save value: false
+	script: value
+#	script: add_subtype_dropdowns(value, type: card_type_of())
+#	script: subtypes_combined_editor()
+
 	card list name    : Sub-Types
-	card list visible : false
 	card list column  : 0302
 	card list width   : 200
+
+	show statistics: false
 	description: The card’s (zero-or-more) subtypes; hyphen-separated (e.g. "Icebreaker - AI - Virus").
+
+# # # # # # # # # # # # # # # 
+
+card field:
+	type: text
+	name: subtype1
+	script: add_subtype_dropdown(value, position: 1, type: card_type_of())
+	show statistics: false
+	card list name    : 1st Sub
+	card list column  : 0303
+	card list width   : 200
+	description: First subtype.
+card field:
+	type: text
+	name: subtype2
+	script: add_subtype_dropdown(value, position: 2, first: card.subtype1, type: card_type_of())
+	show statistics: false
+	card list name    : 2nd Sub
+	card list column  : 0304
+	card list width   : 200
+	description: Second subtype.
+card field:
+	type: text
+	name: subtype3
+	script: add_subtype_dropdown(value, position: 3, type: card_type_of())
+	show statistics: false
+	card list name    : 3rd Sub
+	card list column  : 0305
+	card list width   : 200
+	description: Third subtype.
+card field:
+	type: text
+	name: subtype4
+	script: add_subtype_dropdown(value, position: 4, type: card_type_of())
+	show statistics: false
+	card list name    : 4th Sub
+	card list column  : 0306
+	card list width   : 200
+	description: Fourth subtype.
+card field:
+	type: text
+	name: subtype5
+	script: add_subtype_dropdown(value, position: 5, type: card_type_of())
+	show statistics: false
+	card list name    : 5th Sub
+	card list column  : 0307
+	card list width   : 200
+	description: Fifth subtype.
 
 ##############################
 
 card field:
 	type: text
 	name: text
+
 	multi line: true
-	show statistics: false
 	script:
 		stylesheet
 		format_rules_text(value)
+
+	show statistics: false
 	description: Rules text, sharing the textbox with any flavor text (press down/up arrows to move between them). You can search your set for fields with any abbreviation (e.g. "x:run", since "(te)x(t)" is a distinct subsequence).
 
 # # # # # # # # # # # # # # # 
@@ -190,38 +246,45 @@ card field:
 card field:
 	type: text
 	name: flavor
+
 	multi line: true
-	show statistics: false
 	script:
 		stylesheet
 		format_flavor_text(value)
+
+	show statistics: false
 	description: Flavor text, sharing the textbox with any rules text (press up/down arrows to move between them).
 
 # # # # # # # # # # # # # # # 
 
 card field:
 	type: text
-	name: textbox
-	multi line: true
+	name: box
+
 	save value: false
-	show statistics: false
 	script: textbox_editor()
+	multi line: true
+
+	show statistics: false
 	description: The textbox, containing both rules text and flavor text. You can search your set for fields with any abbreviation (e.g. "x:run", since "(te)x(t)" is a distinct subsequence).
 
-# Uses {combined_editor()} because the flavor text comes (if present) a line below the rules text (not at the bottom of the textbox).
+#TODO Uses {combined_editor()} because the flavor text comes (if present) a line below the rules text (not at the bottom of the textbox).
 
 ##############################
 
 card field:
 	type: text
 	name: cost
-	show statistics: false
+
+	script      : only_numerals(value)
+	sort script : compare_numeral(value)
+
 	card list name:    $$$
 	card list visible: true
 	card list column:  0201
 	card list width:   40
-	script: only_numerals(value)
-	sort script: compare_numeral(value)
+	show statistics: false
+
 	description: The play/rez/install cost (in credits).
 
 # # # # # # # # # # # # # # # 
@@ -263,8 +326,87 @@ card field:
 card field:
 	type: text
 	name: footer
+
+#	script: footer_combined_editor()
 	multi line: true
+
 	show statistics: false
-	description: The set logo, the card’s code (number in its set), and its illustrator, designer, copyright, etc information.
+	description: The set logo, the card’s code (number in set), and its illustrator, designer/copyright, and other information.
+
+# # # # # # # # # # # # # # # 
+
+card field:
+	type: text
+	name: illustrator
+
+	multi line: false
+
+	card list name:   ART
+	card list column: 9900
+	card list visible: false
+	card list width:  200
+
+	show statistics: false
+	description: Who illustrated the card's artwork.
+
+# # # # # # # # # # # # # # # 
+
+card field:
+	type: text
+	name: designer
+
+	script: if set.designer=="" then "" else "<align:right>✍✎ { set.designer }</align>"
+
+	multi line: false
+
+	show statistics: false
+	description: Who designed the card.
+
+# # # # # # # # # # # # # # # 
+
+card field:
+	type: text
+	name: copyright
+
+	multi line: false
+
+	show statistics: false
+	description: Under what will the released card be licensed.
+
+##############################
+
+card field:
+	type: text
+	name: error
+
+	script: if card_has_error() then "❌" else "✅"
+	save value: false
+	editable: false
+
+	card list name: ?
+	card list column: 9001
+	card list visible: true
+	card list width: 20
+
+	description: Whether the card has a misspelling error or mis-templating warning.
+#	script: if card_has_error() then "✗" else "✓"
+
+##############################
+
+card field:
+	type: choice
+	name: corners
+
+	choice: rounded
+	choice: cut marks
+	choice: none
+	default: "rounded"
+
+	card list name: Corners
+	card list column: 9999
+	card list width: 100
+
+	show statistics: false
+	description: The shape of the corners of the card.
 
 ##############################

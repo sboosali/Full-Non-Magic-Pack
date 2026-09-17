@@ -155,10 +155,6 @@ word list:
 		name: Daemon
 		line below: true
 
-	word:
-		name: subtypes
-		script: "Academic, AI, AP, Advertisement, Alliance, Ambush, Barrier, Beanstalk, Bioroid, Black Ops, Bomb, Caïssa, Cast, Character, Chip, Clan, Clone, Cloud, Code Gate, Companion, Condition, Connection, Console, Consumer-grade, Corp, Corporation, Current, Cybernetic, Cyborg, Daemon, Decoder, Deep Net, Deflector, Department, Destroyer, Deva, Digital, Directive, Division, Double, Enforcer, Executive, Expansion, Expendable, Facility, Fracter, G-mod, Gear, Genetics, Government, Grail, Gray Ops, Harmonic, Hostile, Icebreaker, Industrial, Initiative, Job, Killer, Liability, Link, Location, Lockdown, Mandate, Megacorp, Mod, Morph, Mythic, NEXT, Natural, Observer, Off-site, Orgcrime, Police Department, Political, Priority, Psi, Public, Region, Remote, Reprisal, Research, Ritzy, Run, Sabotage, Security, Security Protocol, Seedy, Sensie, Sentry, Source, Stealth, Subsidiary, Sysop, Terminal, Tracer, Transaction, Trap, Triple, Trojan, Unorthodox, Unsubstantiated, Vehicle, Virtual, Virus, Weapon"
-
 # # # # # # # # # # # # # # # 
 
 word list:

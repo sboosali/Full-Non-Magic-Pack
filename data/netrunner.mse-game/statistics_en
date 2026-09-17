@@ -190,3 +190,19 @@ statistics dimension:
 	description: The four primary Icebreaker subtypes.
 
 ##############################
+
+statistics dimension:
+	name: error
+	position hint: 999
+	script: card.error
+	show empty: false
+
+	group: ❌
+	group: ✅
+	colors:
+		✗: dark-red
+		✓: light-green
+		❌: dark-red
+		✅: light-green
+
+##############################

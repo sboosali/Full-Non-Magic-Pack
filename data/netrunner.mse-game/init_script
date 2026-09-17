@@ -388,31 +388,74 @@ replace_soft_tags_with_spaces := replace@(match: "<soft>.*?</soft>", replace: " 
 
 ##############################
 
-# e.g. tag_word_list("B", name: "ice-type", language: "en")
-#   == "<word-list-ice-type-en>B</word-list-ice-type-en>
+# e.g. add_subtype_dropdowns("Frac", type: "program", position: 2, first: "Icebreaker")
+#   == "<word-list-breaker-type-en>Frac</word-list-breaker-type-en>"
 #
-# Used by the {card.subtypes} field. For example,
-# to complete "B(arrier)" or "B(ioroid)" from a "B".
+# * {position:2} means "for the second subtype" (one-indexed);
+#   {position:0} means "for any".
 #
+# * {first:…} is the first subtype (as text, if any).
+#
+# 
 
-tag_wordlist := {
+add_subtype_dropdown := {
+	case normalize_type(type) of
 
-	name := list + (if lang!="" then "-{lang}" else "")
-	
-	"<word-list-{name}>{ input }</word-list-{name}>"
+		"event"     : tag_wordlist(list: "event-type", input, lang: lang),
+		"program"   : add_program_type_dropdown(input, first: first, position: position:, lang: lang),
+		"hardware"  : tag_wordlist(list: "hardware-type", input, lang: lang),
+		"resource"  : tag_wordlist(list: "resource-type", input, lang: lang),
 
-}@(list: "subtype", lang: "en")
+		"operation" : tag_wordlist(list: "operation-type", input, lang: lang),
+		"agenda"    : tag_wordlist(list: "agenda-type", input, lang: lang),
+		"ice"       : add_ice_type_dropdown(input, position: position, lang: lang),
+		"asset"     : tag_wordlist(list: "asset-type", input, lang: lang),
+		"upgrade"   : tag_wordlist(list: "upgrade-type", input, lang: lang),
 
-#TODO localize
+		"identity": (case normalize_side(side) of 
+			"runner" : tag_wordlist(list: "runner-identity-type", input, lang: lang),
+			"corp"   : tag_wordlist(list: "corp-identity-type", input, lang: lang),
+			else     : tag_wordlist(input, lang: lang)),
+
+		else: tag_wordlist(input, lang: lang)
+
+}@(
+	position: 0, first: "",
+	type: "", side: "", lang: "en",
+)
 
 # # # # # # # # # # # # # # # 
+
+add_program_type_dropdown := {
+
+	list := if first=="Icebreaker" and position==2
+			then "breaker-type"
+			else "program-type"
+
+	tag_wordlist(input, list: list)
+
+}@(position: 0, first: "")
+
+# # # # # # # # # # # # # # # 
+
+add_ice_type_dropdown := {
+
+	list := if position==1
+			then "primary-ice-type"
+			else "secondary-ice-type"
+
+	tag_wordlist(input, list: list)
+
+}@(position: 0)
+
+##############################
 
 #TODO
 # add_subtype_dropdowns_to := { add_subtype_dropdowns(type: card.type, side: card.side) }
 
 # # # # # # # # # # # # # # # 
 
-add_subtype_dropdowns_for := {
+tag_wordlist := {
 	list := "{list}-{lang}"
 
 	subtypes := for each s in split_subtypes(input, include_empty: true) do
@@ -425,29 +468,29 @@ add_subtype_dropdowns_for := {
 # # # # # # # # # # # # # # # 
 
 # e.g. add_subtype_dropdowns(type: "program", "Icebreaker - Fracter - V")
-#   == "<word-list-breaker-type-en>Icebreaker</word-list-breaker-type-en> - <word-list-program-type-en>Fracter</word-list-program-type-en> - <word-list-breaker-type-en>V</word-list-breaker-type-en>"
+#   == "<word-list-program-type-en>Icebreaker</word-list-program-type-en> - <word-list-breaker-type-en>Fracter</word-list-breaker-type-en> - <word-list-program-type-en>V</word-list-program-type-en>"
 #
 
 add_subtype_dropdowns := {
 	case normalize_type(type) of
 
-		"event"     : add_subtype_dropdows_for(input, list: "event-type"),
+		"event"     : add_subtype_dropdowns_for(input, list: "event-type"),
 		"program"   : add_program_subtype_dropdowns(input),
-		"hardware"  : add_subtype_dropdows_for(input, list: "hardware-type"),
-		"resource"  : add_subtype_dropdows_for(input, list: "resource-type"),
+		"hardware"  : add_subtype_dropdowns_for(input, list: "hardware-type"),
+		"resource"  : add_subtype_dropdowns_for(input, list: "resource-type"),
 
-		"operation" : add_subtype_dropdows_for(input, list: "operation-type"),
-		"agenda"    : add_subtype_dropdows_for(input, list: "agenda-type"),
+		"operation" : add_subtype_dropdowns_for(input, list: "operation-type"),
+		"agenda"    : add_subtype_dropdowns_for(input, list: "agenda-type"),
 		"ice"       : add_ice_subtype_dropdowns(input),
-		"asset"     : add_subtype_dropdows_for(input, list: "asset-type"),
-		"upgrade"   : add_subtype_dropdows_for(input, list: "upgrade-type"),
+		"asset"     : add_subtype_dropdowns_for(input, list: "asset-type"),
+		"upgrade"   : add_subtype_dropdowns_for(input, list: "upgrade-type"),
 
 		"identity": (case normalize_side(side) of 
-			"runner" : add_subtype_dropdows_for(input, list: "runner-identity-type"),
-			"corp"   : add_subtype_dropdows_for(input, list: "corp-identity-type"),
-			else     : add_subtype_dropdowns_for(input)),
+			"runner" : add_subtype_dropdowns_for(input, list: "runner-identity-type"),
+			"corp"   : add_subtype_dropdowns_for(input, list: "corp-identity-type"),
+			else     : tag_wordlist(input)),
 
-		else: add_subtype_dropdowns_for(input)
+		else: tag_wordlist(input)
 
 }@(type: "", side: "")
 
@@ -526,7 +569,7 @@ textbox_editor := combined_editor@(
 
 # A subtype can have both spaces (e.g. "Black Ops") and hyphens in it (e.g. "Consumer-grade"), so multiple subtypes are separated by a spaced-hyphen (e.g. "Operation: Black Ops - Reprisal" or "Hardware: Console - Consumer-grade").
 
-subtypes_editor := combined_editor@(
+subtypes_combined_editor := combined_editor@(
 
 	field1: card.subtype1,
 	field2: card.subtype2,
@@ -541,7 +584,7 @@ subtypes_editor := combined_editor@(
 
 # # # # # # # # # # # # # # # 
 
-footer_editor := combined_editor@(
+footer_combined_editor := combined_editor@(
 
 	prefix    : "illus. ",
 	field1    : card.illustrator,
