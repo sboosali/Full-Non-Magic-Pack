@@ -261,6 +261,7 @@ normalize_faction := {
 		"weyland-consortium" : "weyland",
 		"wc"                 : "weyland",
 		"sunny-lebeau": "sunny",
+
 		else: input
 }@(side: "")
 

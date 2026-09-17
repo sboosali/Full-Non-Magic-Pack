@@ -165,7 +165,7 @@ card field:
 	name: subtypes
 	script:
 		stylesheet
-		value
+		add_subtype_dropdowns(value, type: card_type_of())
 	show statistics: false
 	card list name    : Sub-Types
 	card list visible : false
