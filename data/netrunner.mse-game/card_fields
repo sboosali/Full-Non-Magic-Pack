@@ -163,6 +163,9 @@ card field:
 card field:
 	type: text
 	name: subtypes
+	script:
+		stylesheet
+		value
 	show statistics: false
 	card list name    : Sub-Types
 	card list visible : false

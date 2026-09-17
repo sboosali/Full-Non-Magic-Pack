@@ -87,10 +87,14 @@ csv_to_rx := { "(?i)\\b{ join(from_csv(input), sep:"|") }\\b" }
 # e.g. split_subtypes( "Icebreaker -   AI   - Virus -" )
 #   == [ "Icebreaker", "AI", "Virus" ]
 
-split_subtypes := split_text@(
-	match: "[ ]+-([ ]+|$)",
-	include_empty: false
-)
+split_subtypes := {
+	split_text(trim(input),
+
+		match: "[ ]+-([ ]+|$)",
+
+		include_empty: include_empty
+	)
+}@(include_empty: false)
 
 # # # # # # # # # # # # # # # 
 
@@ -109,6 +113,74 @@ parse_number := {
 	to_number(trim(to_text(input))) or else default
 
 }@(default: 0)
+
+##############################
+# Unicode:
+# # # # # # # # # # # # # # # 
+
+asciify_a := replace@(replace: "a", match: "(?i)[áàâäāãåậăąǎǟǡǻȁȃȧẚạảấầẩẫậắằẳẵặḁ]")
+
+asciify_e := replace@(replace: "e", match: "(?i)[éèêëē]")
+asciify_i := replace@(replace: "i", match: "(?i)[íìîïī]")
+asciify_o := replace@(replace: "o", match: "(?i)[óòôöōõø]")
+asciify_u := replace@(replace: "u", match: "(?i)[úùûüū]")
+
+asciify_c := replace@(replace: "c", match: "(?i)[ç]")
+asciify_n := replace@(replace: "n", match: "(?i)[ñ]")
+asciify_y := replace@(replace: "y", match: "(?i)[ý]")
+
+asciify_ss := replace@(replace: "ss", match: "(?i)[ß]")
+asciify_ae := replace@(replace: "ue", match: "(?i)[ü]")
+asciify_oe := replace@(replace: "oe", match: "(?i)[ö]")
+asciify_ue := replace@(replace: "ue", match: "(?i)[ü]")
+
+# asciify_ := 
+
+# # # # # # # # # # # # # # # 
+
+# Strip accents/etc.
+#
+# e.g. asciify("Brân 1.0")
+#   == "Bran 1.0"
+#
+
+asciify :=
+
+	asciify_a
+	+
+	asciify_e
+	+
+	asciify_i
+	+
+	asciify_o
+	+
+	asciify_u
+
+	+
+	asciify_c
+	+
+	asciify_n
+	+
+	asciify_y
+
+	+
+	asciify_ss
+	+
+	asciify_ae
+	+
+	asciify_oe
+	+
+	asciify_ue
+
+# # # # # # # # # # # # # # # 
+
+# Drop "non-letter" characters.
+#
+# e.g. letterify("M.I.C.")
+#   == "MIC"
+#
+
+letterify := filter_text@(match: "[a-zA-Z0-9]")
 
 ##############################
 # Enums:
@@ -324,21 +396,26 @@ replace_soft_tags_with_spaces := replace@(match: "<soft>.*?</soft>", replace: " 
 
 tag_wordlist := {
 
-	name := name + (if language!="" then "-{language}" else "")
+	name := list + (if lang!="" then "-{lang}" else "")
 	
 	"<word-list-{name}>{ input }</word-list-{name}>"
 
-}@(name: "subtype", language: "")
+}@(list: "subtype", lang: "en")
 
 #TODO localize
 
 # # # # # # # # # # # # # # # 
 
-add_subtype_dropdowns := {
-	wordlist := "{list}-{lang}"
+#TODO
+# add_subtype_dropdowns_to := { add_subtype_dropdowns(type: card.type, side: card.side) }
 
-	subtypes := for each s in split_subtypes(input) do
-		tag_wordlist(s, list: wordlist)
+# # # # # # # # # # # # # # # 
+
+add_subtype_dropdowns_for := {
+	list := "{list}-{lang}"
+
+	subtypes := for each s in split_subtypes(input, include_empty: true) do
+		[ tag_wordlist(s, list: list) ]
 
 	join_subtypes(subtypes)
 
@@ -346,57 +423,48 @@ add_subtype_dropdowns := {
 
 # # # # # # # # # # # # # # # 
 
-add_subtype_dropdowns_to := { add_subtype_dropdowns_for(type: "program", side: "runner") }
-
-#TODO
-# add_subtype_dropdowns_to := { add_subtype_dropdowns_for(type: card.type, side: card.side) }
-
-# # # # # # # # # # # # # # # 
+# e.g. add_subtype_dropdowns(type: "program", "Icebreaker - Fracter - V")
+#   == "<word-list-breaker-type-en>Icebreaker</word-list-breaker-type-en> - <word-list-program-type-en>Fracter</word-list-program-type-en> - <word-list-breaker-type-en>V</word-list-breaker-type-en>"
+#
 
 add_subtype_dropdowns := {
-
 	case normalize_type(type) of
 
-		"event"     : add_subtype_dropdowns(input, list: "event-type"),
+		"event"     : add_subtype_dropdows_for(input, list: "event-type"),
 		"program"   : add_program_subtype_dropdowns(input),
-		"hardware"  : add_subtype_dropdowns(input, list: "hardware-type"),
-		"resource"  : add_subtype_dropdowns(input, list: "resource-type"),
+		"hardware"  : add_subtype_dropdows_for(input, list: "hardware-type"),
+		"resource"  : add_subtype_dropdows_for(input, list: "resource-type"),
 
-		"operation" : add_subtype_dropdowns(input, list: "operation-type"),
-		"agenda"    : add_subtype_dropdowns(input, list: "agenda-type"),
+		"operation" : add_subtype_dropdows_for(input, list: "operation-type"),
+		"agenda"    : add_subtype_dropdows_for(input, list: "agenda-type"),
 		"ice"       : add_ice_subtype_dropdowns(input),
-		"asset"     : add_subtype_dropdowns(input, list: "asset-type"),
-		"upgrade"   : add_subtype_dropdowns(input, list: "upgrade-type"),
+		"asset"     : add_subtype_dropdows_for(input, list: "asset-type"),
+		"upgrade"   : add_subtype_dropdows_for(input, list: "upgrade-type"),
 
 		"identity": (case normalize_side(side) of 
-			"runner" : add_subtype_dropdowns(input, list: "runner-identity-type"),
-			"corp"   : add_subtype_dropdowns(input, list: "corp-identity-type"),
+			"runner" : add_subtype_dropdows_for(input, list: "runner-identity-type"),
+			"corp"   : add_subtype_dropdows_for(input, list: "corp-identity-type"),
 			else     : add_subtype_dropdowns_for(input)),
 
 		else: add_subtype_dropdowns_for(input)
 
-}@(
-  type: "",
-  side: ""
-)
+}@(type: "", side: "")
 
 ##############################
 
-# 
-
 add_program_subtype_dropdowns := {
 
-	subtypes := split_subtypes(input)
+	subtypes := split_subtypes(input, include_empty: true)
 	first_subtype := subtypes[0] or else ""
 
 	subtypes := for i from 0 to length(subtypes)-1 do (
-		subtype := subtypes[i]
+		s := subtypes[i]
 
 		list := if i==1 and first_subtype=="Icebreaker"
-			then "breaker-type-en"
-			else "program-type-en"
+			then "breaker-type"
+			else "program-type"
 
-		tag_wordlist(subtype, list: list)
+		[ tag_wordlist(s, list: list) ]
 	)
 
 	join_subtypes( subtypes )
@@ -408,16 +476,16 @@ add_program_subtype_dropdowns := {
 
 add_ice_subtype_dropdowns := {
 
-	subtypes := split_subtypes(input)
+	subtypes := split_subtypes(input, include_empty: true)
 
 	subtypes := for i from 0 to length(subtypes)-1 do (
 		subtype := subtypes[i]
 
 		list := if i==0
-			then "primary-ice-type-en"
-			else "secondary-ice-type-en"
+			then "primary-ice-type"
+			else "secondary-ice-type"
 
-		tag_wordlist(subtype, list: list)
+		[ tag_wordlist(subtype, list: list) ]
 	)
 
 	join_subtypes(subtypes)
@@ -816,7 +884,7 @@ format_subtypes :=
 
 	detag_wordlist
 	+
-	add_subtype_dropdowns_to
+	add_subtype_dropdowns@(type: "program", side: "runner")
 
 # # # # # # # # # # # # # # # 
 
@@ -829,74 +897,6 @@ format_reminder_text :=
 	process_english_hints
 	+
 	curly_quotes
-
-##############################
-# Unicode:
-# # # # # # # # # # # # # # # 
-
-asciify_a := replace@(replace: "a", match: "(?i)[áàâäāãåậăąǎǟǡǻȁȃȧẚạảấầẩẫậắằẳẵặḁ]")
-
-asciify_e := replace@(replace: "e", match: "(?i)[éèêëē]")
-asciify_i := replace@(replace: "i", match: "(?i)[íìîïī]")
-asciify_o := replace@(replace: "o", match: "(?i)[óòôöōõø]")
-asciify_u := replace@(replace: "u", match: "(?i)[úùûüū]")
-
-asciify_c := replace@(replace: "c", match: "(?i)[ç]")
-asciify_n := replace@(replace: "n", match: "(?i)[ñ]")
-asciify_y := replace@(replace: "y", match: "(?i)[ý]")
-
-asciify_ss := replace@(replace: "ss", match: "(?i)[ß]")
-asciify_ae := replace@(replace: "ue", match: "(?i)[ü]")
-asciify_oe := replace@(replace: "oe", match: "(?i)[ö]")
-asciify_ue := replace@(replace: "ue", match: "(?i)[ü]")
-
-# asciify_ := 
-
-# # # # # # # # # # # # # # # 
-
-# Strip accents/etc.
-#
-# e.g. asciify("Brân 1.0")
-#   == "Bran 1.0"
-#
-
-asciify :=
-
-	asciify_a
-	+
-	asciify_e
-	+
-	asciify_i
-	+
-	asciify_o
-	+
-	asciify_u
-
-	+
-	asciify_c
-	+
-	asciify_n
-	+
-	asciify_y
-
-	+
-	asciify_ss
-	+
-	asciify_ae
-	+
-	asciify_oe
-	+
-	asciify_ue
-
-# # # # # # # # # # # # # # # 
-
-# Drop "non-letter" characters.
-#
-# e.g. letterify("M.I.C.")
-#   == "MIC"
-#
-
-letterify := filter_text@(match: "[a-zA-Z0-9]")
 
 ##############################
 # Sorting:
