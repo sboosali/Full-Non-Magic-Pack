@@ -226,13 +226,16 @@ card field:
 card field:
 	type: text
 	name: strength
+
+	default     : if is_program(card) and not is_breaker(card.subtypes) then "-" else ""
+	script      : only_numerals(value)
+	sort script : compare_numeral(value)
+
 	show statistics: false
 	card list name    : STR
 	card list visible : true
 	card list column  : 0501
 	card list width   : 10
-	script      : only_numerals(value)
-	sort script : compare_numeral(value)
 	description: The base strength of ICE/Icebreakers. Can be "X". Should be "-" for nom-Icebreaker Programs.
 
 # # # # # # # # # # # # # # # 
@@ -240,9 +243,11 @@ card field:
 card field:
 	type: text
 	name: memory
-	default: if is_program() then "1" else ""
+
+	default     : if is_program() then "1" else ""
 	script      : only_numerals(value)
 	sort script : compare_numeral(value)
+
 	show statistics: false
 	card list name    : MU
 	card list visible : true

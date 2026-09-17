@@ -1,7 +1,8 @@
-﻿##############################
+﻿
+###############################
 
 word list:
-	name: subtype
+	name: subtype-en
 
 	word: Academic
 	word: AI
@@ -27,6 +28,7 @@ word list:
 	word: Connection
 	word: Console
 	word: Consumer-grade
+	word: Corp
 	word: Corporation
 	word: Current
 	word: Cybernetic
@@ -88,6 +90,7 @@ word list:
 	word: Run
 	word: Sabotage
 	word: Security
+	word: Security Protocol
 	word: Seedy
 	word: Sensie
 	word: Sentry
@@ -107,5 +110,290 @@ word list:
 	word: Virtual
 	word: Virus
 	word: Weapon
+
+##############################
+# Runner subtypes:
+# # # # # # # # # # # # # # 
+
+word list:
+	name: runner-identity-type-en
+
+	word: Natural
+	word: Cyborg
+	word:
+		name: G-mod
+		line below: true
+	word: Digital
+	word: Clone
+	word: Bioroid
+
+# # # # # # # # # # # # # # # 
+
+word list:
+	name: breaker-type-en
+
+	word: Fracter
+	word: Killer
+	word:
+		name: Decoder
+		line below: true
+	word: AI
+
+# 
+
+word list:
+	name: program-type-en
+
+	word: Icebreaker
+	word: Virus
+	word:
+		name: Trojan
+		line below: true
+
+	word: Stealth
+	word:
+		name: Daemon
+		line below: true
+
+	word:
+		name: subtypes
+		script: "Academic, AI, AP, Advertisement, Alliance, Ambush, Barrier, Beanstalk, Bioroid, Black Ops, Bomb, Caïssa, Cast, Character, Chip, Clan, Clone, Cloud, Code Gate, Companion, Condition, Connection, Console, Consumer-grade, Corp, Corporation, Current, Cybernetic, Cyborg, Daemon, Decoder, Deep Net, Deflector, Department, Destroyer, Deva, Digital, Directive, Division, Double, Enforcer, Executive, Expansion, Expendable, Facility, Fracter, G-mod, Gear, Genetics, Government, Grail, Gray Ops, Harmonic, Hostile, Icebreaker, Industrial, Initiative, Job, Killer, Liability, Link, Location, Lockdown, Mandate, Megacorp, Mod, Morph, Mythic, NEXT, Natural, Observer, Off-site, Orgcrime, Police Department, Political, Priority, Psi, Public, Region, Remote, Reprisal, Research, Ritzy, Run, Sabotage, Security, Security Protocol, Seedy, Sensie, Sentry, Source, Stealth, Subsidiary, Sysop, Terminal, Tracer, Transaction, Trap, Triple, Trojan, Unorthodox, Unsubstantiated, Vehicle, Virtual, Virus, Weapon"
+
+# # # # # # # # # # # # # # # 
+
+word list:
+	name: event-type-en
+
+	word:
+		name: Run
+		line below: true
+
+	word: Double
+	word: Triple
+	word: Quadruple
+	word: Terminal
+	word:
+		name: Priority
+		line below: true
+
+	word: Stealth
+	word: Job
+	word: Mod
+	word: Sabotage
+
+# # # # # # # # # # # # # # # 
+
+word list:
+	name: hardware-type-en
+
+	word: Console
+	word:
+		name: Cybernetic
+		line below: true
+
+	word: Stealth
+	word:
+		name: Consumer-grade
+		line below: true
+
+	word: Bomb
+	word: Chip
+	word: Gear
+	word: Mod
+	word: Weapon
+	word: Vehicle
+
+# # # # # # # # # # # # # # # 
+
+word list:
+	name: resource-type-en
+
+	word: Connection
+	word: Location
+	word: Virtual
+	word:
+		name: Job
+		line below: true
+
+	word: Genetics
+	word:
+		name: Stealth
+		line below: true
+
+	word: Seedy
+	word: Ritzy
+	word: Clone
+	word: Bioroid
+	word: Companion
+	word: Sabotage
+
+##############################
+# Corp subtypes:
+# # # # # # # # # # # # # # 
+
+word list:
+	name: corp-identity-type-en
+
+	word: Megacorp
+	word: Division
+	word: Subsidiary
+	word: Corp
+
+# # # # # # # # # # # # # # # 
+
+word list:
+	name: agenda-type-en
+
+	word: Expansion
+	word: Initiative
+	word: Research
+	word:
+		name: Security
+		line below: true
+
+	word: Public
+	word: Liability
+	word: Expendable
+	word: Ambush
+	word: Beanstalk
+
+# # # # # # # # # # # # # # # 
+
+word list:
+	name: primary-ice-type-en
+
+	word: Barrier
+	word: Sentry
+	word:
+		name: Code Gate
+		line below: true
+	word: Trap
+	word: Mythic 
+
+# 
+
+word list:
+	name: secondary-ice-type-en
+
+	word: Bioroid
+	word: AP
+	word: Destroyer
+	word: Observer
+	word:
+		name: Deflector
+		line below: true
+
+	word: Harmonic
+	word:
+		name: Mythic
+		line below: true
+
+	word: Liability
+	word: Expendable
+	word: Ambush
+
+# # # # # # # # # # # # # # # 
+
+word list:
+	name: operation-type-en
+
+	word: Double
+	word: Triple
+	word: Terminal
+	word:
+		name: Priority
+		line below: true
+
+	word: Transaction
+	word: Gray Ops 
+	word: Black Ops 
+	word:
+		name: Lockdown
+		line below: true
+
+	word: Reprisal
+	word: Liability
+	word: Psi
+
+# # # # # # # # # # # # # # # 
+
+word list:
+	name: upgrade-type-en
+
+	word: Region
+	word: Sysop
+	word: 
+		name: Ambush
+		line below: true
+
+	word: Facility
+	word: Executive
+	word: Hostile
+	word: Advertisement
+	word: Industrial
+	word: Academic
+	word: Enforcer
+	word: 
+		name: Character
+		line below: true
+
+	word: Ritzy
+	word: Seedy
+	word: Bioroid
+	word: 
+		name: Clone
+		line below: true
+
+	word: Liability
+	word: Expendable
+	word: Off-site
+	word: Beanstalk
+
+# # # # # # # # # # # # # # # 
+
+word list:
+	name: asset-type-en
+
+	word: Political
+	word: 
+		name: Ambush
+		line below: true
+
+	word: Facility
+	word: Executive
+	word: Hostile
+	word: Advertisement
+	word: Industrial
+	word: Academic
+	word: Enforcer
+	word: 
+		name: Character
+		line below: true
+
+	word: Ritzy
+	word: Seedy
+	word: Bioroid
+	word: 
+		name: Clone
+		line below: true
+
+	word: Liability
+	word: Expendable
+	word: Off-site
+	word: Beanstalk
+
+##############################
+
+word list:
+	name: 
+
+	word: 
+	word:
+		name: 
+		line below: true
+
+	word:
+		name: subtypes
+		script: "Academic, AI, AP, Advertisement, Alliance, Ambush, Barrier, Beanstalk, Bioroid, Black Ops, Bomb, Caïssa, Cast, Character, Chip, Clan, Clone, Cloud, Code Gate, Companion, Condition, Connection, Console, Consumer-grade, Corp, Corporation, Current, Cybernetic, Cyborg, Daemon, Decoder, Deep Net, Deflector, Department, Destroyer, Deva, Digital, Directive, Division, Double, Enforcer, Executive, Expansion, Expendable, Facility, Fracter, G-mod, Gear, Genetics, Government, Grail, Gray Ops, Harmonic, Hostile, Icebreaker, Industrial, Initiative, Job, Killer, Liability, Link, Location, Lockdown, Mandate, Megacorp, Mod, Morph, Mythic, NEXT, Natural, Observer, Off-site, Orgcrime, Police Department, Political, Priority, Psi, Public, Region, Remote, Reprisal, Research, Ritzy, Run, Sabotage, Security, Security Protocol, Seedy, Sensie, Sentry, Source, Stealth, Subsidiary, Sysop, Terminal, Tracer, Transaction, Trap, Triple, Trojan, Unorthodox, Unsubstantiated, Vehicle, Virtual, Virus, Weapon"
 
 ##############################

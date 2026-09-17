@@ -28,7 +28,9 @@ _official_subtypes := [
 # # # # # # # # # # # # # # # 
 
 supported_symbols := [
-	"credit", "recurring", "click", "trash", "subroutine", "mu", "link", "interrupt", "unique", "anarch", "criminal", "shaper", "neutral", "haas-bioroid", "jinteki", "nbn", "weyland", "agenda_points", "advancement_requirement", "rez", "deck"
+	"credit", "c", "recurring", "r", "click", "q", "trash", "t", "subroutine", "=",
+	"mu", "link", "interrupt", "unique", "agenda_points", "advancement_requirement", "rez", "deck",
+	"anarch", "criminal", "shaper", "neutral", "haas-bioroid", "jinteki", "nbn", "weyland",
 ]
 #TODO extract from symbol-font
 
@@ -75,6 +77,10 @@ join := {
 # Joins ["x", "y", "z"] into "x,y,z".
 
 to_csv := join@(sep:",")
+
+# # # # # # # # # # # # # # # 
+
+csv_to_rx := { "(?i)\\b{ join(from_csv(input), sep:"|") }\\b" }
 
 ##############################
 
@@ -212,6 +218,10 @@ card_type_of := {
 #TODO
 ##############################
 
+is_breaker := match@(match: "^Icebreaker\\b")
+
+# # # # # # # # # # # # # # # 
+
 is_primary_breaker_subtype := {
 	case normalize_type(input) of
 
@@ -234,9 +244,9 @@ filter_primary_breaker_subtypes := {
 
 # Returns from a {package_choice:} the basename "...-ffg-..." or "...-nsg-...".
 
-normalize_symbol_font := replace@(
-	replace: "netrunner-\\1-symbols",
-	match: ".*netrunner-([a-zA-Z0-9-]+)-symbols\\.mse-symbol-font.*"
+normalize_package_name := replace@(
+	replace: "netrunner-\\1.mse-\\2",
+	match: ".*netrunner-([-a-z0-9]+)\\.mse-([-a-z]+).*"
 )
 
 ##############################
@@ -247,7 +257,23 @@ normalize_symbol_font := replace@(
 # Validation:
 # # # # # # # # # # # # # # # 
 
-only_numerals := filter_text@(match: "(?i)^[0-9X-Z]+") + to_upper
+match_numeral := filter_text@(match: "(?i)[0-9]+|[-–—X-Z]")
+
+match_variable := filter_text@(match: "(?i)[X-Z]")
+match_dash     := filter_text@(match: "[-–—]")
+
+# # # # # # # # # # # # # # # 
+
+only_numerals := {
+	input := to_upper(trim(input))
+
+	# to en-dash:
+	if input=="-" or input=="—" then (
+		 input := "–"
+	)
+
+	input
+}
 
 ##############################
 # Dropdowns (word-list):
@@ -288,12 +314,113 @@ remove_trailing_soft_tags := replace@(match: "<soft>.*?</soft>$", replace: "")
 replace_soft_tags_with_spaces := replace@(match: "<soft>.*?</soft>", replace: " ")
 
 ##############################
+
+# e.g. tag_word_list("B", name: "ice-type", language: "en")
+#   == "<word-list-ice-type-en>B</word-list-ice-type-en>
+#
+# Used by the {card.subtypes} field. For example,
+# to complete "B(arrier)" or "B(ioroid)" from a "B".
+#
+
+tag_wordlist := {
+
+	name := name + (if language!="" then "-{language}" else "")
+	
+	"<word-list-{name}>{ input }</word-list-{name}>"
+
+}@(name: "subtype", language: "")
+
+#TODO localize
+
+# # # # # # # # # # # # # # # 
+
+add_subtype_dropdowns := {
+	wordlist := "{list}-{lang}"
+
+	subtypes := for each s in split_subtypes(input) do
+		tag_wordlist(s, list: wordlist)
+
+	join_subtypes(subtypes)
+
+}@(list: "subtype", lang: "en")
+
+# # # # # # # # # # # # # # # 
+
+add_subtype_dropdowns_to := { add_subtype_dropdowns_for(type: "program", side: "runner") }
+
 #TODO
+# add_subtype_dropdowns_to := { add_subtype_dropdowns_for(type: card.type, side: card.side) }
 
-tag_subtype_dropdowns := {
+# # # # # # # # # # # # # # # 
 
-	input
+add_subtype_dropdowns := {
 
+	case normalize_type(type) of
+
+		"event"     : add_subtype_dropdowns(input, list: "event-type"),
+		"program"   : add_program_subtype_dropdowns(input),
+		"hardware"  : add_subtype_dropdowns(input, list: "hardware-type"),
+		"resource"  : add_subtype_dropdowns(input, list: "resource-type"),
+
+		"operation" : add_subtype_dropdowns(input, list: "operation-type"),
+		"agenda"    : add_subtype_dropdowns(input, list: "agenda-type"),
+		"ice"       : add_ice_subtype_dropdowns(input),
+		"asset"     : add_subtype_dropdowns(input, list: "asset-type"),
+		"upgrade"   : add_subtype_dropdowns(input, list: "upgrade-type"),
+
+		"identity": (case normalize_side(side) of 
+			"runner" : add_subtype_dropdowns(input, list: "runner-identity-type"),
+			"corp"   : add_subtype_dropdowns(input, list: "corp-identity-type"),
+			else     : add_subtype_dropdowns_for(input)),
+
+		else: add_subtype_dropdowns_for(input)
+
+}@(
+  type: "",
+  side: ""
+)
+
+##############################
+
+# 
+
+add_program_subtype_dropdowns := {
+
+	subtypes := split_subtypes(input)
+	first_subtype := subtypes[0] or else ""
+
+	subtypes := for i from 0 to length(subtypes)-1 do (
+		subtype := subtypes[i]
+
+		list := if i==1 and first_subtype=="Icebreaker"
+			then "breaker-type-en"
+			else "program-type-en"
+
+		tag_wordlist(subtype, list: list)
+	)
+
+	join_subtypes( subtypes )
+}
+
+# # # # # # # # # # # # # # # 
+
+# 
+
+add_ice_subtype_dropdowns := {
+
+	subtypes := split_subtypes(input)
+
+	subtypes := for i from 0 to length(subtypes)-1 do (
+		subtype := subtypes[i]
+
+		list := if i==0
+			then "primary-ice-type-en"
+			else "secondary-ice-type-en"
+
+		tag_wordlist(subtype, list: list)
+	)
+
+	join_subtypes(subtypes)
 }
 
 ##############################
@@ -423,7 +550,7 @@ embolden_subtypes := {
 embolden_activation_costs := replace@(
 
 	replace: "<b-auto>\\1</b-auto>",
-	match: "^(?:[a-z0-9_+<>-]+ → )?([^:\\n]+:)"
+	match: "^(?:[a-z0-9_+<>-]+ → )?([^:\\n]+:)(?!$)"
 
 )
 
@@ -455,7 +582,7 @@ color_subtypes := color_ := color_barrier + color_sentry + color_codegate
 # Formatting (Symbols):
 # # # # # # # # # # # # # # # 
 
-supported_symbols_rx := "({ join(supported_symbols, sep: "|") })"
+supported_symbols_rx := "\\b({ join(supported_symbols, sep: "|") })\\b"
 
 #
 
@@ -507,23 +634,46 @@ nr_expand_keywords := expand_keywords@(
 
 ##############################
 
-# Find the nearest period or end-of-line, skipping abbreviation periods.
+# Find the nearest (following) end-of-sentence, a period or end-of-line;
+# TODO skipping abbreviation periods.
 
-end_of_sentence_rx := "[.]([ ]+|$)"
+eos_rx := "([.](?= )|[.]$)"
 
-#TODO
-# end_of_sentence_rx := "(?<!…)[.]"
+#TODO "C.I. Fund"?
+# end_of_sentence_rx := "[.]([ ]+|$)"
+# end_of_sentence_rx := "(?<!Mr|Ms|Mrs|Mx)[.]"
 
 # # # # # # # # # # # # # # # 
 
-# Keyword actions' reminder-text comes at end-of-sentence (not end-of-line);
-# see Time Bomb.
-#TODO eos not eol
+keyword_modes_after_keyword_rx  := csv_to_rx("phrase,")
+keyword_modes_after_sentence_rx := csv_to_rx("action, official,")
+keyword_modes_after_line_rx     := csv_to_rx("flag, ability")
 
-relocate_reminder_text := replace@(
+# # # # # # # # # # # # # # # 
+
+# Keyword actions' reminder-text comes at end-of-sentence;
+# see Time Bomb.
+
+relocate_reminder_text_after_sentence := replace@(
 	replace: "\\2\\1",
-	match: "(<atom-reminder-[^>]+> (?:(?!</kw).*?)</atom-reminder-[^>]+></kw[^>]*>)([^\n]*)"
+	match: "(<atom-reminder-{ keyword_modes_after_sentence_rx }> (?:(?!</kw).*?)</atom-reminder-{ keyword_modes_after_sentence_rx }></kw[^>]*>){ eos_rx }"
 )
+
+# # # # # # # # # # # # # # # 
+
+# Keyword flags & abilities' reminder-text comes at end-of-line.
+
+relocate_reminder_text_after_line := replace@(
+	replace: "\\2\\1",
+	match: "(<atom-reminder-{ keyword_modes_after_line_rx }> (?:(?!</kw).*?)</atom-reminder-{ keyword_modes_after_line_rx }></kw[^>]*>)([^\n]*)"
+)
+
+# # # # # # # # # # # # # # # 
+
+relocate_reminder_text :=
+	{ input }
+#	+ relocate_reminder_text_after_sentence
+#	+ relocate_reminder_text_after_line
 
 ##############################
 # Formatting (Spellchecking):
@@ -581,7 +731,7 @@ mistemplatings := [
 
 check_templating := {
 
-	mistemplating_rx := "(?i)\\b{ join(mistemplatings, sep:"\\b|\\b") }\\b"
+	mistemplating_rx := "(?i)\\b{ join(mistemplatings, sep:"|") }\\b"
 
 	replace(input, match: mistemplating_rx, replace: "<error-templating>\\0</error-templating>")
 
@@ -624,8 +774,11 @@ format_rules_text :=
 	detag_error
 	+
 	detag_color
-
 	+
+
+	expand_symbols
+	+
+
 	embolden_subtypes
 	+
 	embolden_activation_costs
@@ -663,7 +816,7 @@ format_subtypes :=
 
 	detag_wordlist
 	+
-	tag_subtype_dropdowns
+	add_subtype_dropdowns_to
 
 # # # # # # # # # # # # # # # 
 
@@ -765,7 +918,7 @@ compare_numeral := {
 	else if n != false
 	then "B" + to_string(n, format: "+03d")
 
-	else if s=="-"
+	else if s=="-" or s=="–" or s=="—"
 	then "C"
 
 	else "Z"
@@ -803,10 +956,6 @@ compare_name :=
 # /statistics
 # # # # # # # # # # # # # # # 
 
-match_variable_numeral := match@(match: "[XYZ]")
-
-# # # # # # # # # # # # # # # 
-
 # Parse a numeral string (e.g. "1", "X", "   ") into a nonnegative integer (e.g. 1, "X", or "" (resp.)), if able.
 
 parse_numeral := {
@@ -816,7 +965,7 @@ parse_numeral := {
 	if n>=0
 	then n
 
-	else if match_variable_numeral(input)
+	else if match_variable(input)
 	then input
 
 	else ""
@@ -833,7 +982,7 @@ convert_numeral := {
 	if n>=0
 	then n
 
-	else if match_variable_numeral(input)
+	else if match_variable(input) or match_dash(input)
 	then 0
 
 	else -1
@@ -872,11 +1021,43 @@ numeral_stat := {
 # /add_cards_script:
 # # # # # # # # # # # # # # # 
 
+# The default MNeMiC stylesheet for a card-type.
+
+stylesheet_of := {
+
+	stylesheet := case normalize_type(type) of
+
+		"event"    : "netrunner-mnemic-runner-event",
+		"program"  : "netrunner-mnemic-runner-program",
+		"hardware" : "netrunner-mnemic-runner-hardware",
+		"resource" : "netrunner-mnemic-runner-resource",
+
+		"operation" : "netrunner-mnemic-corp-operation",
+		"agenda"    : "netrunner-mnemic-corp-agenda",
+		"ice"       : "netrunner-mnemic-corp-ice",
+		"asset"     : "netrunner-mnemic-corp-asset",
+		"upgrade"   : "netrunner-mnemic-corp-upgrade",
+
+		"identity"   : case normalize_side(side) of 
+			"runner" : "netrunner-mnemic-runner-identity",
+			"corp"   : "netrunner-mnemic-corp-identity",
+			else: ""
+
+		else: ""
+
+}@(type: "", side: "")
+
+# # # # # # # # # # # # # # # 
+
+#add_cycle_link  := add_link@(selected_relation: "cycle", linked_relation: "cycle")
+
+##############################
+
 new_breaker_cycle := {
 
-	fracter := new_card([ type: "Program", memory: 1, strength: 1, subtypes: "Icebreaker - Fracter", text: "Interface → 1<sym>credit</sym>: Break 1 barrier subroutine.\n1<sym>credit</sym>: +1 strength.",   stylesheet: "netrunner-runner-event.mse-style" ])
-	killer  := new_card([ type: "Program", memory: 1, strength: 1, subtypes: "Icebreaker - Killer",  text: "Interface → 1<sym>credit</sym>: Break 1 sentry subroutine.\n1<sym>credit</sym>: +1 strength.",    stylesheet: "netrunner-runner-event.mse-style" ])
-	decoder := new_card([ type: "Program", memory: 1, strength: 1, subtypes: "Icebreaker - Decoder", text: "Interface → 1<sym>credit</sym>: Break 1 code gate subroutine.\n1<sym>credit</sym>: +1 strength.", stylesheet: "netrunner-runner-event.mse-style" ])
+	fracter := new_card([ type: "Program", memory: 1, strength: 1, subtypes: "Icebreaker - Fracter", text: "Interface → 1<sym>credit</sym>: Break 1 barrier subroutine.\n1<sym>credit</sym>: +1 strength." ])
+	killer  := new_card([ type: "Program", memory: 1, strength: 1, subtypes: "Icebreaker - Killer",  text: "Interface → 1<sym>credit</sym>: Break 1 sentry subroutine.\n1<sym>credit</sym>: +1 strength." ])
+	decoder := new_card([ type: "Program", memory: 1, strength: 1, subtypes: "Icebreaker - Decoder", text: "Interface → 1<sym>credit</sym>: Break 1 code gate subroutine.\n1<sym>credit</sym>: +1 strength." ])
 
 	# NB. this relation is symmetric. 
 	#add_link(input: fracter, linked_card: killer, selected_relation: "cycle", linked_relation: "cycle")

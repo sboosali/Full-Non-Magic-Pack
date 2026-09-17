@@ -77,7 +77,7 @@ symbol:
 	image : CREDIT.png
 
 symbol:
-	code  : C
+	code  : c
 	image : CREDIT.png
 
 # 
@@ -87,7 +87,7 @@ symbol:
 	image : RECURRING.png
 
 symbol:
-	code  : R
+	code  : r
 	image : RECURRING.png
 
 # 
@@ -97,7 +97,7 @@ symbol:
 	image : CLICK.png
 
 symbol:
-	code  : Q
+	code  : q
 	image : CLICK.png
 
 # 
@@ -107,7 +107,7 @@ symbol:
 	image : TRASH.png
 
 symbol:
-	code  : Z
+	code  : t
 	image : TRASH.png
 
 # 
@@ -117,7 +117,7 @@ symbol:
 	image : SUBROUTINE.png
 
 symbol:
-	code  : S
+	code  : =
 	image : SUBROUTINE.png
 
 ##############################

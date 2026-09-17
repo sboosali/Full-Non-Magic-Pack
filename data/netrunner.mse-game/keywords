@@ -10,7 +10,7 @@ keyword match script: format_reminder_text(value)
 keyword mode:
 	name: action
 	is default: true
-	description: Custom keyword actions, with reminder text at end-of-line.
+	description: Custom keyword actions, with reminder text at end-of-*sentence* (not line).
 
 # 
 
@@ -22,7 +22,7 @@ keyword mode:
 
 keyword mode:
 	name: flag
-	description: Flags/Gates (e.g. `Threat N → …`). Case-sensitive, between start-of-line and a right-arrow.
+	description: Keyword flags (e.g. `Threat N → …`). Case-sensitive, between start-of-line and a right-arrow.
 
 # 
 

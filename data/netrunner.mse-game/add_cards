@@ -4,9 +4,7 @@
 add cards script:
 	name: &Program
 	script:
-		[ new_card([ type: "program", memory: "1",
-			stylesheet: "netrunner-runner-program.mse-style" ])
-		]
+		[ new_card([ type: "program", memory: "1" ]) ]
 
 ##############################
 
@@ -20,8 +18,8 @@ add cards script:
 	name: &Fracter
 	script:
 		[ new_card([ type: "Program", memory: 1, strength: 1, subtypes: "Icebreaker - Fracter",
-		  text: "Interface → 1<sym>credit</sym>: Break 1 <b>barrier</b> subroutine.\n1<sym>credit</sym>: +1 strength.",
-		  stylesheet: "netrunner-runner-program.mse-style" ])
+		             text: "Interface → 1<sym>credit</sym>: Break 1 <b>barrier</b> subroutine.\n1<sym>credit</sym>: +1 strength."
+		           ])
 		]
 
 # 
@@ -30,8 +28,8 @@ add cards script:
 	name: &Killer
 	script:
 		[ new_card([ type: "Program", memory: 1, strength: 1, subtypes: "Icebreaker - Killer",
-		  text: "Interface → 1<sym>credit</sym>: Break 1 <b>sentry</b> subroutine.\n1<sym>credit</sym>: +1 strength.",
-		  stylesheet: "netrunner-runner-program.mse-style" ])
+		             text: "Interface → 1<sym>credit</sym>: Break 1 <b>sentry</b> subroutine.\n1<sym>credit</sym>: +1 strength."
+		           ])
 		]
 
 # 
@@ -40,8 +38,8 @@ add cards script:
 	name: &Decoder
 	script:
 		[ new_card([ type: "Program", memory: 1, strength: 1, subtypes: "Icebreaker - Decoder",
-		  text: "Interface → 1<sym>credit</sym>: Break 1 <b>code gate</b> subroutine.\n1<sym>credit</sym>: +1 strength.",
-		  stylesheet: "netrunner-runner-program.mse-style" ])
+		           text: "Interface → 1<sym>credit</sym>: Break 1 <b>code gate</b> subroutine.\n1<sym>credit</sym>: +1 strength."
+		           ])
 		]
 
 ##############################
@@ -50,8 +48,8 @@ add cards script:
 	name: &Virus (Program)
 	script:
 		[ new_card([ type: "Program", memory: 1, strength: "-", subtypes: "Virus",
-		  text: "When you install this program, place 3 virus counters on it.\nOnce per turn → Hosted virus counter: ",
-		  stylesheet: "netrunner-runner-program.mse-style" ])
+		            text: "When you install this program, place 3 virus counters on it.\nOnce per turn → Hosted virus counter: "
+					])
 		]
 
 # 
@@ -59,9 +57,10 @@ add cards script:
 add cards script:
 	name: &Trojan (Program)
 	script:
-		[ new_card([ type: "Program", memory: 1, strength: "-", subtypes: "Trojan",
-		  text: "Install only on a piece of ice.\n",
-		  stylesheet: "netrunner-runner-program.mse-style" ])
+		[ new_card([ cardtype: "Program", memory: 1, strength: "-", subtypes: "Trojan",
+					text: "Install only on a piece of ice.\n",
+					stylesheet: "netrunner-runner-hardware.mse-style"
+					])
 		]
 
 ##############################

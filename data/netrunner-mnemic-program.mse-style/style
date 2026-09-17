@@ -142,7 +142,7 @@ card style:
 			size: { parse_number(styling.textbox_font_size, default: 24) }
 			scale down to: 18
 		symbol font:
-			name: { normalize_symbol_font(set.textbox_symbols) }
+			name: { normalize_package_name(set.textbox_symbols) }
 			size: 24
 
 
