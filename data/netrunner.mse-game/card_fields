@@ -167,11 +167,6 @@ card field:
 	type: text
 	name: subtypes
 
-	save value: false
-	script: value
-#	script: add_subtype_dropdowns(value, type: card_type_of())
-#	script: subtypes_combined_editor()
-
 	card list name    : Sub-Types
 	card list column  : 0302
 	card list width   : 200
@@ -179,53 +174,9 @@ card field:
 	show statistics: false
 	description: The card’s (zero-or-more) subtypes; hyphen-separated (e.g. "Icebreaker - AI - Virus").
 
-# # # # # # # # # # # # # # # 
-
-card field:
-	type: text
-	name: subtype1
-	script: add_subtype_dropdown(value, position: 1, type: card_type_of())
-	show statistics: false
-	card list name    : 1st Sub
-	card list column  : 0303
-	card list width   : 200
-	description: First subtype.
-card field:
-	type: text
-	name: subtype2
-	script: add_subtype_dropdown(value, position: 2, first: card.subtype1, type: card_type_of())
-	show statistics: false
-	card list name    : 2nd Sub
-	card list column  : 0304
-	card list width   : 200
-	description: Second subtype.
-card field:
-	type: text
-	name: subtype3
-	script: add_subtype_dropdown(value, position: 3, type: card_type_of())
-	show statistics: false
-	card list name    : 3rd Sub
-	card list column  : 0305
-	card list width   : 200
-	description: Third subtype.
-card field:
-	type: text
-	name: subtype4
-	script: add_subtype_dropdown(value, position: 4, type: card_type_of())
-	show statistics: false
-	card list name    : 4th Sub
-	card list column  : 0306
-	card list width   : 200
-	description: Fourth subtype.
-card field:
-	type: text
-	name: subtype5
-	script: add_subtype_dropdown(value, position: 5, type: card_type_of())
-	show statistics: false
-	card list name    : 5th Sub
-	card list column  : 0307
-	card list width   : 200
-	description: Fifth subtype.
+	script: add_subtype_dropdowns(value, type: card_type_of())
+#	script: subtypes_combined_editor()
+#	save value: true
 
 ##############################
 
@@ -262,7 +213,7 @@ card field:
 	name: box
 
 	save value: false
-	script: textbox_editor()
+	script: textbox_combined_editor()
 	multi line: true
 
 	show statistics: false
@@ -327,11 +278,11 @@ card field:
 	type: text
 	name: footer
 
-#	script: footer_combined_editor()
-	multi line: true
+	multi line: false
 
 	show statistics: false
 	description: The set logo, the card’s code (number in set), and its illustrator, designer/copyright, and other information.
+#	script: footer_combined_editor()
 
 # # # # # # # # # # # # # # # 
 
@@ -339,7 +290,7 @@ card field:
 	type: text
 	name: illustrator
 
-	multi line: false
+	script: if value!="" then "" else "<align:center>✎✍ des. { value }</align>"
 
 	card list name:   ART
 	card list column: 9900
@@ -355,9 +306,7 @@ card field:
 	type: text
 	name: designer
 
-	script: if set.designer=="" then "" else "<align:right>✍✎ { set.designer }</align>"
-
-	multi line: false
+	script: if set.designer=="" then "" else "<align:right>🖌🎨 illus. { set.designer }</align>"
 
 	show statistics: false
 	description: Who designed the card.
@@ -368,45 +317,31 @@ card field:
 	type: text
 	name: copyright
 
-	multi line: false
-
 	show statistics: false
 	description: Under what will the released card be licensed.
 
-##############################
+# # # # # # # # # # # # # # # 
 
 card field:
 	type: text
-	name: error
+	name: index
 
-	script: if card_has_error() then "❌" else "✅"
-	save value: false
-	editable: false
-
-	card list name: ?
-	card list column: 9001
-	card list visible: true
-	card list width: 20
-
-	description: Whether the card has a misspelling error or mis-templating warning.
-#	script: if card_has_error() then "✗" else "✓"
-
-##############################
-
-card field:
-	type: choice
-	name: corners
-
-	choice: rounded
-	choice: cut marks
-	choice: none
-	default: "rounded"
-
-	card list name: Corners
-	card list column: 9999
-	card list width: 100
+	script: if set.automatic_card_numbers then to_string(card_index(), format: "+03d") else value
 
 	show statistics: false
-	description: The shape of the corners of the card.
+	description: 
+
+# # # # # # # # # # # # # # # 
+
+card field:
+	type: text
+	name: logo
+
+	show statistics: false
+	description: 
+
+	default: "/netrunner.mse-game/magnum_opus.mse-symbol"
+#	script: if set.logo!="" then to_string(set.logo) else "/netrunner.mse-game/magnum_opus.mse-symbol"
 
 ##############################
+

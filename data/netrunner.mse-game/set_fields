@@ -35,8 +35,8 @@ set field:
 set field:
 	type: symbol
 	name: logo
-	description: Set Logo (symbol). Shown in cards’ footer. (By default, the alchemical "Magnum Opus" symbol.)
-#	default: "MagnumOpus.png"
+	description: Set Logo (symbol). Shown in cards’ footer. NOTE! To import a PNG, after setting its transparency to white, you must filter for "Images/MSE1 files" (under the bottom-right corner of the Open File dialog). By default, the alchemical "Magnum Opus" symbol.
+#	default: "magnum_opus.mse-symbol"
 
 set field:
 	type: text
@@ -66,7 +66,7 @@ set field:
 	type: boolean
 	name: automatic card numbers
 	initial: yes
-	description: Show card number (e.g. "001") on each card's footer?
+	description: Show card number (e.g. "001") on each card's footer, automatically?
 
 set field:
 	type: text
@@ -119,6 +119,23 @@ set field:
 
 ##############################
 
+set field:
+	type: info
+	name: Help
+
+set field:
+	type: text
+	name: help
+	multi line: true
+	editable: false
+	description: 
+		.
+		To import your set symbol from a PNG, you need to set transparency to white, and grays to black:
+		    $ magick raw_set-symbol.png  -background white  -flatten  -threshold '50%'  mse_set-symbol.png
+		.
+
+##############################
+
 default set style:
 
 	title:
@@ -137,6 +154,14 @@ default set style:
 	checking:
 		render style: checklist
 		direction: vertical
+
+	logo:
+		variation:
+			name: white
+			fill type: solid
+			fill color: rgb(255,255,255)
+			border radius: 0.05
+			border color: rgb(0,0,0)
 
 
 ##############################

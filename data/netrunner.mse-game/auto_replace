@@ -10,12 +10,20 @@ auto replace:
 	replace : •
 
 auto replace:
+	match   : MIN
+	replace : −
+
+auto replace:
 	match   : INF
 	replace : ∞
 
 auto replace:
-	match   : MIN
-	replace : −
+	match   : ENN
+	replace : –
+
+auto replace:
+	match   : EMM
+	replace : —
 
 ##############################
 
