@@ -1,9 +1,17 @@
 ﻿##############################
 
 auto replace:
+	match   : ->
+	replace : →
+
+auto replace:
 	match   : --
 	replace : →
-#	match  : ->
+#	replace : <sym>arrow</sym>
+
+#auto replace:
+#	match   : -->
+#	replace : ⟶
 
 auto replace:
 	match   : *
@@ -29,25 +37,81 @@ auto replace:
 
 auto replace:
 	match   : ==
-	replace : <sym>subroutine</sym>
-#	match  : =>
+	replace : <sym>S</sym>
+
+auto replace:
+	match   : =>
+	replace : <sym>S</sym>
 
 ##############################
 
 auto replace:
 	match   : 1c
+	replace : 1<sym>C</sym>
+
+auto replace:
+	match   : 1C
 	replace : 1<atom-symbol><sym>credit</sym></atom-symbol>
 
 ##############################
 
 auto replace:
-	match   : r2
-	replace : 2<sym>recurring</sym> (When you rez this <atom-this-type>card</atom-this-type> and <b-auto>before</b-auto> your turn begins, refill to 2 hosted credits.)
-#	replace : 2<sym>recurring</sym> (When you rez this <atom-this-type>card</atom-this-type> and before your turn begins, refill to { param1 } hosted credit{ if param1=="1" then "" else "s" }.)\nYou can spend hosted credits 
+	match   : 1mu
+	replace : 1<sym>M</sym>
 
 auto replace:
-	match   : rr2
-	replace : (When you rez this <atom-this-type>card</atom-this-type> and before your turn begins, refill to 2 hosted credits.)
+	match   : 2mu
+	replace : 2<sym>M</sym>
+
+auto replace:
+	match   : 3mu
+	replace : 3<sym>M</sym>
+
+# 
+
+auto replace:
+	match   : 1MU
+	replace : <sym>1mu</sym>
+
+auto replace:
+	match   : 2MU
+	replace : <sym>2mu</sym>
+
+auto replace:
+	match   : 3MU
+	replace : <sym>3mu</sym>
+
+auto replace:
+	match   : XMU
+	replace : <sym>Xmu</sym>
+
+##############################
+
+auto replace:
+	match   : 1r
+	replace : 1<sym>R</sym>
+
+auto replace:
+	match   : 2r
+	replace : 2<sym>R</sym>
+
+auto replace:
+	match   : 3r
+	replace : 3<sym>R</sym>
+
+# 
+
+auto replace:
+	match   : r2R
+	replace :
+		2<sym>R</sym> (When you install this <atom-this-type>card</atom-this-type> and before your turn begins, refill to 2 hosted credits.)
+		You can spend hosted credits 
+
+auto replace:
+	match   : c2R
+	replace :
+		2<sym>R</sym> (When you rez this <atom-this-type>card</atom-this-type> and before your turn begins, refill to 2 hosted credits.)
+		You can spend hosted credits 
 
 ##############################
 

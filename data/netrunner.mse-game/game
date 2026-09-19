@@ -8,6 +8,8 @@ position hint: -2
 version: 2026-09
 depends on: netrunner-mnemic-common.mse-include 2026-09
 
+#read only file: custom_*
+
 ##############################################################
 
 init script: include file: init_script

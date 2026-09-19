@@ -302,6 +302,7 @@ card field:
 
 # # # # # # # # # # # # # # # 
 
+
 card field:
 	type: text
 	name: designer
@@ -324,17 +325,6 @@ card field:
 
 card field:
 	type: text
-	name: index
-
-	script: if set.automatic_card_numbers then to_string(card_index(), format: "+03d") else value
-
-	show statistics: false
-	description: 
-
-# # # # # # # # # # # # # # # 
-
-card field:
-	type: text
 	name: logo
 
 	show statistics: false
@@ -342,6 +332,26 @@ card field:
 
 	default: "/netrunner.mse-game/magnum_opus.mse-symbol"
 #	script: if set.logo!="" then to_string(set.logo) else "/netrunner.mse-game/magnum_opus.mse-symbol"
+
+# # # # # # # # # # # # # # # 
+
+card field:
+	type: text
+	name: index
+
+	script: if set.automatic_card_numbers then card_index_text() else value
+	save value : true
+	editable   : true
+
+	card list name: /
+	card list visible: true
+	card list column: 10
+	card list width: 50
+	card list alignment: right
+
+	show statistics: false
+	description: 
+#	script:      card_index() + " / " + number_of_items(in: set, filter: is_real_card)
 
 ##############################
 

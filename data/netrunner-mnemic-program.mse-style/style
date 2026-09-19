@@ -23,7 +23,12 @@ card background: black
 styling field:
 	type: text
 	name: textbox font size
-	description: Defaults to 12 if empty.
+	description: Defaults to 24.
+
+styling field:
+	type: text
+	name: symbol font size
+	description: Defaults to 18.
 
 ##############################################################
 
@@ -53,7 +58,7 @@ card style:
 		width  : 750
 		height : 480
 		z index: 1
-		mask: artbox_mask.png
+		mask: mask_program_artbox.png
 
 	influence:
 		left : 691
@@ -135,7 +140,7 @@ card style:
 		# padding bottom : 30
 		z index: 2
 		tab index: 3
-		#mask: textbox_mask.png
+		mask: mask_program_textbox.png
 		line height hard : 1.4
 		font:
 			name: Minion Pro
@@ -143,7 +148,8 @@ card style:
 			scale down to: 18
 		symbol font:
 			name: { normalize_package_name(set.textbox_symbols) }
-			size: 24
+			size: { parse_number(styling.symbol_font_size, default: 18) }
+			scale down to: 18
 
 
 	cost:
@@ -162,7 +168,7 @@ card style:
 			name: BankGothicBT-Medium
 			size          : 64
 			#scale down to : 48
-			#max width: 0.5
+			#max width: 0.2
 			color: rgb(255, 255, 255)
 
 	strength:
@@ -181,7 +187,7 @@ card style:
 			name: BankGothicBT-Medium
 			size          : 64
 			scale down to : 48
-			#max width: 0.5
+			#max width: 0.2
 
 	memory:
 		left : 186
@@ -189,7 +195,7 @@ card style:
 		width  : 38
 		height : 38
 		z index: 3
-		alignment: center middle justify-all if-overflow
+		alignment: center middle
 		tab index: 6
 		font:
 			name : BankGothicBT-Medium

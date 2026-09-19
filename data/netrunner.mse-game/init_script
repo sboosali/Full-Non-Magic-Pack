@@ -25,14 +25,36 @@ _official_subtypes := [
 	"Weapon"
 ]
 
+# 
+
+official_subtypes := {
+	_official_subtypes
+}
+
+# 
+
+
+
 # # # # # # # # # # # # # # # 
 
 supported_symbols := [
-	"credit", "c", "recurring", "r", "click", "q", "trash", "t", "subroutine", "=",
-	"mu", "link", "interrupt", "unique", "agenda_points", "advancement_requirement", "rez", "deck",
-	"anarch", "criminal", "shaper", "neutral", "haas-bioroid", "jinteki", "nbn", "weyland",
+	"credit", "C", "recurring", "R", "click", "Q", "trash", "T", "subroutine", "S",
+	"mu", "M", "link", "L", "interrupt", "I", "unique", "U", "agenda-points", "advancement-requirement", "rez", "deck",
+	"anarch", "criminal", "shaper", "neutral", "haas-bioroid", "jinteki", "nbn", "weyland"
 ]
 #TODO extract from symbol-font
+
+# 
+
+normalized_symbols := [ "credit": "C", "recurring": "R", "click": "Q", "trash": "T", "subroutine": "S", "mu": "M", "link": "L", "interrupt": "I", "unique": "U" ]
+
+normalize_symbol := { normalized_symbols[input] or else input }
+
+# 
+
+denormalized_symbols := [ "C": "credit", "R": "recurring", "Q": "click", "T": "trash", "S": "subroutine", "M": "mu", "L": "link", "I": "interrupt", "U": "unique" ]
+
+denormalize_symbol := { denormalized_symbols[input] or else input }
 
 # # # # # # # # # # # # # # # 
 
@@ -80,7 +102,7 @@ to_csv := join@(sep:",")
 
 # # # # # # # # # # # # # # # 
 
-csv_to_rx := { "(?i)\\b{ join(from_csv(input), sep:"|") }\\b" }
+csv_to_rx := { "\\b{ join(from_csv(input), sep:"|") }\\b" }
 
 ##############################
 
@@ -110,7 +132,11 @@ join_subtypes := join@(sep: " - ")
 
 parse_number := {
 
-	to_number(trim(to_text(input))) or else default
+	s := trim(to_text(input))
+
+	if s==""
+	then default
+	else (to_number(s) or else default)
 
 }@(default: 0)
 
@@ -118,7 +144,7 @@ parse_number := {
 
 card_index := { 1 }
 
-card_index_string := to_string(card_index(), format: "+03d")
+card_index_text := { to_string(card_index(), format: "+03d") }
 
 ##############################
 # Unicode:
@@ -330,6 +356,8 @@ normalize_package_name := replace@(
 
 ##############################
 
+is_real_card := { true }
+
 
 
 ##############################
@@ -473,25 +501,6 @@ add_subtype_dropdowns := {
 }@(list: "subtype", lang: "en", type: "")
 
 ##############################
-
-format_single_program_subtype :=
-	remove_tag@(tag: "<word-list-")
-#	+ typing_over_subtypes
-	+ tag_wordlist@(name: "program-type")
-
-# # # # # # # # # # # # # # # 
-
-format_program_type := {
-
-	input := remove_tag(input, tag: "<word-list")
-	input := remove_trailing_soft_tags(input)
-	input := replace_soft_tags_with_spaces(input)
-#	input := typing_over_subtypes(input)
-
-	input
-}
-
-##############################
 # combined_editor:
 # # # # # # # # # # # # # # # 
 
@@ -500,7 +509,8 @@ textbox_combined_editor := combined_editor@(
 	field1: card.text,
 	field2: card.flavor,
 
-	separator: "<line>\n</line>")
+	separator: "<line>\n</line>",
+)
 
 # # # # # # # # # # # # # # # 
 
@@ -517,19 +527,20 @@ subtypes_combined_editor := combined_editor@(
 	separator: " - ",
 
 	hide_when_empty   : true,
-	soft_before_empty : true)
+	soft_before_empty : true,
+)
 
 # # # # # # # # # # # # # # # 
 
 footer_combined_editor := combined_editor@(
 
-	prefix    : "illus. ",
 	field1    : card.illustrator,
-	separator : "  |  ",
+	separator : "     ",
 	field2    : card.designer,
 
 	hide_when_empty   : true,
-	soft_before_empty : true)
+	soft_before_empty : true,
+)
 
 ##############################
 # Formatting (Bold):
@@ -564,12 +575,6 @@ all_subtypes := {
 
 # # # # # # # # # # # # # # # 
 
-official_subtypes := {
-	_official_subtypes
-}
-
-# # # # # # # # # # # # # # # 
-
 custom_subtypes := {
 	for each card in set do
 		split_subtypes(to_text(card.subtypes))
@@ -585,21 +590,50 @@ subtype_rx := {
 
 # # # # # # # # # # # # # # # 
 
+# e.g. 
+#
+# e.g. but does embolden "run" in "Search your stack for a run event." but not "End the run."
+#
+
 embolden_subtypes := {
-	replace(input,
+
+	input := replace(input,
 
 		replace: "<b-auto>\\1</b-auto>",
 		match: "(?i){ subtype_rx() }"
 
 	)
+
+	input := replace(input,
+
+		replace: "<b-auto>\\0</b-auto>",
+		match: "(?i)\\brun(?= event)"
+
+	)
+
+	input
 }
 
 # # # # # # # # # # # # # # # 
 
+# e.g. 
+#
+# * Won't embolden keyword-gates.
+#   e.g. "Threat 3 → [trash]: …"
+#
+# * Won't embolden modals.
+#   e.g. "Resolve 1 of the following: …"
+#
+
 embolden_activation_costs := replace@(
 
 	replace: "<b-auto>\\1</b-auto>",
-	match: "^(?:[a-z0-9_+<>-]+ → )?([^:\\n]+:)(?!$)"
+	match: "^([^:\\n→]+:)(?!$)"
+
+) + replace@(
+
+	replace: "\\1<b-auto>\\2</b-auto>",
+	match: "^([a-zA-Z0-9 _+-]+ → )([^:\\n→]+:)(?!$)"
 
 )
 
@@ -635,14 +669,15 @@ supported_symbols_rx := "\\b({ join(supported_symbols, sep: "|") })\\b"
 
 #
 
-# e.g. "[click]" → "<sym>click</sym>"
+# e.g. "[click]" → "<sym>Q</sym>"
 
 expand_symbols := replace@(
 	replace: "<sym>\\1</sym>",
 	match: "\\[{ supported_symbols_rx }\\]"
+) + replace@(
+	replace: { "<sym>{ normalize_symbol(_1) }</sym>" },
+	match: "<sym>{ supported_symbols_rx }</sym>"
 )
-
-# e.g. "[click]" → "<sym>click</sym>"
 
 ##############################
 # Formatting (Keywords):
@@ -676,36 +711,31 @@ nr_expand_keywords := expand_keywords@(
 
 	default_expand: { chosen(choice: mode, set.automatic_reminder_text) },
 
-	condition: { (not used_placeholders) },
+	condition: { (not used_placeholders) and (if mode=="flag" then correct_case else true) },
 
 	combine: { "{ keyword }<atom-reminder-{mode}> ({ reminder })</atom-reminder-{mode}>" })
 #	combine_keyword_with_reminder_text0)
 
 ##############################
 
-# Find the nearest (following) end-of-sentence, a period or end-of-line;
-# TODO skipping abbreviation periods.
-
-eos_rx := "([.](?= )|[.]$)"
-
-#TODO "C.I. Fund"?
-# end_of_sentence_rx := "[.]([ ]+|$)"
-# end_of_sentence_rx := "(?<!Mr|Ms|Mrs|Mx)[.]"
-
-# # # # # # # # # # # # # # # 
-
 keyword_modes_after_keyword_rx  := csv_to_rx("phrase,")
-keyword_modes_after_sentence_rx := csv_to_rx("action, official,")
+keyword_modes_after_sentence_rx := csv_to_rx("action, official, rule")
 keyword_modes_after_line_rx     := csv_to_rx("flag, ability")
 
 # # # # # # # # # # # # # # # 
 
-# Keyword actions' reminder-text comes at end-of-sentence;
-# see Time Bomb.
+# Find the nearest (following) end-of-sentence, a period or end-of-line;
+# TODO skipping abbreviation periods.
+
+eos_rx := "[.](?= )|[.]$"
+
+# # # # # # # # # # # # # # # 
+
+# Keyword actions' reminder-text comes at end-of-sentence (see Time Bomb).
 
 relocate_reminder_text_after_sentence := replace@(
-	replace: "\\2\\1",
-	match: "(<atom-reminder-{ keyword_modes_after_sentence_rx }> (?:(?!</kw).*?)</atom-reminder-{ keyword_modes_after_sentence_rx }></kw[^>]*>){ eos_rx }"
+	replace: "\\2\\3\\1",
+	match: "(<atom-reminder-(?:{ keyword_modes_after_sentence_rx })> (?:(?!</kw).*?)</atom-reminder-(?:{ keyword_modes_after_sentence_rx })></kw[^>]*>)([^.\n]*)({ eos_rx })"
 )
 
 # # # # # # # # # # # # # # # 
@@ -714,15 +744,15 @@ relocate_reminder_text_after_sentence := replace@(
 
 relocate_reminder_text_after_line := replace@(
 	replace: "\\2\\1",
-	match: "(<atom-reminder-{ keyword_modes_after_line_rx }> (?:(?!</kw).*?)</atom-reminder-{ keyword_modes_after_line_rx }></kw[^>]*>)([^\n]*)"
+	match: "(<atom-reminder-(?:{ keyword_modes_after_line_rx })> (?:(?!</kw).*?)</atom-reminder-(?:{ keyword_modes_after_line_rx })></kw[^>]*>)([^\n]*)$"
 )
 
 # # # # # # # # # # # # # # # 
 
 relocate_reminder_text :=
 	{ input }
-#	+ relocate_reminder_text_after_sentence
-#	+ relocate_reminder_text_after_line
+	+ relocate_reminder_text_after_sentence
+	+ relocate_reminder_text_after_line
 
 ##############################
 # Formatting (Spellchecking):
@@ -864,8 +894,10 @@ format_flavor_text :=
 format_subtypes :=
 
 	detag_wordlist
-	+
-	add_subtype_dropdowns@(type: "program")
+	+ typing_over_subtypes
+#	+ remove_trailing_soft_tags(input)
+#	+ replace_soft_tags_with_spaces(input)
+	+ add_subtype_dropdowns@(type: "program")
 
 # # # # # # # # # # # # # # # 
 
@@ -1091,6 +1123,25 @@ card_from_nrdb_json := {
 
 	new_card(fields)
 }
+
+
+##############################
+# TXT:
+# # # # # # # # # # # # # # # 
+
+unexpand_symbols := replace@(
+	replace: { "[{ denormalize_symbol(_1) }]" },
+	match: "(?i)<sym>([-_$!=a-z0-9]+)</sym>"
+)
+
+# # # # # # # # # # # # # # # 
+
+# Human-readable plaintext (such as for copy-pasting).
+#
+# e.g. to_plaintext( "<kw-A>Hustle <param-number>3</param-number></kw-A> or gain 2<sym>C</sym>. <atom-reminder-action><i-auto>(Place 3<sym>C</sym> on a Runner card with a <sym>R</sym> ability or hosted <sym>C</sym>.)</i-auto></atom-reminder-action> Then draw 1 card." )
+#   == "Hustle 3 or gain 2[credit]. (Place 3[credit] on a Runner card with a [recurring] ability or hosted [credit].) Then draw 1 card."
+
+to_plaintext := unexpand_symbols + to_text
 
 ##############################
 # etc:

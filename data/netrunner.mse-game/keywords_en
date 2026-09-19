@@ -18,7 +18,19 @@ keyword mode:
 
 keyword mode:
 	name: rule
-	description: "Keyword" actions that are intrinsic game rules (e.g. `Purge virus counters.`). Reminder text is hidden by default.
+	description: Intrinsic keyword actions to the game rules (e.g. `Purge virus counters`). Reminder text is hidden by default.
+
+keyword mode:
+	name: flag
+	description: Keyword flags (e.g. `Threat N → …`). Case-sensitive, between start-of-line and a right-arrow.
+
+keyword mode:
+	name: ability
+	description: “Keyword abilities” (e.g. `Dividends 1`, `Hidden`). At start-of-line, in a comma-separated list.
+
+keyword mode:
+	name: phrase
+	description: “Keyword phrases” (e.g. `unique (⬥)`). Reminder text follows immediately afterwards.
 
 ##############################
 
@@ -74,13 +86,29 @@ keyword:
 	mode: official
 	reminder: The Corp trashes {param1} card{ if (param1.value=="1") then "" else "s" } of their choice from HQ { if (param1.value=="1") then "or" else "and/or" } the top of R&D.
 
-# # # # # # # # # # # # # # # 
+##############################
+
+keyword:
+	keyword: Threat
+	match: Threat <atom-param>number</atom-param>
+	mode: flag
+	reminder: This ability is active if any player has {param1} or more agenda points.
+
+##############################
 
 keyword:
 	keyword: Bypassing
 	match: bypass
 	mode: rule
 	reminder: Pass that ice. No subroutines or further "when encountered" abilities resolve.
+
+##############################
+
+keyword:
+	keyword: Unique
+	match: unique
+	mode: phrase
+	reminder: <sym>unique</sym>
 
 ##############################
 
