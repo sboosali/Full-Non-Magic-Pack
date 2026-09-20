@@ -5,7 +5,7 @@ installer group: Netrunner/Game files
 icon: preview.jpg
 position hint: -2
 
-version: 2026-09
+version: 2026-10
 depends on: netrunner-mnemic-common.mse-include 2026-09
 
 #read only file: custom_*

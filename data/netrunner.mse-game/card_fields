@@ -354,4 +354,3 @@ card field:
 #	script:      card_index() + " / " + number_of_items(in: set, filter: is_real_card)
 
 ##############################
-

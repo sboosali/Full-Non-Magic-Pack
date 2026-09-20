@@ -1,0 +1,25 @@
+##############################################################
+
+card dpi: 300
+card width: 750
+card height: 1046
+card background: black
+
+##############################################################
+
+styling field:
+	type: text
+	name: text font size
+	description: Defaults to 24. For rules text.
+
+styling field:
+	type: text
+	name: symbol font size
+	description: Defaults to 18. For symbols in rules text.
+
+styling field:
+	type: text
+	name: subtypes font size
+	description: Defaults to 20.
+
+##############################################################

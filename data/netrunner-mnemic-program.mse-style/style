@@ -4,31 +4,16 @@ full name: NR Program
 short name: Runner/Program [Netrunner]
 installer group: Netrunner/MNeMiC templates/Runner Programs
 icon: preview.jpg
-position hint: -2
+position hint: -8
 
-version: 2026-09
+version: 2026-10
 depends on: netrunner.mse-game 2026-09
 depends on: netrunner-mnemic-common.mse-include 2026-09
 depends on: netrunner-ffg-symbols.mse-symbol-font 2026-09
 
 ##############################################################
 
-card dpi: 300
-card width: 750
-card height: 1046
-card background: black
-
-##############################################################
-
-styling field:
-	type: text
-	name: textbox font size
-	description: Defaults to 24.
-
-styling field:
-	type: text
-	name: symbol font size
-	description: Defaults to 18.
+include file: /netrunner-mnemic-common.mse-include/default_style
 
 ##############################################################
 
@@ -61,8 +46,8 @@ card style:
 		mask: mask_program_artbox.png
 
 	influence:
-		left : 691
-		top  : 735
+		left : 701
+		top  : 764
 		width  : 42
 		height : 210
 		z index : 3
@@ -125,7 +110,7 @@ card style:
 		tab index: 2
 		font:
 			name: Gill Sans
-			size: 20
+			size: { parse_number(styling.subtypes_font_size, default: 20) }
 			scale down to: 12
 
 
@@ -144,7 +129,7 @@ card style:
 		line height hard : 1.4
 		font:
 			name: Minion Pro
-			size: { parse_number(styling.textbox_font_size, default: 24) }
+			size: { parse_number(styling.text_font_size, default: 24) }
 			scale down to: 18
 		symbol font:
 			name: { normalize_package_name(set.textbox_symbols) }
@@ -221,9 +206,38 @@ card style:
 
 # symbol_variation(symbol: set.logo, variation: "white")
 
-##############################
-
 		# padding left   : 7
 		# padding top    : 25
 		# padding right  : 130
 		# padding bottom : 30
+
+##############################
+
+extra card field:
+	type: choice
+	name: type1
+
+	script: "program"
+	initial: program
+	editable: false
+
+	show statistics: false
+	card list name    : Type
+	card list visible : true
+	card list column  : 0300
+	card list width   : 100
+
+extra card field:
+	type: text
+	name: type2
+
+	default: "program"
+	editable: false
+
+	show statistics: false
+	card list name    : Type
+	card list visible : true
+	card list column  : 0300
+	card list width   : 100
+
+##############################
