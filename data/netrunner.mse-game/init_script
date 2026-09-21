@@ -144,7 +144,7 @@ parse_number := {
 
 card_index := { 1 }
 
-card_index_text := { to_string(card_index(), format: "+03d") }
+card_index_text := { to_string(card_index(), format: "03d") }
 
 ##############################
 # Unicode:
@@ -213,6 +213,18 @@ asciify :=
 #
 
 letterify := filter_text@(match: "[a-zA-Z0-9]")
+
+# # # # # # # # # # # # # # # 
+
+acronymize := {
+
+	ws := split_text(match: "\\W", include_empty: false, input)
+
+	cs := for each w in ws do
+		substring(w, begin:0, end:1)
+
+	to_upper(cs)
+}
 
 ##############################
 # Fields:
@@ -959,10 +971,10 @@ format_flavor_text :=
 format_subtypes :=
 
 	detag_wordlist
-	+ typing_over_subtypes
+#	+ typing_over_subtypes
 #	+ remove_trailing_soft_tags(input)
 #	+ replace_soft_tags_with_spaces(input)
-	+ add_subtype_dropdowns@(type: "program")
+#	+ add_subtype_dropdowns@(type: "program")
 
 # # # # # # # # # # # # # # # 
 
@@ -995,23 +1007,37 @@ format_type := {
 # Sorts "X" before "0"/"1"/etc and "-" after (for costs/strengths/points/etc, up to 1000).
 # 
 # e.g. compare_numeral("3")
-#   == "B+003"
+#   == "B+03"
 # 
 
 compare_numeral := {
 	s := to_text(input)
-	n := to_number(s) or else false
+	n := if s=="" then false else (to_number(s) or else false)
 
 	if s=="X" or s=="Y" or s=="Z"
-	then "A" + s
+	then "A" + to_string(s, format: "%-3s")
 
 	else if n != false
 	then "B" + to_string(n, format: "+03d")
 
 	else if s=="-" or s=="–" or s=="—"
+	then "C   "
+
+	else "Z   "
+}
+
+# # # # # # # # # # # # # # # 
+
+compare_boolean := {
+	s := to_text(input)
+
+	if s=="yes"
+	then "A"
+
+	if s=="no"
 	then "C"
 
-	else "Z"
+	else "B{ to_string(s) }"
 }
 
 ##############################
@@ -1104,7 +1130,7 @@ compare_type := {
 
 strip_article := replace@(replace: "", match: "(?i)^(The) ")
 
-# 
+# # # # # # # # # # # # # # # 
 
 compare_name :=
 

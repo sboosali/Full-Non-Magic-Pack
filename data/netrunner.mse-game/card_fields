@@ -1,4 +1,45 @@
 ﻿
+############################## 
+
+card field:
+	type: text
+	name: title
+
+	default: ""
+
+	card list allow: false
+	show statistics: false
+	description: The card name.
+
+# # # # # # # # # # # # # # # 
+
+card field:
+	type: text
+	name: subtitle
+
+	card list allow: false
+	show statistics: false
+	description: Identities' subtitle (part of its name).
+
+# # # # # # # # # # # # # # # 
+
+card field:
+	type: choice
+	name: unique
+
+	choice  : unique
+	choice  : no
+	initial : no
+
+	card list name    : ◆
+	card list visible : true
+	card list column  : 0901
+	card list width   : 20
+
+	show statistics: false
+	description: Whether the installable card is unique (⬩). (Identities/Events/Operations are neither unique nor non-unique.)
+#	sort script       : compare_boolean(value)
+
 ##############################
 
 card field:
@@ -51,10 +92,10 @@ card field:
 		type: radio
 		enabled: { set.enable_minifactions and is_card_runner() }
 
-	card list name    : FAC
-	card list column  : 0401
-	card list visible : true
-	card list width   : 100
+	card list name      : faction
+	card list column    : 0401
+	card list visible   : true
+	card list width     : 100
 	choice colors cardlist:
 		haas-bioroid : rgb(138, 43, 226)
 		jinteki      : rgb(220, 20, 60)
@@ -76,13 +117,9 @@ card field:
 
 card field:
 	type: image
-	name: corners
-
-# # # # # # # # # # # # # # # 
-
-card field:
-	type: image
 	name: art
+
+	card list allow: false
 	show statistics: false
 	description: The artwork/illustration. The dimensions / aspect ratio differ between card-types, but most are "horizontal rectangles".
 
@@ -112,46 +149,13 @@ card field:
 		name: 0
 		type: radio
 
-	card list name    : Inf.
-	card list column  : 0402
-	card list visible : true
-	card list width   : 40
+	card list name      : inf.
+	card list column    : 0402
+	card list visible   : true
+	card list width     : 10
 
 	show statistics: false
 	description: The influence cost (0–5).
-
-############################## 
-
-card field:
-	type: text
-	name: title
-
-	show statistics: false
-	description: The card name.
-
-# # # # # # # # # # # # # # # 
-
-card field:
-	type: text
-	name: subtitle
-
-	show statistics: false
-	description: Identities' subtitle (part of its name).
-
-# # # # # # # # # # # # # # # 
-
-card field:
-	type: choice
-	name: unique
-	initial: no
-	choice: unique
-	choice: no
-	show statistics: false
-	card list name    : ◆
-	card list visible : true
-	card list column  : 0901
-	card list width   : 40
-	description: Whether the installable card is unique (⬩). (Identities/Events/Operations are neither unique nor non-unique.)
 
 ##############################
 
@@ -159,14 +163,15 @@ card field:
 	type: text
 	name: cardtype
 
-	default     : this_type()
-	script      : format_type(value)
+	default : this_type()
+	script  : format_type(value)
 
-	card list visible : false
+	card list allow: false
 	show statistics: false
 	description: The card’s (single) card-type.
 
 # # # # # # # # # # # # # # # 
+
 
 
 ##############################
@@ -175,9 +180,9 @@ card field:
 	type: text
 	name: subtypes
 
-	card list name    : Sub-Types
-	card list column  : 0302
-	card list width   : 200
+	card list name      : sub-types
+	card list column    : 0302
+	card list width     : 400
 
 	show statistics: false
 	description: The card’s (zero-or-more) subtypes; hyphen-separated (e.g. "Icebreaker - AI - Virus").
@@ -238,14 +243,17 @@ card field:
 	script      : only_numerals(value)
 	sort script : compare_numeral(value)
 
-	card list name:    $$$
-	card list visible: true
-	card list column:  0201
-	card list width:   40
-	show statistics: false
+	card list name      : $$$
+	card list visible   : true
+	card list column    : 0201
+	card list width     : 15
+	card list alignment : center middle
 
+	show statistics: false
 	description: The play/rez/install cost (in credits).
 
+##############################
+# Program/ICE Fields:
 # # # # # # # # # # # # # # # 
 
 card field:
@@ -256,11 +264,13 @@ card field:
 	script      : only_numerals(value)
 	sort script : compare_numeral(value)
 
+	card list name      : STR
+	card list visible   : true
+	card list column    : 0501
+	card list width     : 10
+	card list alignment : center middle
+
 	show statistics: false
-	card list name    : STR
-	card list visible : true
-	card list column  : 0501
-	card list width   : 10
 	description: The base strength of ICE/Icebreakers. Can be "X". Should be "-" for nom-Icebreaker Programs.
 
 # # # # # # # # # # # # # # # 
@@ -273,11 +283,13 @@ card field:
 	script      : only_numerals(value)
 	sort script : compare_numeral(value)
 
+	card list name      : MU
+	card list visible   : true
+	card list column    : 0502
+	card list width     : 10
+	card list alignment : center middle
+
 	show statistics: false
-	card list name    : MU
-	card list visible : true
-	card list column  : 0502
-	card list width   : 10
 	description: Programs’ memory usage (mostly 1, 2, or 0).
 
 ##############################
@@ -300,22 +312,24 @@ card field:
 
 	script: if value!="" then "" else "<align:center>✎✍ des. { value }</align>"
 
-	card list name:   Art
-	card list column: 9900
-	card list visible: false
-	card list width:  200
+	card list name      : art
+	card list column    : 9900
+	card list visible   : false
+	card list width     : 200
 
 	show statistics: false
 	description: Who illustrated the card's artwork.
 
 # # # # # # # # # # # # # # # 
 
-
 card field:
 	type: text
 	name: designer
 
 	script: if set.designer=="" then "" else "<align:right>🖌🎨 illus. { set.designer }</align>"
+
+	save value : false
+	editable   : true
 
 	show statistics: false
 	description: Who designed the card.
@@ -326,20 +340,23 @@ card field:
 	type: text
 	name: copyright
 
+	save value : false
+	editable   : true
+
 	show statistics: false
 	description: Under what will the released card be licensed.
 
 # # # # # # # # # # # # # # # 
 
 card field:
-	type: text
+	type: choice
 	name: logo
+
+	save value : false
+	editable   : true
 
 	show statistics: false
 	description: 
-
-	default: "/netrunner.mse-game/magnum_opus.mse-symbol"
-#	script: if set.logo!="" then to_string(set.logo) else "/netrunner.mse-game/magnum_opus.mse-symbol"
 
 # # # # # # # # # # # # # # # 
 
@@ -348,14 +365,15 @@ card field:
 	name: index
 
 	script: if set.automatic_card_numbers then card_index_text() else value
-	save value : true
+
+	save value : false
 	editable   : true
 
-	card list name: /
-	card list visible: true
-	card list column: 10
-	card list width: 50
-	card list alignment: right
+	card list name      : /
+	card list visible   : true
+	card list column    : 10
+	card list width     : 50
+	card list alignment : right
 
 	show statistics: false
 	description: 
@@ -364,17 +382,28 @@ card field:
 ##############################
 
 card field:
+	type: image
+	name: corners
+
+	card list allow: false
+	show statistics: false
+
+##############################
+# Virtual "Data" Fields:
+# # # # # # # # # # # # # # #
+
+card field:
 	type: text
 	name: name
 
 	identifying: true
 	script: name_of(title: card.title, subtitle: card.subtitle)
 
-	sort script       : compare_name(value)
-	card list name    : Name
-	card list column  : 0101
-	card list visible : true
-	card list width   : 150
+	sort script         : compare_name(value)
+	card list name      : name
+	card list column    : 0101
+	card list visible   : true
+	card list width     : 1000
 
 	show statistics: false
 
@@ -386,11 +415,11 @@ card field:
 
 	script: this_side()
 
-	sort script       : compare_side(value)
-	card list name    : Side
-	card list column  : 0403
-	card list visible : true
-	card list width   : 100
+	sort script         : compare_side(value)
+	card list name      : side
+	card list column    : 0403
+	card list visible   : false
+	card list width     : 100
 
 	show statistics: false
 
@@ -402,16 +431,35 @@ card field:
 
 	script: this_type()
 
-	sort script       : compare_type(value)
-	card list name    : Type
-	card list visible : true
-	card list column  : 0301
-	card list width   : 100
+	sort script         : compare_type(value)
+	card list name      : card-type
+	card list visible   : true
+	card list column    : 0301
+	card list width     : 100
+	card list alignment : right
 
 	show statistics: false
 
 # # # # # # # # # # # # # # # 
 
 
+
+##############################
+# Virtual "Search" Fields:
+# # # # # # # # # # # # # # #
+
+card field:
+	type: text
+	name: card name ascii
+	script: asciify(card.name)
+	card list allow: false
+	show statistics: false
+
+card field:
+	type: text
+	name: card name acronym
+	script: acronymize(asciify(card.name))
+	card list allow: false
+	show statistics: false
 
 ##############################
