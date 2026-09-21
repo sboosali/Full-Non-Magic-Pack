@@ -1,14 +1,14 @@
-﻿mse version: 2.5.6
-game: netrunner
-full name: NR Program
-short name: Runner/Program [Netrunner]
-installer group: Netrunner/MNeMiC templates/Runner Programs
-icon: preview.jpg
-position hint: -8
+﻿mse version     : 2.5.6
+game            : netrunner
+version         : 2026-10
+short name      : NR Program
+full name       : Runner/Program [Netrunner]
+installer group : Netrunner/MNeMiC templates/Runner Programs
+icon            : preview.jpg
+position hint   : -8
 
-version: 2026-10
-depends on: netrunner.mse-game 2026-09
-depends on: netrunner-mnemic-common.mse-include 2026-09
+depends on: netrunner.mse-game                    2026-09
+depends on: netrunner-mnemic-common.mse-include   2026-09
 depends on: netrunner-ffg-symbols.mse-symbol-font 2026-09
 
 ##############################################################
@@ -87,7 +87,6 @@ card style:
 		tab index: 8
 		choice images:
 			unique: /netrunner-ffg-symbols.mse-symbol-font/UNIQUE.png
-
 
 	cardtype:
 		left : 50
@@ -239,5 +238,13 @@ extra card field:
 	card list visible : true
 	card list column  : 0300
 	card list width   : 100
+
+# # # # # # # # # # # # # # # 
+
+extra card style:
+	type1:
+		z index: -2
+	type2: 
+		z index: -2
 
 ##############################

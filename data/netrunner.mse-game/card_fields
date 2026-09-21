@@ -5,53 +5,52 @@ card field:
 	type: choice
 	name: faction
 
-	default: "neutral-{ side_of(card) }"
+	default: "neutral-{ this_side() }"
 	default name: Neutral
 
 	choice:
 		name: anarch
 		type: radio
-		enabled: { is_runner_card() }
+		enabled: { is_card_runner() }
 	choice:
 		name: criminal
 		type: radio
-		enabled: { is_runner_card() }
+		enabled: { is_card_runner() }
 	choice:
 		name: shaper
 		type: radio
-		enabled: { is_runner_card() }
+		enabled: { is_card_runner() }
 
 	choice:
 		name: haas-bioroid
 		type: radio
-		enabled: { is_corp_card() }
+		enabled: { is_card_corp() }
 	choice:
 		name: jinteki
 		type: radio
-		enabled: { is_corp_card() }
+		enabled: { is_card_corp() }
 	choice:
 		name: nbn
 		type: radio
-		enabled: { is_corp_card() }
+		enabled: { is_card_corp() }
 	choice:
 		name: weyland
 		type: radio
-		enabled: { is_corp_card() }
+		enabled: { is_card_corp() }
 
 	choice:
 		name: adam
 		type: radio
-		enabled: { set.enable_minifactions and is_runner_card() }
+		enabled: { set.enable_minifactions and is_card_runner() }
 	choice:
 		name: apex
 		type: radio
-		enabled: { set.enable_minifactions and is_runner_card() }
+		enabled: { set.enable_minifactions and is_card_runner() }
 	choice:
 		name: sunny
 		type: radio
-		enabled: { set.enable_minifactions and is_runner_card() }
+		enabled: { set.enable_minifactions and is_card_runner() }
 
-	show statistics: false
 	card list name    : FAC
 	card list column  : 0401
 	card list visible : true
@@ -70,6 +69,7 @@ card field:
 		apex  : rgb(140, 72, 71)
 		sunny : rgb(120, 97, 150)
 
+	show statistics: false
 	description: The faction.
 
 # # # # # # # # # # # # # # # 
@@ -91,6 +91,7 @@ card field:
 card field:
 	type: choice
 	name: influence
+
 	initial: 0
 	choice:
 		name: 5
@@ -110,11 +111,13 @@ card field:
 	choice:
 		name: 0
 		type: radio
-	show statistics: false
-	card list name    : INF
+
+	card list name    : Inf.
 	card list column  : 0402
 	card list visible : true
 	card list width   : 40
+
+	show statistics: false
 	description: The influence cost (0–5).
 
 ############################## 
@@ -122,13 +125,18 @@ card field:
 card field:
 	type: text
 	name: title
-	identifying: true
-	card list name    : Name
-	card list column  : 0101
-	card list visible : true
-	card list width   : 150
+
 	show statistics: false
 	description: The card name.
+
+# # # # # # # # # # # # # # # 
+
+card field:
+	type: text
+	name: subtitle
+
+	show statistics: false
+	description: Identities' subtitle (part of its name).
 
 # # # # # # # # # # # # # # # 
 
@@ -150,12 +158,12 @@ card field:
 card field:
 	type: text
 	name: cardtype
-	default: to_upper(card_type_of()) + ": "
+
+	default     : this_type()
+	script      : format_type(value)
+
+	card list visible : false
 	show statistics: false
-	card list name    : Card-Type
-	card list visible : true
-	card list column  : 0301
-	card list width   : 100
 	description: The card’s (single) card-type.
 
 # # # # # # # # # # # # # # # 
@@ -174,7 +182,7 @@ card field:
 	show statistics: false
 	description: The card’s (zero-or-more) subtypes; hyphen-separated (e.g. "Icebreaker - AI - Virus").
 
-	script: add_subtype_dropdowns(value, type: card_type_of())
+	script: add_subtype_dropdowns(value, type: card.type)
 #	script: subtypes_combined_editor()
 #	save value: true
 
@@ -244,7 +252,7 @@ card field:
 	type: text
 	name: strength
 
-	default     : if is_program(card) and not is_breaker(card.subtypes) then "-" else ""
+	default     : if is_card_program() and not is_card_breaker() then "-" else ""
 	script      : only_numerals(value)
 	sort script : compare_numeral(value)
 
@@ -261,7 +269,7 @@ card field:
 	type: text
 	name: memory
 
-	default     : if is_program() then "1" else ""
+	default     : if is_card_program() then "1" else ""
 	script      : only_numerals(value)
 	sort script : compare_numeral(value)
 
@@ -292,7 +300,7 @@ card field:
 
 	script: if value!="" then "" else "<align:center>✎✍ des. { value }</align>"
 
-	card list name:   ART
+	card list name:   Art
 	card list column: 9900
 	card list visible: false
 	card list width:  200
@@ -352,5 +360,58 @@ card field:
 	show statistics: false
 	description: 
 #	script:      card_index() + " / " + number_of_items(in: set, filter: is_real_card)
+
+##############################
+
+card field:
+	type: text
+	name: name
+
+	identifying: true
+	script: name_of(title: card.title, subtitle: card.subtitle)
+
+	sort script       : compare_name(value)
+	card list name    : Name
+	card list column  : 0101
+	card list visible : true
+	card list width   : 150
+
+	show statistics: false
+
+# # # # # # # # # # # # # # # 
+
+card field:
+	type: text
+	name: side
+
+	script: this_side()
+
+	sort script       : compare_side(value)
+	card list name    : Side
+	card list column  : 0403
+	card list visible : true
+	card list width   : 100
+
+	show statistics: false
+
+# # # # # # # # # # # # # # # 
+
+card field:
+	type: text
+	name: type
+
+	script: this_type()
+
+	sort script       : compare_type(value)
+	card list name    : Type
+	card list visible : true
+	card list column  : 0301
+	card list width   : 100
+
+	show statistics: false
+
+# # # # # # # # # # # # # # # 
+
+
 
 ##############################

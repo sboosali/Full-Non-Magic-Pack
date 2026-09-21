@@ -215,13 +215,70 @@ asciify :=
 letterify := filter_text@(match: "[a-zA-Z0-9]")
 
 ##############################
-# Enums:
+# Fields:
 # # # # # # # # # # # # # # # 
 
+this_stylesheet_type := {
+
+	s := replace(stylesheet.full_name,
+		match: "(?i)^[a-z]+/([a-z]+) .*$"
+		replace: "\\1")
+
+	normalize_type(s)
+}
+# # # # # # # # # # # # # # # 
+
+this_stylesheet_side := {
+
+	s := replace(stylesheet.full_name,
+		match: "(?i)^([a-z]+)/.*$"
+		replace: "\\1")
+
+	normalize_side(s)
+}
+
+# # # # # # # # # # # # # # # 
+
+this_side := {
+#	s1 := card.side
+	s2 := this_stylesheet_side()
+	s2
+}
+
+this_type := {
+#	t1 := card.type
+	t2 := this_stylesheet_type()
+	t2
+}
+
+##############################
+
+# 
+
+name_of := {
+	if subtitle != ""
+	then "{ title }: { subtitle }"
+	else title
+}@(title: "", subtitle: "")
+
+##############################
+
+is_card_runner := { "runner" == (card.side or else this_side()) }
+is_card_corp   := { "corp"   == (card.side or else this_side()) }
 #TODO
-is_runner_card := { true }
-is_corp_card   := { false }
-side_of := { "runner" }
+
+# # # # # # # # # # # # # # # 
+
+normalize_side := {
+	s := to_lower(input)
+
+	case s of
+
+		"r"   : "runner",
+		"c"   : "corp",
+
+		else: s
+}@(side: "")
 
 # # # # # # # # # # # # # # # 
 
@@ -238,7 +295,7 @@ side_of := { "runner" }
 #   == ""
 #
 
-side_of2 := {
+side_of := {
 
 	t_side := case normalize_type(type) of
 
@@ -275,17 +332,13 @@ side_of2 := {
 
 	if t_side!="" then t_side else f_side
 
-}@(
-  type: "",
-  faction: ""
-)
+}@(type: "", faction: "")
 
 ##############################
 
 normalize_faction := {
 
-	input := to_lower(input)
-	input := replace(input, match: "[_ ]", replace: "-")
+	input := replace(to_lower(input), match: "[_ ]", replace: "-")
 
 	case input of
 		"haas" : "haas-bioroid",
@@ -299,31 +352,30 @@ normalize_faction := {
 
 ##############################
 
-is_program := { true }
+is_card_program := { "program" == (card.type or else this_type()) }
+is_card_ice     := { "ice"     == (card.type or else this_type()) }
+#TODO
+
+# # # # # # # # # # # # # # # 
+
+clean_type := filter_text@(match: "[^:]") + trim
 
 # # # # # # # # # # # # # # # 
 
 normalize_type := {
 
-	input := to_lower(input)
-	input := letterify(input)
+	input := letterify(to_lower(input))
 
 	input
 }@(side: "")
 
 #TODO
-# # # # # # # # # # # # # # # 
 
-card_type_of := {
-
-	"program"
-
-}
-
-#TODO
 ##############################
 
-is_breaker := match@(match: "^Icebreaker\\b")
+is_card_breaker := {
+	match(card.subtypes, match: "\\bIcebreaker\\b")
+}
 
 # # # # # # # # # # # # # # # 
 
@@ -356,9 +408,22 @@ normalize_package_name := replace@(
 
 ##############################
 
-is_real_card := { true }
+is_card_real := {
+	case (card.type or else this_type()) of
 
+	"identity"  : true,
+	"event"     : true,
+	"program"   : true,
+	"hardware"  : true,
+	"resource"  : true,
+	"agenda"    : true,
+	"operation" : true,
+	"asset"     : true,
+	"ice"       : true,
+	"upgrade"   : true,
 
+	else: false
+}
 
 ##############################
 # Validation:
@@ -911,6 +976,18 @@ format_reminder_text :=
 	+
 	curly_quotes
 
+# # # # # # # # # # # # # # # 
+
+# 
+
+format_type := {
+	s := clean_type(input)
+
+	if s!=""
+	then to_upper(s) + ": "
+	else ""
+}
+
 ##############################
 # Sorting:
 # # # # # # # # # # # # # # # 
@@ -939,19 +1016,106 @@ compare_numeral := {
 
 ##############################
 
-strip_article := replace@(replace: "", match: "(?i)^(The) ")
+# Official sets are ordered by faction (grouped by side), then type.
+#
+# NB. each enum {compare_*} must always output strings of the same length.
+#
+
+compare_card := {
+
+	compare_side(card.side) + compare_faction(card.faction) + compare_type(card.cardtype) + compare_name(card.name)
+
+}
 
 # # # # # # # # # # # # # # # 
+
+card_index := {
+	1 + position (
+
+		of: card,
+		in: set,
+		order_by : compare_card,
+		filter   : is_card_real,
+
+	)
+}
+
+# # # # # # # # # # # # # # # 
+
+card_count := {
+	number_of_items(in: set, filter: is_card_real)
+}
+
+##############################
+
+compare_side := {
+	case normalize_side(input) of
+
+	"runner" : "A",
+	"corp"   : "B",
+
+	else: "Z"
+}
+
+##############################
+
+compare_faction := {
+	case normalize_faction(input) of
+
+		"anarch"         : "A",
+		"criminal"       : "B",
+		"shaper"         : "C",
+		"neutral-runner" : "D",
+		"adam"           : "E",
+		"apex"           : "F",
+		"sunny"          : "G",
+
+		"haas-bioroid"  : "H",
+		"jinteki"       : "I",
+		"nbn"           : "J",
+		"weyland"       : "K",
+		"neutral-corp"  : "Z",
+
+		else: "Z"
+}
+
+##############################
+
+compare_type := {
+	case normalize_type(input) of
+
+	"identity"  : "A",
+
+	"event"     : "B",
+	"program"   : "C",
+	"hardware"  : "D",
+	"resource"  : "E",
+
+	"agenda"    : "F",
+	"operation" : "G",
+	"asset"     : "H",
+	"ice"       : "I",
+	"upgrade"   : "J",
+
+	else: "Z"
+}@(side: "")
+
+##############################
+
+strip_article := replace@(replace: "", match: "(?i)^(The) ")
+
+# 
 
 compare_name :=
 
 	to_lower
-	+
-	strip_article
-	+
-	asciify
-	+
-	letterify
+#	+ strip_article
+	+ letterify
+	+ asciify
+
+##############################
+
+
 
 ##############################
 # Analysis:
