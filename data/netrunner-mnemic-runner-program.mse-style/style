@@ -123,7 +123,7 @@ card style:
 		padding right  : 25
 		z index: 2
 		tab index: 3
-		mask: mask_program_textbox.png
+		mask: mask_program_textbox_line.png
 		line height hard : 1.4
 		font:
 			name: Minion Pro
@@ -204,50 +204,12 @@ card style:
 		z index: 2
 		image: { "" }
 
+##############################
 
 		# padding left   : 7
 		# padding top    : 25
 		# padding right  : 130
 		# padding bottom : 30
-
-##############################
-
-extra card field:
-	type: choice
-	name: type1
-
-	script: "program"
-	initial: program
-	editable: false
-
-	show statistics: false
-	card list name    : Type
-	card list visible : true
-	card list column  : 0300
-	card list width   : 100
-
-extra card field:
-	type: text
-	name: type2
-
-	default: "program"
-	editable: false
-
-	show statistics: false
-	card list name    : Type
-	card list visible : true
-	card list column  : 0300
-	card list width   : 100
-
-# # # # # # # # # # # # # # # 
-
-extra card style:
-	type1:
-		z index: -2
-	type2: 
-		z index: -2
-
-##############################
 
 #TODO
 

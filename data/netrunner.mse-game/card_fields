@@ -164,7 +164,7 @@ card field:
 	name: cardtype
 
 	default : this_type()
-	script  : format_type(value)
+	script  : format_card_type(value, subtypes: card.subtypes)
 
 	card list allow: false
 	show statistics: false
@@ -187,9 +187,8 @@ card field:
 	show statistics: false
 	description: The card’s (zero-or-more) subtypes; hyphen-separated (e.g. "Icebreaker - AI - Virus").
 
-	script: add_subtype_dropdowns(value, type: card.type)
+	script: format_subtypes(value, type: card.type)
 #	script: subtypes_combined_editor()
-#	save value: true
 
 ##############################
 
@@ -291,6 +290,109 @@ card field:
 
 	show statistics: false
 	description: Programs’ memory usage (mostly 1, 2, or 0).
+
+##############################
+# Asset/Upgrade Fields:
+# # # # # # # # # # # # # # # 
+
+card field:
+	type: text
+	name: trash
+
+	script      : only_numerals(value)
+	sort script : compare_numeral(value)
+
+	card list name    : 🗑️ Trash
+	card list visible : true
+	card list column  : 0201
+	card list width   : 40
+
+	description: Assets'/Upgrades' trash cost (in credits). Operations/ICE  can have one too.
+
+##############################
+# Agenda Fields:
+# # # # # # # # # # # # # # # 
+
+card field:
+	type: text
+	name: requirement
+
+	script      : only_numerals(value)
+	sort script : compare_numeral(value)
+
+	card list name    : Rq./_
+	card list visible : true
+	card list column  : 0601
+	card list width   : 40
+
+	description: Agendas’ advancement requirement (mostly 2, 3, 4, 5, or X).
+
+# # # # # # # # # # # # # # # 
+
+card field:
+	type: text
+	name: points
+
+	script      : only_numerals(value)
+	sort script : compare_numeral(value)
+
+	card list name    : _/Pt.
+	card list visible : true
+	card list column  : 0602
+	card list width   : 40
+
+	description: Agendas’ agenda-point value (mostly 1, 2, or 3).
+
+##############################
+# Identity Fields:
+# # # # # # # # # # # # # # # 
+
+card field:
+	type: text
+	name: id min deck size
+
+	default: 45
+
+	show statistics: false
+	description: Identities’ minimum deck size. Corp decks with 40–44 cards need 18–19 agenda-points; 45–49 need 20–21, 50–54 need 22–23, and so on.
+
+# # # # # # # # # # # # # # # 
+
+card field:
+	type: text
+	name: id max influence
+
+	default: 15
+
+	show statistics: false
+	description: Identities’ maximum influence limit
+
+# # # # # # # # # # # # # # # 
+
+card field:
+	type: text
+	name: id link strength
+
+	show statistics: false
+	description: Runner identities’ base link strength (mostly 0).
+
+# # # # # # # # # # # # # # # 
+
+card field:
+	type: text
+	name: subtitle
+
+	show statistics: false
+	description: Identities’ subtitle. Cards can have the same title if they have different subtitles, which form a card’s name (e.g. "Haas-Bioroid: Precision Design").
+
+# # # # # # # # # # # # # # # 
+
+card field:
+	type: text
+	name: id pronouns
+
+	show statistics: false
+	description: Runner identities’ pronouns (e.g. "they/them").
 
 ##############################
 

@@ -968,13 +968,17 @@ format_flavor_text :=
 
 # # # # # # # # # # # # # # # 
 
-format_subtypes :=
+format_subtypes := {
 
-	detag_wordlist
-#	+ typing_over_subtypes
-#	+ remove_trailing_soft_tags(input)
-#	+ replace_soft_tags_with_spaces(input)
-#	+ add_subtype_dropdowns@(type: "program")
+	f := detag_wordlist + to_text
+#		+ typing_over_subtypes
+#		+ remove_trailing_soft_tags
+#		+ replace_soft_tags_with_spaces
+#		+ add_subtype_dropdowns@(type: type)
+
+	f(input)
+
+}@(type: "")
 
 # # # # # # # # # # # # # # # 
 
@@ -992,13 +996,19 @@ format_reminder_text :=
 
 # 
 
-format_type := {
-	s := clean_type(input)
+format_card_type := {
 
-	if s!=""
-	then to_upper(s) + ": "
+	t := clean_type(input)
+	s := trim(to_text(subtypes))
+
+	if t!="" and s!=""
+	then to_upper(t) + ": "
+
+	else if t!=""
+	then to_upper(t)
+
 	else ""
-}
+}@(subtypes: "")
 
 ##############################
 # Sorting:
