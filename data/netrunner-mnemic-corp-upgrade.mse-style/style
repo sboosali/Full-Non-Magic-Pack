@@ -1,8 +1,8 @@
 mse version     : 2.5.6
 version         : 2026-10
 game            : netrunner
-short name      : NR Upgrade
-full name       : Corp/Upgrade [Netrunner]
+short name      : Upgrade
+full name       : Corp/Upgrade (MNeMiC)
 position hint   : -1
 installer group : Netrunner/MNeMiC templates/Corp Upgrade
 icon            : preview.jpg

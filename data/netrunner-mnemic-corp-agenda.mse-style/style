@@ -1,8 +1,8 @@
 mse version     : 2.5.6
 version         : 2026-10
 game            : netrunner
-short name      : NR Agenda
-full name       : Corp/Agenda [Netrunner]
+short name      : Agenda
+full name       : Corp/Agenda (MNeMiC)
 position hint   : -5
 installer group : Netrunner/MNeMiC templates/Corp Agenda
 icon            : preview.jpg

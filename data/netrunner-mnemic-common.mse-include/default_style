@@ -22,4 +22,9 @@ styling field:
 	name: subtypes font size
 	description: Defaults to 20.
 
+styling field:
+	type: text
+	name: unique symbol shrinkage
+	description: Defaults to 0.25. Smaller means less padding and a LARGER diamond.
+
 ##############################################################

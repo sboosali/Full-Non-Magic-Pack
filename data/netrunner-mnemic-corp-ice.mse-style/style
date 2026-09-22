@@ -1,8 +1,8 @@
 mse version     : 2.5.6
 version         : 2026-10
 game            : netrunner
-short name      : NR ICE
-full name       : Corp/ICE [Netrunner]
+short name      : ICE
+full name       : Corp/ICE (MNeMiC)
 position hint   : -2
 installer group : Netrunner/MNeMiC templates/Corp ICE
 icon            : preview.jpg

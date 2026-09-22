@@ -304,7 +304,7 @@ card field:
 
 	card list name    : 🗑️ Trash
 	card list visible : true
-	card list column  : 0201
+	card list column  : 0503
 	card list width   : 40
 
 	description: Assets'/Upgrades' trash cost (in credits). Operations/ICE  can have one too.
@@ -322,7 +322,7 @@ card field:
 
 	card list name    : Rq./_
 	card list visible : true
-	card list column  : 0601
+	card list column  : 0504
 	card list width   : 40
 
 	description: Agendas’ advancement requirement (mostly 2, 3, 4, 5, or X).
@@ -338,7 +338,7 @@ card field:
 
 	card list name    : _/Pt.
 	card list visible : true
-	card list column  : 0602
+	card list column  : 0505
 	card list width   : 40
 
 	description: Agendas’ agenda-point value (mostly 1, 2, or 3).
@@ -451,11 +451,11 @@ card field:
 # # # # # # # # # # # # # # # 
 
 card field:
-	type: choice
+	type: image
 	name: logo
 
 	save value : false
-	editable   : true
+	editable   : false
 
 	show statistics: false
 	description: 

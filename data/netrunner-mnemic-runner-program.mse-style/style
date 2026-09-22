@@ -1,8 +1,8 @@
 ﻿mse version     : 2.5.6
 game            : netrunner
 version         : 2026-10
-short name      : NR Program
-full name       : Runner/Program [Netrunner]
+short name      : Program
+full name       : Runner/Program (MNeMiC)
 installer group : Netrunner/MNeMiC templates/Runner Programs
 icon            : preview.jpg
 position hint   : -8
@@ -86,7 +86,7 @@ card style:
 		popup style  : dropdown
 		tab index: 8
 		choice images:
-			unique: /netrunner-ffg-symbols.mse-symbol-font/UNIQUE.png
+			unique: { enlarge("/netrunner-ffg-symbols.mse-symbol-font/UNIQUE.png", border_size: parse_number(styling.unique_symbol_shrinkage, default: 0.25)) }
 
 
 	cardtype:
@@ -198,11 +198,12 @@ card style:
 
 	logo:
 		left : 642
-		top  : 1005
-		width  : 30
-		height : 30
+		top  : 1006
+		width  : 25
+		height : 25
 		z index: 2
-		image: { "" }
+		default: { invert_image("/netrunner.mse-game/MagnumOpus.png") }
+
 
 ##############################
 
@@ -221,4 +222,10 @@ card style:
 
 #logo
 #		image: { symbol_variation(symbol: set.logo, variation: "white") }
+#		default: { recolor_image("/netrunner.mse-game/MagnumOpus.png", red: "white", green: "white", blue: "white") }
+#		default: { invert_image("/netrunner.mse-game/MagnumOpus.png") }
+
+#uniq
 #		script: { enlarge_image("/netrunner-ffg-symbols.mse-symbol-font/UNIQUE.png", border_size: 2.0) }
+# # enlarge_image
+

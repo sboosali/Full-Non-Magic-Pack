@@ -1,8 +1,8 @@
 mse version     : 2.5.6
 version         : 2026-10
 game            : netrunner
-short name      : NR Operation
-full name       : Corp/Operation [Netrunner]
+short name      : Operation
+full name       : Corp/Operation (MNeMiC)
 position hint   : -4
 installer group : Netrunner/MNeMiC templates/Corp Operation
 icon            : preview.jpg

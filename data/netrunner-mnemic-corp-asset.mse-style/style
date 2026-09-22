@@ -1,8 +1,8 @@
 mse version     : 2.5.6
 version         : 2026-10
 game            : netrunner
-short name      : NR Asset
-full name       : Corp/Asset [Netrunner]
+short name      : Asset
+full name       : Corp/Asset (MNeMiC)
 position hint   : -3
 installer group : Netrunner/MNeMiC templates/Corp Asset
 icon            : preview.jpg
