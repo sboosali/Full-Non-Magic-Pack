@@ -1,0 +1,38 @@
+mse version     : 2.5.6
+version         : 2026-10
+game            : netrunner
+short name      : NR Hardware
+full name       : Runner/Hardware [Netrunner]
+position hint   : -8
+installer group : Netrunner/MNeMiC templates/Runner Hardware
+icon            : preview.jpg
+
+depends on: netrunner.mse-game                    2026-10
+depends on: netrunner-mnemic-common.mse-include   2026-10
+depends on: netrunner-ffg-symbols.mse-symbol-font 2026-10
+
+include file: /netrunner-mnemic-common.mse-include/default_style
+
+##############################
+
+card style:
+
+
+	faction:
+		left : 0
+		top  : 0
+		width  : 750
+		height : 1050
+		z index: 0
+		render style : image
+		popup style  : in place
+		choice images:
+			anarch         : RunnerHardwareDefaultAnarch.png
+			criminal       : RunnerHardwareDefaultCriminal.png
+			shaper         : RunnerHardwareDefaultShaper.png
+			neutral-runner : RunnerHardwareDefaultNeutral-Runner.png
+			apex           : RunnerHardwareDefaultApex.png
+			adam           : RunnerHardwareDefaultAdam.png
+			sunny          : RunnerHardwareDefaultSunny.png
+
+

@@ -1,0 +1,38 @@
+mse version     : 2.5.6
+version         : 2026-10
+game            : netrunner
+short name      : NR Event
+full name       : Runner/Event [Netrunner]
+position hint   : -9
+installer group : Netrunner/MNeMiC templates/Runner Event
+icon            : preview.jpg
+
+depends on: netrunner.mse-game                    2026-10
+depends on: netrunner-mnemic-common.mse-include   2026-10
+depends on: netrunner-ffg-symbols.mse-symbol-font 2026-10
+
+include file: /netrunner-mnemic-common.mse-include/default_style
+
+##############################
+
+card style:
+
+
+	faction:
+		left : 0
+		top  : 0
+		width  : 750
+		height : 1050
+		z index: 0
+		render style : image
+		popup style  : in place
+		choice images:
+			anarch         : RunnerEventDefaultAnarch.png
+			criminal       : RunnerEventDefaultCriminal.png
+			shaper         : RunnerEventDefaultShaper.png
+			neutral-runner : RunnerEventDefaultNeutral-Runner.png
+			apex           : RunnerEventDefaultApex.png
+			adam           : RunnerEventDefaultAdam.png
+			sunny          : RunnerEventDefaultSunny.png
+
+

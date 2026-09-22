@@ -123,7 +123,7 @@ card style:
 		padding right  : 25
 		z index: 2
 		tab index: 3
-		mask: mask_program_textbox_line.png
+		mask: mask_program_textbox.png
 		line height hard : 1.4
 		font:
 			name: Minion Pro
