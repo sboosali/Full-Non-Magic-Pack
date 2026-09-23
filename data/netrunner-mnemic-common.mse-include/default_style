@@ -1,11 +1,11 @@
-##############################################################
+##############################
 
 card dpi: 300
 card width: 750
 card height: 1046
 card background: black
 
-##############################################################
+##############################
 
 styling field:
 	type: text
@@ -27,4 +27,4 @@ styling field:
 	name: unique symbol shrinkage
 	description: Defaults to 0.25. Smaller means less padding and a LARGER diamond.
 
-##############################################################
+##############################
