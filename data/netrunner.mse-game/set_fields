@@ -128,11 +128,7 @@ set field:
 	name: help
 	multi line: true
 	editable: false
-	description: 
-		.
-		To import your set symbol from a PNG, you need to set transparency to white, and grays to black:
-		    $ magick raw_set-symbol.png  -background white  -flatten  -threshold '50%'  mse_set-symbol.png
-		.
+	description: To
 
 ##############################
 

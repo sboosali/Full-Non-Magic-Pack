@@ -2,6 +2,16 @@
 ############################## 
 
 card field:
+	type: image
+	name: art
+
+	card list allow: false
+	show statistics: false
+	description: The artwork/illustration. The dimensions / aspect ratio differ between card-types, but most are "horizontal rectangles".
+
+# # # # # # # # # # # # # # # 
+
+card field:
 	type: text
 	name: title
 
@@ -116,20 +126,10 @@ card field:
 # # # # # # # # # # # # # # # 
 
 card field:
-	type: image
-	name: art
-
-	card list allow: false
-	show statistics: false
-	description: The artwork/illustration. The dimensions / aspect ratio differ between card-types, but most are "horizontal rectangles".
-
-# # # # # # # # # # # # # # # 
-
-card field:
 	type: choice
 	name: influence
 
-	initial: 0
+	initial: 1
 	choice:
 		name: 5
 		type: radio
@@ -252,6 +252,24 @@ card field:
 	description: The play/rez/install cost (in credits).
 
 ##############################
+# Asset/Upgrade Fields:
+# # # # # # # # # # # # # # # 
+
+card field:
+	type: text
+	name: trash
+
+	script      : only_numerals(value)
+	sort script : compare_numeral(value)
+
+	card list name    : 🗑️ Trash
+	card list visible : true
+	card list column  : 0501
+	card list width   : 40
+
+	description: Assets'/Upgrades' trash cost (in credits). Operations/ICE can have one too.
+
+##############################
 # Program/ICE Fields:
 # # # # # # # # # # # # # # # 
 
@@ -265,7 +283,7 @@ card field:
 
 	card list name      : STR
 	card list visible   : true
-	card list column    : 0501
+	card list column    : 0502
 	card list width     : 10
 	card list alignment : center middle
 
@@ -284,30 +302,12 @@ card field:
 
 	card list name      : MU
 	card list visible   : true
-	card list column    : 0502
+	card list column    : 0503
 	card list width     : 10
 	card list alignment : center middle
 
 	show statistics: false
 	description: Programs’ memory usage (mostly 1, 2, or 0).
-
-##############################
-# Asset/Upgrade Fields:
-# # # # # # # # # # # # # # # 
-
-card field:
-	type: text
-	name: trash
-
-	script      : only_numerals(value)
-	sort script : compare_numeral(value)
-
-	card list name    : 🗑️ Trash
-	card list visible : true
-	card list column  : 0503
-	card list width   : 40
-
-	description: Assets'/Upgrades' trash cost (in credits). Operations/ICE  can have one too.
 
 ##############################
 # Agenda Fields:
@@ -412,7 +412,7 @@ card field:
 	type: text
 	name: illustrator
 
-	script: if value!="" then "" else "<align:center>✎✍ des. { value }</align>"
+	script: if value!="" then "" else "<align:center>✎ des. { value }</align>"
 
 	card list name      : art
 	card list column    : 9900
@@ -428,7 +428,7 @@ card field:
 	type: text
 	name: designer
 
-	script: if set.designer=="" then "" else "<align:right>🖌🎨 illus. { set.designer }</align>"
+	script: if set.designer=="" then "" else "<align:right>🖌 illus. { set.designer }</align>"
 
 	save value : false
 	editable   : true

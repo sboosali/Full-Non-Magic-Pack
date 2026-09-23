@@ -26,6 +26,7 @@ card style:
 		z index: 0
 		render style : image
 		popup style  : in place
+		tab index: 10
 
 		choice images:
 			haas-bioroid : CorpIceDefaultHB.png
@@ -34,4 +35,96 @@ card style:
 			weyland      : CorpIceDefaultWeyland.png
 			neutral-corp : CorpIceDefaultNeutral-Corp.png
 
+
+	influence:
+		left : 675
+		top  : 741
+		width  : 42
+		height : 210
+		z index : 3
+		render style : image
+		popup style  : in place
+		tab index: 9
+		choice images:
+			5: /netrunner-mnemic-common.mse-include/IconInfluence5Vertical.png
+			4: /netrunner-mnemic-common.mse-include/IconInfluence4Vertical.png
+			3: /netrunner-mnemic-common.mse-include/IconInfluence3Vertical.png
+			2: /netrunner-mnemic-common.mse-include/IconInfluence2Vertical.png
+			1: /netrunner-mnemic-common.mse-include/IconInfluence1Vertical.png
+			0: /netrunner-mnemic-common.mse-include/IconInfluence0Vertical.png
+
+
+	art:
+		left : 0
+		top  : 542
+		width  : 750
+		height : 509
+		z index: 1
+		mask: mask_ice_artbox.png
+
+
+	cost:
+		left : 0
+		top  : 0
+		width  : 170
+		height : 170
+		padding left   : 70
+		padding top    : 61
+		padding right  : 59
+		padding bottom : 51
+		z index: 3
+		alignment: center middle
+		tab index: 3
+		font:
+			name: BankGothicBT-Medium
+			size          : 64
+			color: rgb(255, 255, 255)
+
+
+	strength:
+		left : 0
+		top  : 1046
+		width  : 160
+		height : 160
+		padding left   : 25
+		padding right  : 60
+		padding bottom : 54
+		z index: 4
+		angle: 90
+		alignment: center middle justify-all if-overflow
+		tab index: 3
+		font:
+			name: BankGothicBT-Medium
+			size          : 64
+			scale down to : 64
+
+
+	text:
+		left : 115
+		top  : 126
+		width  : 567
+		height : 413
+		padding left   : 25
+		padding right  : 25
+		padding top    : 25
+		padding bottom : 25
+		z index: 2
+		tab index: 3
+		line height hard : 1.4
+		font:
+			name: Minion Pro
+			size: { parse_number(styling.text_font_size, default: 24) }
+			scale down to: 18
+		symbol font:
+			name: { normalize_package_name(set.textbox_symbols) }
+			size: { parse_number(styling.symbol_font_size, default: 18) }
+			scale down to: 18
+#		angle: 90
+
+
+##############################
+
+# 	influence:
+#		left : 675
+#		top  : { if card.faction=="neutral-corp" then 841 else 741 }
 

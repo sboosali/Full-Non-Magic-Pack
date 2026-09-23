@@ -1005,7 +1005,7 @@ format_card_type := {
 	then to_upper(t) + ": "
 
 	else if t!=""
-	then to_upper(t)
+	then to_upper(t) + "  "
 
 	else ""
 }@(subtypes: "")

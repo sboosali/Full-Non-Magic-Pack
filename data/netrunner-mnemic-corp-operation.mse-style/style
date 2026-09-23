@@ -35,3 +35,55 @@ card style:
 			neutral-corp : CorpOperationDefaultNeutral-Corp.png
 
 
+
+	influence:
+		left : { if card.faction=="neutral-corp" then 33 else 107 }
+		top  : 992
+		width  : 210
+		height : 42
+		z index : 3
+		tab index: 9
+		render style : image
+		popup style  : in place
+		choice images:
+			5: /netrunner-mnemic-common.mse-include/IconInfluence5Horizontal.png
+			4: /netrunner-mnemic-common.mse-include/IconInfluence4Horizontal.png
+			3: /netrunner-mnemic-common.mse-include/IconInfluence3Horizontal.png
+			2: /netrunner-mnemic-common.mse-include/IconInfluence2Horizontal.png
+			1: /netrunner-mnemic-common.mse-include/IconInfluence1Horizontal.png
+			0: /netrunner-mnemic-common.mse-include/IconInfluence0Horizontal.png
+
+
+	cost:
+		left : 0
+		top  : 0
+		width  : 170
+		height : 170
+		padding left   : 55
+		padding top    : 63
+		padding right  : 59
+		padding bottom : 51
+		z index: 3
+		alignment: center middle
+		tab index: 2
+		font:
+			name  : BankGothicBT-Medium
+			size  : 64
+			color : rgb(255, 255, 255)
+
+
+	footer:
+		left : { if card.faction=="neutral-corp" then 255 else 329 }
+		top  : 991
+		right  : 740
+		bottom : 1046
+		z index: 2
+		alignment: center middle
+		tab index: 10
+		font:
+			name  : Arial Narrow
+			size  : 14
+			color : rgb(255, 255, 255)
+
+
+##############################
