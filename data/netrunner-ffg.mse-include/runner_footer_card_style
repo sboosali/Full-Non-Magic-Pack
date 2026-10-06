@@ -1,0 +1,47 @@
+card style:
+
+	illustrator:
+		left : 0
+		top  : 995
+		right  : 497
+		bottom : 1046
+		padding left : 10
+		z index: 2
+		alignment: left middle
+		tab index: 10
+		font:
+			name  : Arial
+			size  : { footer_font_size() }
+			color : white
+
+	designer:
+		left : 498
+		top  : 995
+		right  : 600
+		bottom : 1046
+		z index: 2
+		alignment: right middle
+		font:
+			name  : Arial Narrow
+			size  : { footer_font_size() }
+			color : white
+
+	index:
+		left : 601
+		top  : 995
+		right  : 651
+		bottom : 1046
+		z index: 2
+		alignment: right middle
+		font:
+			name  : Arial Narrow
+			size  : 16
+			color : white
+
+	logo:
+		left : 652
+		top  : 1008
+		width  : 25
+		height : 25
+		z index: 2
+		default: { logo_image() }

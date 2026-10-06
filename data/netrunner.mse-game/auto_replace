@@ -1,4 +1,12 @@
-﻿##############################
+﻿
+# NB.:
+#
+# The naming convention is TODO.
+#
+# 
+#
+
+##############################
 
 auto replace:
 	match   : ->
@@ -14,8 +22,8 @@ auto replace:
 #	replace : ⟶
 
 auto replace:
-	match   : *
-	replace : •
+	match   : * 
+	replace : • 
 
 auto replace:
 	match   : MIN
@@ -46,12 +54,94 @@ auto replace:
 ##############################
 
 auto replace:
-	match   : 1c
-	replace : 1<sym>C</sym>
+	match   : etr
+	replace : End the run.
+
+##############################
 
 auto replace:
-	match   : 1C
-	replace : 1<atom-symbol><sym>credit</sym></atom-symbol>
+	match   : Xc
+	replace : X[credit]
+
+auto replace:
+	match   : 1c
+	replace : 1[credit]
+
+auto replace:
+	match   : 2c
+	replace : 2[credit]
+
+auto replace:
+	match   : 3c
+	replace : 3[credit]
+
+auto replace:
+	match   : 4c
+	replace : 4[credit]
+
+auto replace:
+	match   : 5c
+	replace : 5[credit]
+
+auto replace:
+	match   : 6c
+	replace : 6[credit]
+
+auto replace:
+	match   : 7c
+	replace : 7[credit]
+
+auto replace:
+	match   : 8c
+	replace : 8[credit]
+
+auto replace:
+	match   : 9c
+	replace : 9[credit]
+
+auto replace:
+	match   : 10c
+	replace : 10[credit]
+
+auto replace:
+	match   : 11c
+	replace : 11[credit]
+
+auto replace:
+	match   : 12c
+	replace : 12[credit]
+
+auto replace:
+	match   : 13c
+	replace : 13[credit]
+
+auto replace:
+	match   : 14c
+	replace : 14[credit]
+
+auto replace:
+	match   : 15c
+	replace : 15[credit]
+
+auto replace:
+	match   : 16c
+	replace : 16[credit]
+
+auto replace:
+	match   : 17c
+	replace : 17[credit]
+
+auto replace:
+	match   : 18c
+	replace : 18[credit]
+
+auto replace:
+	match   : 19c
+	replace : 19[credit]
+
+auto replace:
+	match   : 20c
+	replace : 20[credit]
 
 ##############################
 
@@ -121,3 +211,17 @@ auto replace:
 
 ##############################
 
+auto replace:
+	match   : mdl1
+	replace : Resolve 1 of the following:\n• \n• 
+
+##############################
+
+
+##############################
+
+
+##############################
+
+
+##############################

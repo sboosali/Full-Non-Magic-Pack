@@ -26,11 +26,11 @@ keyword mode:
 
 keyword mode:
 	name: ability
-	description: “Keyword abilities” (e.g. `Dividends 1`, `Hidden`). At start-of-line, in a comma-separated list.
+	description: Keyword abilities (e.g. `Dividends 1`, `Hidden`). At start-of-line, in a comma-separated list.
 
 keyword mode:
 	name: phrase
-	description: “Keyword phrases” (e.g. `unique (⬥)`). Reminder text follows immediately afterwards.
+	description: Keyword phrases (e.g. `unique (⬥)`). Reminder text follows immediately afterwards.
 
 ##############################
 

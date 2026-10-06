@@ -8,14 +8,61 @@ installer group : Netrunner/MNeMiC templates/Corp Agenda
 icon            : preview.jpg
 
 depends on: netrunner.mse-game                    2026-10
-depends on: netrunner-mnemic-common.mse-include   2026-10
+depends on: netrunner-ffg.mse-include             2026-10
 depends on: netrunner-ffg-symbols.mse-symbol-font 2026-10
 
-include file: /netrunner-mnemic-common.mse-include/default_style
+##############################
+
+include file: /netrunner-ffg.mse-include/default_styling
+
+# # # # # # # # # # # # # # # 
+
+styling field:
+	type: color
+	name: agenda point value color
+
+	default: "#a8e3ef"
+	allow custom: true
+
+	choice:
+		name  : Default
+		color : #a8e3ef
+	choice:
+		name  : Haas-Bioroid
+		color : #8a2be2
+	choice:
+		name  : Jinteki
+		color : #dc143c
+	choice:
+		name  : NBN
+		color : #ff8c00
+	choice:
+		name  : Weyland
+		color : #006400
+
+	description: #A8E3EF by default (a soft cyan).
+
+# # # # # # # # # # # # # # # 
+
+styling field:
+	type: boolean
+	name: should agenda point value color match faction
+
+	initial: no
+	description: 
 
 ##############################
 
 card style:
+
+
+	art:
+		left : 77
+		top  : 0
+		width  : 673
+		height : 610
+		z index: 1
+		mask: mask_agenda_artwork.png
 
 
 	faction:
@@ -24,9 +71,9 @@ card style:
 		width  : 750
 		height : 1050
 		z index: 0
+		tab index: 5
 		render style : image
 		popup style  : in place
-
 		choice images:
 			haas-bioroid : CorpAgendaDefaultHB.png
 			jinteki      : CorpAgendaDefaultJinteki.png
@@ -35,3 +82,158 @@ card style:
 			neutral-corp : CorpAgendaDefaultNeutral-Corp.png
 
 
+	influence:
+		left : { if is_card_neutral() then 33 else 107 }
+		top  : 992
+		width  : 210
+		height : 42
+		z index : 2
+		visible : { is_card_neutral() or (value != "0") }
+		tab index: 9
+		render style : image
+		popup style  : in place
+		choice images:
+			5: /netrunner-ffg.mse-include/IconInfluence5Horizontal.png
+			4: /netrunner-ffg.mse-include/IconInfluence4Horizontal.png
+			3: /netrunner-ffg.mse-include/IconInfluence3Horizontal.png
+			2: /netrunner-ffg.mse-include/IconInfluence2Horizontal.png
+			1: /netrunner-ffg.mse-include/IconInfluence1Horizontal.png
+			0: /netrunner-ffg.mse-include/IconInfluence0Horizontal.png
+
+
+	requirement:
+		left : 610
+		top  : 0
+		width  : 140
+		height : 140
+		padding left   : 37
+		padding right  : 28
+		padding top    : 25
+		padding bottom : 35
+		z index: 2
+		alignment: center middle
+		tab index: 2
+		font:
+			name: BankGothicBT-Medium
+			size: 64
+			color: white
+			stroke color  : black
+			stroke radius : 1
+			stroke blur   : 0
+
+	points:
+		left : 0
+		top  : 480
+		width  : 160
+		height : 130
+		padding left   : 55
+		padding right  : 30
+		padding top    : 60
+		padding bottom : 20
+		z index: 2
+		alignment: center middle
+		tab index: 3
+		font:
+			name: BankGothicBT-Medium
+			size: 64
+			color: { agenda_point_value_color() }
+			stroke color  : black
+			stroke radius : 1
+			stroke blur   : 0
+
+
+	title:
+		left : 30
+		top  : 0
+		width  : 580
+		height : 120
+		padding left   : { 25 + (if is_card_unique() then 15 else 0) }
+		padding right  : 25
+		padding top    : 25
+		padding bottom : 25
+		z index: 3
+		alignment: left bottom shrink-overflow
+		tab index: 4
+		font:
+			name: { title_font_name() }
+			size: { title_font_size() }
+
+	unique:
+		left : 40
+		top  : 0
+		width  : 30
+		height : 140
+		z index: 3
+		alignment: right middle
+		tab index: 3
+		render style : image
+		popup style  : dropdown
+		choice images:
+			unique: /netrunner-ffg-symbols.mse-symbol-font/UNIQUE.png
+
+
+	cardtype:
+		left : 70
+		top  : 650
+		right  : 239
+		height : 70
+		z index: 3
+		alignment: right middle shrink-overflow
+		font:
+			name: Monkirta Pursuit NC
+			size: 24
+
+	subtypes:
+		left : 240
+		top  : 650
+		width  : 400
+		height : 70
+		z index: 3
+		alignment: left middle shrink-overflow
+		tab index: 5
+		font:
+			name: { subtypes_font_name() }
+			size: { subtypes_font_size() }
+
+
+	text:
+		left : 60
+		top  : 710
+		width  : 630
+		height : 280
+		padding left   : 20
+		padding right  : 20
+		padding top    : 5
+		padding bottom : 10
+		z index: 2
+		mask: mask_agenda_textbox.png
+		tab index: 1
+		line height hard : 1.4
+		line height line : 1.8
+		font:
+			name: { text_font_name() }
+			size: { text_font_size() }
+			scale down to: 18
+		symbol font:
+			name: { which_textbox_symbols() }
+			size: { symbol_font_size() }
+			scale down to: 18
+
+
+	footer:
+		left : { if is_card_neutral() then 255 else 115 }
+		top  : 991
+		right  : 740
+		bottom : 1046
+		z index: 3
+		alignment: center middle
+		tab index: 10
+		font:
+			name  : { footer_font_name() }
+			size  : { footer_font_size() }
+			color : white
+
+
+include file: /netrunner-ffg.mse-include/default_card_styles
+
+##############################

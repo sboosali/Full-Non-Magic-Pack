@@ -111,6 +111,20 @@ word list:
 	word: Virus
 	word: Weapon
 
+# # # # # # # # # # # # # # 
+#TODO
+
+word list:
+	name: grouped-subtypes-en
+	word:
+		script: custom_subtypes()
+		line below: true
+	word:
+		script: written_subtypes()
+		line below: true
+	word:
+		script: official_subtypes()
+
 ##############################
 # Runner subtypes:
 # # # # # # # # # # # # # # 
@@ -123,11 +137,40 @@ word list:
 	word:
 		name: G-mod
 		line below: true
+
 	word: Digital
-	word: Clone
 	word: Bioroid
+	word: Clone
 
 # # # # # # # # # # # # # # # 
+
+word list:
+	name: program-type-en
+
+	word:
+		name: Icebreaker
+		line below: true
+
+	word: Virus
+	word: Trojan
+	word: Daemon
+	word:
+		name: Stealth
+		line below: true
+
+	word: Ritzy
+	word: Seedy
+	word:
+		name: Cloud
+		line below: true
+
+	word:
+		name: ...
+		word:
+			name: ...
+			script: all_subtypes_string()
+
+# 
 
 word list:
 	name: breaker-type-en
@@ -138,22 +181,6 @@ word list:
 		name: Decoder
 		line below: true
 	word: AI
-
-# 
-
-word list:
-	name: program-type-en
-
-	word: Icebreaker
-	word: Virus
-	word:
-		name: Trojan
-		line below: true
-
-	word: Stealth
-	word:
-		name: Daemon
-		line below: true
 
 # # # # # # # # # # # # # # # 
 
@@ -172,10 +199,15 @@ word list:
 		name: Priority
 		line below: true
 
-	word: Stealth
 	word: Job
 	word: Mod
 	word: Sabotage
+	word:
+		name: Stealth
+		line below: true
+
+	word: Seedy
+	word: Ritzy
 
 # # # # # # # # # # # # # # # 
 
@@ -197,7 +229,12 @@ word list:
 	word: Gear
 	word: Mod
 	word: Weapon
-	word: Vehicle
+	word:
+		name: Vehicle
+		line below: true
+
+	word: Seedy
+	word: Ritzy
 
 # # # # # # # # # # # # # # # 
 
@@ -218,10 +255,10 @@ word list:
 
 	word: Seedy
 	word: Ritzy
-	word: Clone
 	word: Bioroid
-	word: Companion
+	word: Clone
 	word: Sabotage
+	word: Companion
 
 ##############################
 # Corp subtypes:
@@ -232,7 +269,10 @@ word list:
 
 	word: Megacorp
 	word: Division
-	word: Subsidiary
+	word:
+		name: Subsidiary
+		line below: true
+
 	word: Corp
 
 # # # # # # # # # # # # # # # 
@@ -250,8 +290,13 @@ word list:
 	word: Public
 	word: Liability
 	word: Expendable
-	word: Ambush
+	word:
+		name: Ambush
+		line below: true
+
 	word: Beanstalk
+	word: Ritzy
+	word: Seedy
 
 # # # # # # # # # # # # # # # 
 
@@ -310,6 +355,12 @@ word list:
 	word: Reprisal
 	word: Liability
 	word: Psi
+	word:
+		name: Ambush
+		line below: true
+
+	word: Ritzy
+	word: Seedy
 
 # # # # # # # # # # # # # # # 
 
@@ -333,16 +384,19 @@ word list:
 		name: Character
 		line below: true
 
+	word: Liability
+	word: Expendable
+	word: Off-site
+	word:
+		name: Psi
+		line below: true
+
 	word: Ritzy
 	word: Seedy
 	word: Bioroid
 	word: 
 		name: Clone
 		line below: true
-
-	word: Liability
-	word: Expendable
-	word: Off-site
 	word: Beanstalk
 
 # # # # # # # # # # # # # # # 
@@ -366,30 +420,25 @@ word list:
 		name: Character
 		line below: true
 
+	word: Liability
+	word: Expendable
+	word:
+		name: Psi
+		line below: true
+
 	word: Ritzy
 	word: Seedy
 	word: Bioroid
 	word: 
 		name: Clone
 		line below: true
-
-	word: Liability
-	word: Expendable
-	word: Off-site
 	word: Beanstalk
 
 ##############################
 
 word list:
-	name: 
-
-	word: 
+	name: illustrator
 	word:
-		name: 
-		line below: true
-
-	word:
-		name: subtypes
-		script: "Academic, AI, AP, Advertisement, Alliance, Ambush, Barrier, Beanstalk, Bioroid, Black Ops, Bomb, Caïssa, Cast, Character, Chip, Clan, Clone, Cloud, Code Gate, Companion, Condition, Connection, Console, Consumer-grade, Corp, Corporation, Current, Cybernetic, Cyborg, Daemon, Decoder, Deep Net, Deflector, Department, Destroyer, Deva, Digital, Directive, Division, Double, Enforcer, Executive, Expansion, Expendable, Facility, Fracter, G-mod, Gear, Genetics, Government, Grail, Gray Ops, Harmonic, Hostile, Icebreaker, Industrial, Initiative, Job, Killer, Liability, Link, Location, Lockdown, Mandate, Megacorp, Mod, Morph, Mythic, NEXT, Natural, Observer, Off-site, Orgcrime, Police Department, Political, Priority, Psi, Public, Region, Remote, Reprisal, Research, Ritzy, Run, Sabotage, Security, Security Protocol, Seedy, Sensie, Sentry, Source, Stealth, Subsidiary, Sysop, Terminal, Tracer, Transaction, Trap, Triple, Trojan, Unorthodox, Unsubstantiated, Vehicle, Virtual, Virus, Weapon"
+		script: collect_illustrators()
 
 ##############################

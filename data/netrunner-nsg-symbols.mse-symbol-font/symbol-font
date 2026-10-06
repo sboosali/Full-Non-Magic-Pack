@@ -7,7 +7,7 @@ icon: preview.png
 
 ##############################
 
-image font size: 75
+image font size: 100
 horizontal space: 2
 
 ##############################
@@ -20,21 +20,31 @@ insert symbol menu:
 	item: subroutine
 	item:
 		type: line
-	item: interrupt
+	item:
+		name: interrupt
+		label: Interrupt (!)
 	item: link
-	item: mu
+	item:
+		name: mu
+		label: MU
+	item: unique
 	item:
 		type: line
 	item:
 		name: (Corp factions)
 		type: submenu
-		item: haas-bioroid
+		item:
+			name: haas-bioroid
+			label: Haas-Bioroid
 		item: jinteki
-		item: nbn
+		item:
+			name: nbn
+			label: NBN
 		item: weyland
 		item: neutral
 		item:
 			type: line
+		item: neutral
 	item:
 		name: (Runner factions)
 		type: submenu
@@ -43,8 +53,11 @@ insert symbol menu:
 		item: shaper
 	item:
 		type: line
-	item: agenda_points
-	item: rez
+	item:
+		name: (Other symbols)
+		type: submenu
+		item: rez
+		item: agenda-points
 
 ##############################
 
@@ -56,15 +69,19 @@ symbol:
 	code  : C
 	image : NSG_CREDIT.png
 
+symbol:
+	code  : $
+	image : NSG_CREDIT.png
+
 # 
 
 symbol:
 	code  : recurring
-	image : NSG_recurring_credit.png
+	image : NSG_RECURRING_CREDIT.png
 
 symbol:
 	code  : R
-	image : NSG_recurring_credit.png
+	image : NSG_RECURRING_CREDIT.png
 
 # 
 
@@ -83,7 +100,7 @@ symbol:
 	image : NSG_TRASH_ABILITY.png
 
 symbol:
-	code  : Z
+	code  : T
 	image : NSG_TRASH_ABILITY.png
 
 # 
@@ -96,10 +113,18 @@ symbol:
 	code  : S
 	image : NSG_SUBROUTINE.png
 
+symbol:
+	code  : =
+	image : NSG_SUBROUTINE.png
+
 ##############################
 
 symbol:
 	code  : mu
+	image : NSG_MU.png
+
+symbol:
+	code  : M
 	image : NSG_MU.png
 
 # # # # # # # # # # # # # # # 
@@ -112,6 +137,10 @@ symbol:
 
 symbol:
 	code  : interrupt
+	image : NSG_INTERRUPT.png
+
+symbol:
+	code  : I
 	image : NSG_INTERRUPT.png
 
 symbol:
@@ -163,7 +192,7 @@ symbol:
 # 
 
 symbol:
-	code  : agenda_points
+	code  : agenda-points
 	image : NSG_AGENDA.png
 
 ##############################

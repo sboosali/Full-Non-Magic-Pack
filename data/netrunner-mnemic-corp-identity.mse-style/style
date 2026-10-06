@@ -8,14 +8,32 @@ installer group : Netrunner/MNeMiC templates/Corp Identity
 icon            : preview.jpg
 
 depends on: netrunner.mse-game                    2026-10
-depends on: netrunner-mnemic-common.mse-include   2026-10
+depends on: netrunner-ffg.mse-include             2026-10
 depends on: netrunner-ffg-symbols.mse-symbol-font 2026-10
 
-include file: /netrunner-mnemic-common.mse-include/default_style
+##############################
+
+include file: /netrunner-ffg.mse-include/default_styling
+
+# # # # # # # # # # # # # # # 
+
+styling field:
+	type: text
+	name: subtitle font size
+
+	description: 
 
 ##############################
 
 card style:
+
+	art:
+		left : 52
+		top  : 0
+		width  : 652
+		height : 754
+		z index: 1
+		mask: mask_corp_identity_artwork.png
 
 
 	faction:
@@ -24,6 +42,7 @@ card style:
 		width  : 750
 		height : 1050
 		z index: 0
+		tab index: 5
 		render style : image
 		popup style  : in place
 
@@ -35,3 +54,79 @@ card style:
 			neutral-corp : CorpCorpIDDefaultNeutral-Corp.png
 
 
+	cardtype:
+		left : 50
+		top  : 800
+		width  : 600
+		height : 66
+		z index: 3
+		alignment: right middle shrink-overflow
+		font:
+			name: Monkirta Pursuit NC
+			size: 24
+
+	subtypes:
+		left : 241
+		top  : 800
+		right  : 650
+		height : 66
+		padding top    : 17
+		padding bottom : 11
+		z index: 3
+		alignment: left middle shrink-overflow
+		tab index: 4
+		font:
+			name: { subtypes_font_name() }
+			size: { subtypes_font_size() }
+
+	title:
+		left : 105
+		top  : 35
+		width  : 590
+		height : 80
+		padding left   : 10
+		padding right  : 50
+		padding top    : 30
+		padding bottom : 10
+		z index: 3
+		alignment: left bottom shrink-overflow
+		tab index: 2
+		font:
+			name: { title_font_name() }
+			size: { title_font_size() }
+
+	subtitle:
+		left : 0
+		top  : 113
+		width  : 635
+		height : 65
+		padding left   : 50
+		padding right  : 50
+		padding top    : 10
+		padding bottom : 35
+		z index: 3
+		alignment: left bottom shrink-overflow
+		tab index: 3
+		font:
+			name: { subtitle_font_name() }
+			size: { subtitle_font_size() }
+
+
+	footer:
+		left : 692
+		top  : 650
+		width  : 575
+		height : 58
+		z index: 2
+		angle: 90
+		alignment: left middle
+		tab index: 10
+		font:
+			name  : { footer_font_name() }
+			size  : { footer_font_size() }
+			color : white
+
+
+include file: /netrunner-ffg.mse-include/default_card_styles
+
+##############################

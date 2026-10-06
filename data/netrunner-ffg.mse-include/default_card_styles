@@ -1,0 +1,14 @@
+card style:
+
+	corners:
+		left : 0
+		top  : 0
+		width  : 750
+		height : 1046
+		z index : 5
+		mask  : { default_corners_mask() }
+		image : /netrunner-ffg.mse-include/750x1046_no-corners.png
+		render style: image
+		choice images :
+			none      : /netrunner-ffg.mse-include/ui-no-corners.png
+			rounded   : /netrunner-ffg.mse-include/ui-rounded-corners.png

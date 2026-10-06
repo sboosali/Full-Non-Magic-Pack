@@ -8,14 +8,25 @@ installer group : Netrunner/MNeMiC templates/Corp ICE
 icon            : preview.jpg
 
 depends on: netrunner.mse-game                    2026-10
-depends on: netrunner-mnemic-common.mse-include   2026-10
+depends on: netrunner-ffg.mse-include             2026-10
 depends on: netrunner-ffg-symbols.mse-symbol-font 2026-10
 
-include file: /netrunner-mnemic-common.mse-include/default_style
+##############################
+
+include file: /netrunner-ffg.mse-include/default_styling
 
 ##############################
 
 card style:
+
+
+	art:
+		left : 0
+		top  : 542
+		width  : 750
+		height : 509
+		z index: 1
+		mask: mask_ice_artwork.png
 
 
 	faction:
@@ -24,6 +35,7 @@ card style:
 		width  : 750
 		height : 1050
 		z index: 0
+		tab index: 5
 		render style : image
 		popup style  : in place
 		tab index: 10
@@ -46,21 +58,12 @@ card style:
 		popup style  : in place
 		tab index: 9
 		choice images:
-			5: /netrunner-mnemic-common.mse-include/IconInfluence5Vertical.png
-			4: /netrunner-mnemic-common.mse-include/IconInfluence4Vertical.png
-			3: /netrunner-mnemic-common.mse-include/IconInfluence3Vertical.png
-			2: /netrunner-mnemic-common.mse-include/IconInfluence2Vertical.png
-			1: /netrunner-mnemic-common.mse-include/IconInfluence1Vertical.png
-			0: /netrunner-mnemic-common.mse-include/IconInfluence0Vertical.png
-
-
-	art:
-		left : 0
-		top  : 542
-		width  : 750
-		height : 509
-		z index: 1
-		mask: mask_ice_artbox.png
+			5: /netrunner-ffg.mse-include/IconInfluence5Vertical.png
+			4: /netrunner-ffg.mse-include/IconInfluence4Vertical.png
+			3: /netrunner-ffg.mse-include/IconInfluence3Vertical.png
+			2: /netrunner-ffg.mse-include/IconInfluence2Vertical.png
+			1: /netrunner-ffg.mse-include/IconInfluence1Vertical.png
+			0: /netrunner-ffg.mse-include/IconInfluence0Vertical.png
 
 
 	cost:
@@ -78,7 +81,7 @@ card style:
 		font:
 			name: BankGothicBT-Medium
 			size          : 64
-			color: rgb(255, 255, 255)
+			color: white
 
 
 	strength:
@@ -99,7 +102,7 @@ card style:
 			scale down to : 64
 
 
-	text:
+	box:
 		left : 115
 		top  : 126
 		width  : 567
@@ -109,22 +112,42 @@ card style:
 		padding top    : 25
 		padding bottom : 25
 		z index: 2
+		alignment: shrink-overflow
 		tab index: 3
 		line height hard : 1.4
+		line height line : 1.8
 		font:
-			name: Minion Pro
-			size: { parse_number(styling.text_font_size, default: 24) }
+			name: { text_font_name() }
+			size: { text_font_size() }
 			scale down to: 18
 		symbol font:
-			name: { normalize_package_name(set.textbox_symbols) }
-			size: { parse_number(styling.symbol_font_size, default: 18) }
+			name: { which_textbox_symbols() }
+			size: { symbol_font_size() }
 			scale down to: 18
-#		angle: 90
 
+
+	footer:
+		left : 692
+		top  : 730
+		width  : 625
+		height : 38
+		z index: 2
+		angle: 90
+		alignment: left middle
+		tab index: 10
+		font:
+			name  : { footer_font_name() }
+			size  : { footer_font_size() }
+			color : white
+
+
+include file: /netrunner-ffg.mse-include/default_card_styles
 
 ##############################
 
+#TODO	angle: 90
+
 # 	influence:
 #		left : 675
-#		top  : { if card.faction=="neutral-corp" then 841 else 741 }
+#		top  : { if is_card_neutral() then 841 else 741 }
 

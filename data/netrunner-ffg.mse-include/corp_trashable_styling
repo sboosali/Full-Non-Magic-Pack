@@ -1,0 +1,23 @@
+# # # # # # # # # # # # # # # 
+
+styling field:
+	type: slider
+	name: trash cost scale
+
+	initial   : 100
+	increment : 001
+	minimum   : 050
+	maximum   : 200
+
+	description: Percentage of how many times larger should the trashcan be? e.g. 125% (is 100% by default).
+
+# 
+
+styling field:
+	type: color
+	name: trash cost color
+
+	default: "#81776a"
+	allow custom: true
+
+	description: What color should the trashcan be? rgb(129,119,106) by default (a brownish-gray).

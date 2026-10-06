@@ -6,15 +6,15 @@ icon: preview.jpg
 position hint: -2
 
 version: 2026-10
-depends on: netrunner-mnemic-common.mse-include 2026-09
+depends on: netrunner-ffg.mse-include 2026-10
 
 #read only file: custom_*
 
-##############################################################
+##############################
 
 init script: include file: init_script
 
-##############################################################
+##############################
 
 include file: card_fields
 include file: set_fields
@@ -28,4 +28,9 @@ include file: keywords_en
 include file: statistics_en
 # include localized file: statistics
 
-##############################################################
+##############################
+
+# import script          : adjust_card_stylesheet(input)
+# card list color script : nr_card_list_color(input)
+
+##############################

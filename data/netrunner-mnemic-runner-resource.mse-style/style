@@ -8,14 +8,25 @@ installer group : Netrunner/MNeMiC templates/Runner Resource
 icon            : preview.jpg
 
 depends on: netrunner.mse-game                    2026-10
-depends on: netrunner-mnemic-common.mse-include   2026-10
+depends on: netrunner-ffg.mse-include             2026-10
 depends on: netrunner-ffg-symbols.mse-symbol-font 2026-10
 
-include file: /netrunner-mnemic-common.mse-include/default_style
+##############################
+
+include file: /netrunner-ffg.mse-include/default_styling
 
 ##############################
 
 card style:
+
+
+	art:
+		left : 0
+		top  : 0
+		width  : 750
+		height : 521
+		z index: 1
+		mask: mask_resource_artwork.png
 
 
 	faction:
@@ -24,6 +35,7 @@ card style:
 		width  : 750
 		height : 1050
 		z index: 0
+		tab index: 5
 		render style : image
 		popup style  : in place
 		choice images:
@@ -34,6 +46,23 @@ card style:
 			apex           : RunnerResourceDefaultApex.png
 			adam           : RunnerResourceDefaultAdam.png
 			sunny          : RunnerResourceDefaultSunny.png
+
+	influence:
+		left : 701
+		top  : 764
+		width  : 42
+		height : 210
+		z index : 3
+		tab index: 6
+		render style : image
+		popup style  : in place
+		choice images:
+			5: /netrunner-ffg.mse-include/IconInfluence5Vertical.png
+			4: /netrunner-ffg.mse-include/IconInfluence4Vertical.png
+			3: /netrunner-ffg.mse-include/IconInfluence3Vertical.png
+			2: /netrunner-ffg.mse-include/IconInfluence2Vertical.png
+			1: /netrunner-ffg.mse-include/IconInfluence1Vertical.png
+			0: /netrunner-ffg.mse-include/IconInfluence0Vertical.png
 
 
 	cost:
@@ -47,42 +76,93 @@ card style:
 		padding bottom : 51
 		z index: 3
 		alignment: center middle
-		tab index: 5
+		tab index: 2
 		font:
 			name: BankGothicBT-Medium
-			size          : 64
-			color: rgb(255, 255, 255)
+			size: 64
+			color: white
 
 
-	influence:
-		left : 701
-		top  : 764
-		width  : 42
-		height : 210
-		z index : 3
-		tab index: 9
-		render style : image
-		popup style  : in place
-		choice images:
-			5: /netrunner-mnemic-common.mse-include/IconInfluence5Vertical.png
-			4: /netrunner-mnemic-common.mse-include/IconInfluence4Vertical.png
-			3: /netrunner-mnemic-common.mse-include/IconInfluence3Vertical.png
-			2: /netrunner-mnemic-common.mse-include/IconInfluence2Vertical.png
-			1: /netrunner-mnemic-common.mse-include/IconInfluence1Vertical.png
-			0: /netrunner-mnemic-common.mse-include/IconInfluence0Vertical.png
-
-
-	footer:
-		left : 152
-		top  : 991
-		right  : 665
-		bottom : 1046
-		z index: 2
-		alignment: center middle
-		tab index: 10
+	title:
+		left : 160
+		top  : 0
+		right : 750
+		height : 90
+		padding left : { if is_card_unique() then 25 else 0 }
+		padding top  : 10
+		z index: 4
+		alignment: left middle shrink-overflow
+		tab index: 4
 		font:
-			name: Arial Narrow
-			size: 14
-			color  : rgb(255, 255, 255)
+			name: { title_font_name() }
+			size: { title_font_size() }
+
+	unique:
+		left : 155
+		top  : 10
+		width  : 25
+		height : 80
+		z index: 5
+		alignment: right middle
+		tab index: 3
+		render style : image
+		popup style  : dropdown
+		choice images:
+			unique: /netrunner-ffg-symbols.mse-symbol-font/UNIQUE.png
 
 
+	cardtype:
+		left : 34
+		top  : 490
+		right  : 220
+		height : 56
+		z index: 3
+		alignment: right middle shrink-overflow
+		font:
+			name: Monkirta Pursuit NC
+			size: 24
+
+	subtypes:
+		left : 221
+		top  : 491
+		width  : 376
+		height : 56
+		z index: 3
+		alignment: left middle shrink-overflow
+		tab index: 4
+		font:
+			name: { subtypes_font_name() }
+			size: { subtypes_font_size() }
+
+
+	box:
+		left : 0
+		top  : 560
+		width  : 630
+		height : 430
+		padding left   : 35
+		padding right  : 35
+		padding top    : 25
+		padding bottom : 25
+		z index: 2
+		tab index: 1
+		line height hard : 1.4
+		line height line : 1.8
+		font:
+			name: { text_font_name() }
+			size: { text_font_size() }
+			scale down to: 18
+		symbol font:
+			name: { which_textbox_symbols() }
+			size: { symbol_font_size() }
+			scale down to: 18
+
+
+include file: /netrunner-ffg.mse-include/runner_footer_card_style
+
+include file: /netrunner-ffg.mse-include/default_card_styles
+
+##############################
+
+#		width  : 25
+#		height : 90

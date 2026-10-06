@@ -7,17 +7,26 @@ installer group : Netrunner/MNeMiC templates/Runner Programs
 icon            : preview.jpg
 position hint   : -8
 
-depends on: netrunner.mse-game                    2026-09
-depends on: netrunner-mnemic-common.mse-include   2026-09
-depends on: netrunner-ffg-symbols.mse-symbol-font 2026-09
+depends on: netrunner.mse-game                    2026-10
+depends on: netrunner-ffg.mse-include             2026-10
+depends on: netrunner-ffg-symbols.mse-symbol-font 2026-10
 
-##############################################################
+##############################
 
-include file: /netrunner-mnemic-common.mse-include/default_style
+include file: /netrunner-ffg.mse-include/default_styling
 
-##############################################################
+##############################
 
 card style:
+
+
+	art:
+		left : 0
+		top  : 0
+		width  : 750
+		height : 480
+		z index: 1
+		mask: mask_program_artwork.png
 
 
 	faction:
@@ -26,6 +35,7 @@ card style:
 		width  : 750
 		height : 1050
 		z index: 0
+		tab index: 9
 		render style : image
 		popup style  : in place
 		choice images:
@@ -37,13 +47,6 @@ card style:
 			adam           : RunnerProgramDefaultAdam.png
 			sunny          : RunnerProgramDefaultSunny.png
 
-	art:
-		left : 0
-		top  : 0
-		width  : 750
-		height : 480
-		z index: 1
-		mask: mask_program_artbox.png
 
 	influence:
 		left : 701
@@ -51,16 +54,16 @@ card style:
 		width  : 42
 		height : 210
 		z index : 3
-		tab index: 9
+		tab index: 8
 		render style : image
 		popup style  : in place
 		choice images:
-			5: /netrunner-mnemic-common.mse-include/IconInfluence5Vertical.png
-			4: /netrunner-mnemic-common.mse-include/IconInfluence4Vertical.png
-			3: /netrunner-mnemic-common.mse-include/IconInfluence3Vertical.png
-			2: /netrunner-mnemic-common.mse-include/IconInfluence2Vertical.png
-			1: /netrunner-mnemic-common.mse-include/IconInfluence1Vertical.png
-			0: /netrunner-mnemic-common.mse-include/IconInfluence0Vertical.png
+			5: /netrunner-ffg.mse-include/IconInfluence5Vertical.png
+			4: /netrunner-ffg.mse-include/IconInfluence4Vertical.png
+			3: /netrunner-ffg.mse-include/IconInfluence3Vertical.png
+			2: /netrunner-ffg.mse-include/IconInfluence2Vertical.png
+			1: /netrunner-ffg.mse-include/IconInfluence1Vertical.png
+			0: /netrunner-ffg.mse-include/IconInfluence0Vertical.png
 
 
 	title:
@@ -69,11 +72,11 @@ card style:
 		width  : 550
 		height : 55
 		z index: 3
-		alignment: left bottom
-		tab index: 1
+		alignment: left bottom shrink-overflow
+		tab index: 6
 		font:
-			name: Trajan Pro Bold
-			size: 32
+			name: { title_font_name() }
+			size: { title_font_size() }
 
 	unique:
 		left : 0
@@ -81,12 +84,12 @@ card style:
 		width  : 40
 		height : 55
 		z index: 3
-		alignment: center middle
+		alignment: right middle
 		render style : image
 		popup style  : dropdown
-		tab index: 8
+		tab index: 5
 		choice images:
-			unique: { enlarge("/netrunner-ffg-symbols.mse-symbol-font/UNIQUE.png", border_size: parse_number(styling.unique_symbol_shrinkage, default: 0.25)) }
+			unique: { unique_diamond_image() }
 
 
 	cardtype:
@@ -103,18 +106,17 @@ card style:
 	subtypes:
 		left : 235
 		top  : 545
-		right  : 750
+		right  : 639
 		bottom : 620
 		z index: 3
 		alignment: left middle shrink-overflow
-		tab index: 2
+		tab index: 7
 		font:
-			name: Gill Sans
-			size: { parse_number(styling.subtypes_font_size, default: 20) }
-			scale down to: 12
+			name: { subtypes_font_name() }
+			size: { subtypes_font_size() }
 
 
-	text:
+	box:
 		left : 50
 		top  : 620
 		width  : 615
@@ -122,16 +124,17 @@ card style:
 		padding left   : 25
 		padding right  : 25
 		z index: 2
-		tab index: 3
 		mask: mask_program_textbox.png
+		tab index: 1
 		line height hard : 1.4
+		line height line : 1.8
 		font:
-			name: Minion Pro
-			size: { parse_number(styling.text_font_size, default: 24) }
+			name: { text_font_name() }
+			size: { text_font_size() }
 			scale down to: 18
 		symbol font:
-			name: { normalize_package_name(set.textbox_symbols) }
-			size: { parse_number(styling.symbol_font_size, default: 18) }
+			name: { which_textbox_symbols() }
+			size: { symbol_font_size() }
 			scale down to: 18
 
 
@@ -140,33 +143,18 @@ card style:
 		top  : 0
 		width  : 170
 		height : 170
-		padding left   : 55
-		padding top    : 63
-		padding right  : 59
-		padding bottom : 51
-		z index: 3
-		alignment: center middle
-		tab index: 5
-		font:
-			name: BankGothicBT-Medium
-			size          : 64
-			color: rgb(255, 255, 255)
-
-	strength:
-		left : 0
-		top  : 915
-		width  : 152
-		height : 131
-		padding left   : 15
-		padding right  : 40
-		padding bottom : 54
+		padding left   : 5
+		padding right  : 0
+		padding top    : 10
+		padding bottom : 0
 		z index: 3
 		alignment: center middle justify-all if-overflow
-		tab index: 7
+		tab index: 2
 		font:
 			name: BankGothicBT-Medium
-			size          : 64
-			scale down to : 48
+			size: 64
+			color: white
+			max stretch: 0.2
 
 	memory:
 		left : 186
@@ -175,57 +163,89 @@ card style:
 		height : 38
 		z index: 3
 		alignment: center middle
-		tab index: 6
+		tab index: 3
 		font:
 			name : BankGothicBT-Medium
 			size : 36
 			color  : rgb(102, 102, 102)
 			weight : bold
 
+	strength:
+		left : 0
+		top  : 915
+		width  : 152
+		height : 131
+		padding left   : 35
+		padding right  : 40
+		padding bottom : 54
+		z index: 3
+		alignment: center middle justify-all if-overflow
+		tab index: 4
+		font:
+			name: BankGothicBT-Medium
+			size: 64
+			max stretch: 0.5
 
-	footer:
+
+#	footer:
+#		left : 152
+#		top  : 991
+#		right  : 641
+#		bottom : 1046
+#		z index: 2
+#		alignment: middle
+#		tab index: 10
+#		font:
+#			name  : { footer_font_name() }
+#			size  : { footer_font_size() }
+#			color : white
+
+	illustrator:
 		left : 152
-		top  : 991
-		right  : 665
+		top  : 995
+		right  : 396
 		bottom : 1046
 		z index: 2
-		alignment: center middle
+		alignment: left middle
 		tab index: 10
 		font:
-			name: Arial Narrow
-			size: 14
-			color  : rgb(255, 255, 255)
+			name  : Arial
+			size  : 14
+			color : white
+
+	designer:
+		left : 397
+		top  : 995
+		right  : 600
+		bottom : 1046
+		z index: 2
+		alignment: right middle
+		font:
+			name  : Arial Narrow
+			size  : 14
+			color : white
+
+	index:
+		left : 601
+		top  : 995
+		right  : 641
+		bottom : 1046
+		z index: 2
+		alignment: right middle
+		font:
+			name  : Arial Narrow
+			size  : 14
+			color : white
 
 	logo:
 		left : 642
-		top  : 1006
+		top  : 1008
 		width  : 25
 		height : 25
 		z index: 2
-		default: { invert_image("/netrunner.mse-game/MagnumOpus.png") }
+		default: { logo_image() }
 
+
+include file: /netrunner-ffg.mse-include/default_card_styles
 
 ##############################
-
-		# padding left   : 7
-		# padding top    : 25
-		# padding right  : 130
-		# padding bottom : 30
-
-#TODO
-
-			#max width: 0.2
-
-#text
-		#padding top    : 25
-		#padding bottom : 30
-
-#logo
-#		image: { symbol_variation(symbol: set.logo, variation: "white") }
-#		default: { recolor_image("/netrunner.mse-game/MagnumOpus.png", red: "white", green: "white", blue: "white") }
-#		default: { invert_image("/netrunner.mse-game/MagnumOpus.png") }
-
-#uniq
-#		script: { enlarge_image("/netrunner-ffg-symbols.mse-symbol-font/UNIQUE.png", border_size: 2.0) }
-# # enlarge_image
-

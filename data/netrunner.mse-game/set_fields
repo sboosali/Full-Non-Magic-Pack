@@ -35,7 +35,7 @@ set field:
 set field:
 	type: symbol
 	name: logo
-	description: Set Logo (symbol). Shown in cards’ footer. NOTE! To import a PNG, after setting its transparency to white, you must filter for "Images/MSE1 files" (under the bottom-right corner of the Open File dialog). By default, the alchemical "Magnum Opus" symbol.
+	description: WIP! Set Logo (symbol). Shown in cards’ footer. NB. To import a PNG, after setting its transparency to white, you must filter for "Images/MSE1 files" (under the bottom-right corner of the Open File dialog). By default, the alchemical "Magnum Opus" symbol.
 #	default: "magnum_opus.mse-symbol"
 
 set field:
@@ -46,7 +46,7 @@ set field:
 set field:
 	type: text
 	name: copyright
-	default: "CC0"
+	default: ""
 	description: Under what copyright the cards themselves should be licensed (e.g. "CC0 2026"). Abbreviated: e.g. "CC0" for public domain, "©" for all rights reserved, etc.
 
 ##############################
@@ -55,12 +55,20 @@ set field:
 	type: info
 	name: Card Styling
 
+# 
+
+set field:
+	type: boolean
+	name: enable minifactions
+	initial: no
+	description: Whether the set has Adam/Apex/Sunny.
+
 set field:
 	type: package choice
 	name: textbox symbols
 	match: netrunner-*-symbols.mse-symbol-font
-	initial: /netrunner-ffg-symbols.mse-symbol-font
-	description: Game symbols (the [credit] diamond, [click] clock, [trash] can, etc).
+	initial: "netrunner-ffg-symbols.mse-symbol-font"
+	description: Game symbols (the [credit] diamond, [click] clock, [trash] can, etc). FFG's by default.
 
 set field:
 	type: boolean
@@ -68,28 +76,128 @@ set field:
 	initial: yes
 	description: Show card number (e.g. "001") on each card's footer, automatically?
 
+# 
+
 set field:
 	type: text
 	name: extra subtypes
-	description: Whitelist of extra subtypes to auto-embolden. Is a comma-separated value (e.g. "Nanotech, SimStim, Black ICE, Jockey,").
+	description: Whitelist of extra subtypes to auto-embolden. Is a comma-separated value (e.g. "SimStim, Nano-tech, Black ICE").
 
 set field:
 	type: text
 	name: ambiguous subtypes
-	default: "Run,Sabotage,"
+	default: "Run,Virus,Sabotage,"
 	description: Blacklist of subtypes to NOT auto-embolden. "Run, Sabotage," by default. n.b. You can still manually bold (or unbold) any words; e.g. for "**run** event".
 
+# 
+
 set field:
-	type: boolean
-	name: color subtypes
-	initial: no
-	description: Color the words "barrier"/"sentry"/"code gate" as their associated faction (for visual clarity). e.g. "Barrier" becomes dark-green like Weyland (such as in the rules-text of Fracters).
+	type: multiple choice
+	name: auto color
+	choice: ice types
+	choice: breaker types
+	choice: central servers
+	choice: game tokens
+	description: Which words to color as their associated faction. e.g. Choose "ice type" to color the word "barrier" Weyland-green, such as in the rules-text of Fracters.
 
 set field:
 	type: boolean
-	name: enable minifactions
+	name: auto color text
+	initial: yes
+	description: Auto-Color in a card's textbox.
+
+set field:
+	type: boolean
+	name: auto color subtypes
 	initial: no
-	description: Whether the set has Adam/Apex/Sunny.
+	description: Auto-Color in a card's typeline.
+
+#
+
+set field:
+	type: text
+	name: illustrator prefix
+	default: "<i>illus. </i>"
+	description: Prefix for illustator/artist credit. e.g. "🎨", "🖌 ", or "<i>illus. </i>".
+
+set field:
+	type: text
+	name: designer prefix
+	default: "des. "
+	description: Prefix for designer credit. e.g. "© " or "<i>des. </i>".
+
+set field:
+	type: text
+	name: designer suffix
+	default: " • "
+	description: Suffix for designer credit. e.g. " • ".
+
+# 
+
+set field:
+	type: boolean
+	name: influence color
+
+	description: Recolor the (blue) influence-pips.
+
+set field:
+	type: boolean
+	name: influence color matches faction
+
+	initial: no
+	description: Whether a card's (blue) influence-pips are recolored to its faction's associated color.
+
+# 
+
+set field:
+	type: text
+	name: rules text font
+	description: « Minion Pro » by default. e.g. Lexend for readability.
+
+set field:
+	type: text
+	name: subtypes font
+	description: « Gill Sans » by default. You could also try Iosevka, DesignSystemB-500R, or KimberleyW00-Light.
+
+set field:
+	type: text
+	name: card type font
+	description: « Monkirta Pursuit NC » by default.
+
+set field:
+	type: text
+	name: title font
+	description: « Trajan Pro Bold » by default. For a card's name.
+
+set field:
+	type: text
+	name: subtitle font
+	description: « Trajan Pro » by default. For an identity's subtitle.
+
+set field:
+	type: text
+	name: illustrator font
+	description: « Arial » by default.
+
+set field:
+	type: text
+	name: designer font
+	description: « Arial Narrow » by default.
+
+set field:
+	type: text
+	name: footer font
+	description: « Arial (Regular) » by default.
+
+# 
+
+set field:
+	type: choice
+	name: corners
+	choice: none
+	choice: rounded
+	initial: rounded
+	description: 
 
 ##############################
 
@@ -110,25 +218,19 @@ set field:
 	description: For which "keyword modes" should reminder text be auto-expanded? (You can still toggle reminder text on/off by right clicking a keyword on any card.)
 
 set field:
+	type: boolean
+	name: enable reminder text
+	initial: yes
+	description: Whether to expand reminder text at all.
+
+set field:
 	type: multiple choice
 	name: checking
 	initial: check spelling, check templating
 	choice: check spelling
 	choice: check templating
-	description: Mark mis-spellings and/or mis-templatings (with a wavy red underline). e.g. the word "token" in the phrase "advancement token" (which should be "counter").
-
-##############################
-
-set field:
-	type: info
-	name: Help
-
-set field:
-	type: text
-	name: help
-	multi line: true
-	editable: false
-	description: To
+	choice: check names
+	description: Mark mis-spellings and/or mis-templatings (with a wavy red underline), and card names that have already been officially printed. e.g. the word "token" in the phrase "advancement token" (which should be "counter").
 
 ##############################
 
@@ -142,6 +244,10 @@ default set style:
 	description:
 		font:
 			size: 8
+
+	auto color:
+		render style: checklist
+		direction: vertical
 
 	automatic reminder text:
 		render style: checklist
@@ -158,6 +264,13 @@ default set style:
 			fill color: rgb(255,255,255)
 			border radius: 0.05
 			border color: rgb(0,0,0)
+
+	corners:
+		render style: both
+		popup style: in place
+		choice images:
+			none    : /netrunner-ffg.mse-include/ui-no-corners.png
+			rounded : /netrunner-ffg.mse-include/ui-rounded-corners.png
 
 
 ##############################

@@ -1,0 +1,5 @@
+﻿mse version: 2.6.3
+full name: Common utilities for (MNeMiC) FFG templates
+version: 2026-10
+
+depends on: netrunner-ffg-symbols.mse-symbol-font 2026-10

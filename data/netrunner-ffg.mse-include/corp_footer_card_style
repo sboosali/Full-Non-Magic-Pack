@@ -1,0 +1,46 @@
+card style:
+
+	illustrator:
+		left : { if is_card_neutral() then 255 else 329 }
+		top  : 991
+		right  : 599
+		bottom : 1046
+		z index: 2
+		alignment: left middle
+		tab index: 10
+		font:
+			name  : Arial
+			size  : { footer_font_size() }
+			color : white
+
+	designer:
+		left : 500
+		top  : 995
+		right  : 674
+		bottom : 1046
+		z index: 2
+		alignment: right middle shrink-overflow
+		font:
+			name  : Arial Narrow
+			size  : { footer_font_size() }
+			color : white
+
+	index:
+		left : 675
+		top  : 993
+		right  : 707
+		bottom : 1046
+		z index: 2
+		alignment: right middle
+		font:
+			name  : Arial Narrow
+			size  : 16
+			color : white
+
+	logo:
+		left : 710
+		top  : 1008
+		width  : 25
+		height : 25
+		z index: 2
+		default: { logo_image() }

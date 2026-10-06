@@ -8,21 +8,27 @@ installer group : Netrunner/MNeMiC templates/Corp Asset
 icon            : preview.jpg
 
 depends on: netrunner.mse-game                    2026-10
-depends on: netrunner-mnemic-common.mse-include   2026-10
+depends on: netrunner-ffg.mse-include             2026-10
 depends on: netrunner-ffg-symbols.mse-symbol-font 2026-10
 
 ##############################
 
-include file: /netrunner-mnemic-common.mse-include/default_style
+include file: /netrunner-ffg.mse-include/default_styling
 
-styling field:
-	type: text
-	name: trash cost scale
-	description: How many times larger should the trashcan be? e.g. 1.2 (defaults to 1.0).
+include file: /netrunner-ffg.mse-include/corp_trashable_styling
 
 ##############################
 
 card style:
+
+
+	art:
+		left : 81
+		top  : 0
+		width  : 603
+		height : 506
+		z index: 1
+		mask: mask_asset_artwork.png
 
 
 	faction:
@@ -31,6 +37,7 @@ card style:
 		width  : 750
 		height : 1050
 		z index: 0
+		tab index: 5
 		render style : image
 		popup style  : in place
 
@@ -43,7 +50,7 @@ card style:
 
 
 	influence:
-		left : { if card.faction=="neutral-corp" then 33 else 107 }
+		left : { if is_card_neutral() then 33 else 107 }
 		top  : 992
 		width  : 210
 		height : 42
@@ -52,12 +59,12 @@ card style:
 		render style : image
 		popup style  : in place
 		choice images:
-			5: /netrunner-mnemic-common.mse-include/IconInfluence5Horizontal.png
-			4: /netrunner-mnemic-common.mse-include/IconInfluence4Horizontal.png
-			3: /netrunner-mnemic-common.mse-include/IconInfluence3Horizontal.png
-			2: /netrunner-mnemic-common.mse-include/IconInfluence2Horizontal.png
-			1: /netrunner-mnemic-common.mse-include/IconInfluence1Horizontal.png
-			0: /netrunner-mnemic-common.mse-include/IconInfluence0Horizontal.png
+			5: /netrunner-ffg.mse-include/IconInfluence5Horizontal.png
+			4: /netrunner-ffg.mse-include/IconInfluence4Horizontal.png
+			3: /netrunner-ffg.mse-include/IconInfluence3Horizontal.png
+			2: /netrunner-ffg.mse-include/IconInfluence2Horizontal.png
+			1: /netrunner-ffg.mse-include/IconInfluence1Horizontal.png
+			0: /netrunner-ffg.mse-include/IconInfluence0Horizontal.png
 
 
 	cost:
@@ -75,29 +82,29 @@ card style:
 		font:
 			name  : BankGothicBT-Medium
 			size  : 64
-			color : rgb(255, 255, 255)
+			color : white
 
 
 	trash:
-		left   : { stylesheet; 642 + (86 * (1 - parse_number(styling.trash_cost_scale, default: 1.0))) }
-		top    : { stylesheet; 896 + (78 * (1 - parse_number(styling.trash_cost_scale, default: 1.0))) }
-		width  : { stylesheet; 86  *            parse_number(styling.trash_cost_scale, default: 1.0) }
-		height : { stylesheet; 78  *            parse_number(styling.trash_cost_scale, default: 1.0) }
-		padding left   : { stylesheet; 25  * parse_number(styling.trash_cost_scale, default: 1.0) }
-		padding top    : { stylesheet; 15  * parse_number(styling.trash_cost_scale, default: 1.0) }
-		padding right  : { stylesheet; 10  * parse_number(styling.trash_cost_scale, default: 1.0) }
-		padding bottom : { stylesheet; 10  * parse_number(styling.trash_cost_scale, default: 1.0) }
+		left   : { stylesheet; 642 + (86 * (1 - trash_cost_scale())) }
+		top    : { stylesheet; 896 + (78 * (1 - trash_cost_scale())) }
+		width  : { stylesheet; 86  *            trash_cost_scale() }
+		height : { stylesheet; 78  *            trash_cost_scale() }
+		padding left   : { stylesheet; 35  * trash_cost_scale() }
+		padding top    : { stylesheet; 15  * trash_cost_scale() }
+		padding right  : { stylesheet; 05  * trash_cost_scale() }
+		padding bottom : { stylesheet; 10  * trash_cost_scale() }
 		z index: 4
 		alignment: center middle
 		tab index: 3
 		font:
 			name  : Impact
-			size  : { 48 * parse_number(styling.trash_cost_scale, default: 1.0) }
+			size  : { 48 * trash_cost_scale() }
 			color : rgb(129, 119, 106)
 
 
 	footer:
-		left : { if card.faction=="neutral-corp" then 255 else 329 }
+		left : { if is_card_neutral() then 255 else 329 }
 		top  : 991
 		right  : 740
 		bottom : 1046
@@ -105,10 +112,12 @@ card style:
 		alignment: center middle
 		tab index: 10
 		font:
-			name  : Arial Narrow
-			size  : 14
-			color : rgb(255, 255, 255)
+			name  : { footer_font_name() }
+			size  : { footer_font_size() }
+			color : white
 
+
+include file: /netrunner-ffg.mse-include/default_card_styles
 
 ##############################
 
@@ -124,11 +133,11 @@ extra card field:
 extra card style:
 
 	trashcan:
-		left   : { stylesheet; 642 + (86 * (1 - parse_number(styling.trash_cost_scale, default: 1.0))) }
-		top    : { stylesheet; 896 + (78 * (1 - parse_number(styling.trash_cost_scale, default: 1.0))) }
-		width  : { stylesheet; 86  *            parse_number(styling.trash_cost_scale, default: 1.0) }
-		height : { stylesheet; 78  *            parse_number(styling.trash_cost_scale, default: 1.0) }
+		left   : { stylesheet; 642 + (86 * (1 - trash_cost_scale())) }
+		top    : { stylesheet; 896 + (78 * (1 - trash_cost_scale())) }
+		width  : { stylesheet; 86  *            trash_cost_scale() }
+		height : { stylesheet; 78  *            trash_cost_scale() }
 		z index: 2
-		default: { drop_shadow( "/netrunner-mnemic-common.mse-include/TrashCost.png", offset_x: 10, offset_y: 10, blur_radius: 0.01 ) }
+		default: { drop_shadow( "/netrunner-ffg.mse-include/TrashCost.png", offset_x: 10, offset_y: 10, blur_radius: 0.01 ) }
 
 ##############################

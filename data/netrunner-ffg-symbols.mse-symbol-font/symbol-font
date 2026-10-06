@@ -5,6 +5,13 @@ position hint: -2
 installer group: Netrunner/Symbol fonts/FFG
 icon: preview.png
 
+# NB.:
+#
+# Most symbols have a single-capital-letter alias (e.g. "[C]" is the same as "[credit]"). This lets pressing left-arrow a single time skip over the symbol (and is shorter to type too).
+#
+# The subroutine arrow is aligned with the "midline" (it points towards Middle of a capital letter like "E").
+#
+
 ##############################
 
 image font size: 50

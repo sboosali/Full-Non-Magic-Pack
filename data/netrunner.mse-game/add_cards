@@ -1,66 +1,414 @@
 
+# NB.:
+#
+# The ampersand "anchors" the keyboard in the Add Card menu.
+# e.g. typing "p" will click on "&Program".
+#
+# Each card-type has a distinct stylesheet (because their frames/layout/etc are all different). It's more convenient to add a new card with the "Add Cards" menu than by the "New Card" button (after which you'd have to go to the blank card's Style tab and change the stylesheet... unless you keep every card in its own .mse-set file).
+#
+# Has Unicode for "scannability".
+#
+# 
+
 ##############################
 
 add cards script:
-	name: &Program
+	name: Runner I[&D]
 	script:
-		[ new_card([ type: "program", memory: "1" ]) ]
+		[ new_runner_identity() ]
+
+# # # # # # # # # # # # # # # 
+
+add cards script:
+	name: [&E]vent
+	script:
+		[ new_event() ]
+
+# # # # # # # # # # # # # # # 
+
+add cards script:
+	name: [&P]rogram
+	script:
+		[ new_program() ]
+
+# # # # # # # # # # # # # # # 
+
+add cards script:
+	name: [&H]ardware
+	script:
+		[ new_hardware() ]
+
+# # # # # # # # # # # # # # # 
+
+add cards script:
+	name: [&R]esource
+	script:
+		[ new_resource() ]
 
 ##############################
 
 add cards script:
-	name: &Breaker Cycle
+	name: Corp I[&D]
+	script:
+		[ new_corp_identity() ]
+
+# # # # # # # # # # # # # # # 
+
+add cards script:
+	name: [&O]peration
+	script:
+		[ new_operation() ]
+
+# # # # # # # # # # # # # # # 
+
+add cards script:
+	name: A[&g]enda
+	script:
+		[ new_agenda() ]
+
+# # # # # # # # # # # # # # # 
+
+add cards script:
+	name: A[&s]set
+	script:
+		[ new_asset() ]
+
+# # # # # # # # # # # # # # # 
+
+add cards script:
+	name: [&I]CE
+	script:
+		[ new_ice() ]
+
+# # # # # # # # # # # # # # # 
+
+add cards script:
+	name: [&U]pgrade
+	script:
+		[ new_upgrade() ]
+
+##############################
+
+add cards script:
+	name: [&V]irus (Program)
+	script:
+		[ new_program(
+			subtypes: "Virus",
+			text: "When you install this program, place 3 virus counters on it.\nHosted virus counter: ",
+		)]
+
+# # # # # # # # # # # # # # # 
+
+add cards script:
+	name: &Tro[&j]an (Program)
+	script:
+		[ new_program(
+			subtypes: "Trojan",
+			text: "Install only on a piece of ice.\n",
+		)]
+
+##############################
+
+add cards script:
+	name: C[&y]cle: 3 Icebreakers
 	script: new_breaker_cycle()
 
-##############################
+# # # # # # # # # # # # # # # 
 
-add cards script:
-	name: &Fracter
-	script:
-		[ new_card([ type: "Program", memory: 1, strength: 1, subtypes: "Icebreaker - Fracter",
-		             text: "Interface → 1<sym>credit</sym>: Break 1 <b>barrier</b> subroutine.\n1<sym>credit</sym>: +1 strength."
-		           ])
-		]
 
-# 
-
-add cards script:
-	name: &Killer
-	script:
-		[ new_card([ type: "Program", memory: 1, strength: 1, subtypes: "Icebreaker - Killer",
-		             text: "Interface → 1<sym>credit</sym>: Break 1 <b>sentry</b> subroutine.\n1<sym>credit</sym>: +1 strength."
-		           ])
-		]
-
-# 
-
-add cards script:
-	name: &Decoder
-	script:
-		[ new_card([ type: "Program", memory: 1, strength: 1, subtypes: "Icebreaker - Decoder",
-		           text: "Interface → 1<sym>credit</sym>: Break 1 <b>code gate</b> subroutine.\n1<sym>credit</sym>: +1 strength."
-		           ])
-		]
 
 ##############################
 
 add cards script:
-	name: &Virus (Program)
+	name: Conso[&l]e (Hardware)
 	script:
-		[ new_card([ type: "Program", memory: 1, strength: "-", subtypes: "Virus",
-		            text: "When you install this program, place 3 virus counters on it.\nOnce per turn → Hosted virus counter: "
-					])
-		]
+		[ new_hardware(
+			subtypes: "Console", unique: "unique",
+			text: "+1<sym>M</sym>\n…\nLimit 1 console per player.",
+		)]
 
-# 
+# # # # # # # # # # # # # # # 
 
 add cards script:
-	name: &Trojan (Program)
+	name: Cybernetic (Hardware)
+
+	script: 
+		[ new_hardware(
+			subtypes: ["Cybernetic"],
+			text: "When you install this hardware, suffer 1 meat damage.\n",
+		)]
+
+##############################
+
+add cards script:
+	name: Regio[&n] (Upgrade)
 	script:
-		[ new_card([ cardtype: "Program", memory: 1, strength: "-", subtypes: "Trojan",
-					text: "Install only on a piece of ice.\n",
-					stylesheet: "netrunner-runner-hardware.mse-style"
-					])
+		[ new_upgrade(
+			subtypes: "Region", unique: "unique",
+			text: "…\nLimit 1 region per server."
+		)]
+
+##############################
+
+add cards script:
+	name: A[&m]bush (Asset)
+	script:
+		[ new_asset(
+			subtypes: "Ambush", cost: 0, trash: 0,
+			text: "While the Runner is accessing this asset in R&D, they must reveal it.\nWhen the Runner accesses this asset anywhere except in Archives, you may pay _<sym>C</sym>. If you do, "
+		)]
+
+##############################
+
+add cards script:
+	name: Ru[&n] (Event)
+	script:
+		[ new_event(
+			subtypes: "Run",
+				text: "Run any server. If successful, "
+		)]
+
+# # # # # # # # # # # # # # # 
+
+add cards script:
+	name: Multiaccess Ru[&n] (Event)
+	script:
+		[ new_event(
+			subtypes: "Run",
+				text: "Run HQ or R&D. If successful, access 1 additional card when you breach the attacked server."
+		)]
+
+##############################
+
+add cards script:
+	name: Dou[&b]le (Event)
+	script:
+		[ new_event(
+			subtypes: "Double",
+			text: "As an additional cost to play this event, spend [click].\n"
+		)]
+
+# # # # # # # # # # # # # # # 
+
+add cards script:
+	name: Dou[&b]le (Operation)
+	script:
+		[ new_operation(
+			subtypes: "Double",
+			text: "As an additional cost to play this operation, spend [click].\n"
+		)]
+
+# # # # # # # # # # # # # # # 
+
+add cards script:
+	name: [&T]erminal (Event)
+	script:
+		[ new_event(
+			subtypes: "Terminal",
+			text: "After you resolve this event, your action phase ends.\n"
+		)]
+
+# # # # # # # # # # # # # # # 
+
+add cards script:
+	name: [&T]erminal (Operation)
+	script:
+		[ new_operation(
+			subtypes: "Terminal",
+			text: "After you resolve this operation, your action phase ends.\n"
+		)]
+
+# # # # # # # # # # # # # # # 
+
+add cards script:
+	name: Priori[&t]y (Event)
+	script:
+		[ new_event(
+			subtypes: "Priority",
+			text: "Play only as your first [click].\n"
+		)]
+
+# # # # # # # # # # # # # # # 
+
+add cards script:
+	name: Priori[&t]y (Operation)
+	script:
+		[ new_operation(
+			subtypes: "Priority",
+			text: "Play only as your first [click].\n"
+		)]
+
+##############################
+# # # # # # # # # # # # # # # 
+
+add cards script:
+	name: Fracter (Icebrea[&k]er)
+	script:
+		[ new_program(
+			strength: 1, subtypes: "Icebreaker - Fracter",
+			text: "Interface → 1[credit]: Break 1 barrier subroutine.\n1[credit]: +1 strength."
+		)]
+
+# # # # # # # # # # # # # # # 
+
+add cards script:
+	name: Killer (Icebrea[&k]er)
+	script:
+		[ new_program(
+			strength: 1, subtypes: "Icebreaker - Killer",
+			text: "Interface → 1[credit]: Break 1 sentry subroutine.\n1[credit]: +1 strength."
+		)]
+
+# # # # # # # # # # # # # # # 
+
+add cards script:
+	name: Decoder (Icebrea[&k]er)
+	script:
+		[ new_program(
+			strength: 1, subtypes: "Icebreaker - Decoder",
+			text: "Interface → 1[credit]: Break 1 code gate subroutine.\n1[credit]: +1 strength."
+		)]
+
+##############################
+
+add cards script:
+	name: C[&y]cle: 3 ICE
+
+	script: new_ice_cycle()
+
+# # # # # # # # # # # # # # # 
+
+add cards script:
+	name: Bioroid 1[&.]0 (ICE)
+	script:
+		[ new_ice(
+			subtypes: "… - Bioroid", faction: "haas-bioroid",
+			text: "Lose [click]: Break 1 subroutine on this ice. Only the Runner can use this ability.\n<sym>subroutine</sym> \n<sym>subroutine</sym> "
+		)]
+
+# # # # # # # # # # # # # # # 
+
+add cards script:
+	name: E[&x]pendable (ICE)
+	script:
+		[ new_ice(
+			subtypes: "… - Expendable",
+			text: "[click], 1[credit], reveal and trash this card from HQ: "
+		)]
+
+##############################
+
+add cards script:
+	name: Drip E[&c]on (Resource), Recurring
+
+	description: e.g. Cezve
+	script:
+		[ new_resource(
+			text: "1[recurring] (When you install this and before your turn begins, refill to 1 hosted credit.)\nYou can spend hosted credits to "
+		)]
+
+# # # # # # # # # # # # # # # 
+
+add cards script:
+	name: Drip E[&c]on (Asset), Recurring
+
+	description: e.g. Mahkota Langit Grid
+	script:
+		[ new_asset(
+			text: "1[recurring] (When you install this and before your turn begins, refill to 1 hosted credit.)\nYou can spend hosted credits to "
+		)]
+
+##############################
+
+add cards script:
+	name: Drip E[&c]on (Resource), Finite
+
+	description: e.g. Daily Casts
+	script:
+		[ new_resource(
+			text: "When you install this resource, load [credit] onto it. When it is empty, trash it.\nWhen your turn begins, take [credit] from this resource."
+		)]
+
+# # # # # # # # # # # # # # # 
+
+add cards script:
+	name: Drip E[&c]on (Asset), Finite
+
+	description: e.g. Nico Campaign
+	script:
+		[ new_asset(
+			text: "When you rez this asset, load [credit] onto it. When it is empty, trash it.\nWhen your turn begins, take [credit] from this asset."
+		)]
+
+##############################
+
+add cards script:
+	name: Click E[&c]on (Resource), Finite
+
+	description: e.g. Telework Contract. 
+	script:
+		[ new_resource(
+			text: "When you install this resource, load [credit] onto it. When it is empty, trash it.\n[click]: Take [credit] from this resource.",
+		)]
+
+# # # # # # # # # # # # # # # 
+
+add cards script:
+	name: Click E[&c]on (Asset), Finite
+
+	description: e.g. Regolith Mining License. 
+	script:
+		[ new_asset(
+				text: "When you rez this asset, load [credit] onto it. When it is empty, trash it.\n[click]: Take [credit] from this asset.",
+		)]
+
+##############################
+
+add cards script:
+	name: [&4]/2 (Agenda)
+	script:
+		[ new_agenda(
+			requirement: 4, points: 2,
+			text: "When you score this agenda, "
+		)]
+
+# # # # # # # # # # # # # # # 
+
+
+
+# # # # # # # # # # # # # # # 
+
+add cards script:
+	name: E[&x]pendable (Agenda)
+	script:
+		[ new_agenda(
+			subtypes: "… - Expendable",
+			text: "[click], 1[credit], reveal and trash this card from HQ: "
+		)]
+
+##############################
+
+add cards script:
+	name: C[&y]cle: 3 Events
+
+	script: 
+		[
+		new_event(faction: "anarch"),
+		new_event(faction: "criminal"),
+		new_event(faction: "shaper"),
+		]
+
+##############################
+
+add cards script:
+	name: C[&y]cle: 4 Operations
+
+	script: 
+		[
+		new_operation(faction: "haas-bioroid"),
+		new_operation(faction: "jinteki"),
+		new_operation(faction: "nbn"),
+		new_operation(faction: "weyland"),
 		]
 
 ##############################

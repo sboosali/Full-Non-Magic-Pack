@@ -1,0 +1,75 @@
+##############################
+
+card dpi: 300
+card width: 750
+card height: 1046
+card background: black
+
+##############################
+
+styling field:
+	type: text
+	name: text font size
+	description: 24 by default. For the rules text.
+
+#TODO:
+styling field:
+	type: text
+	name: symbol font size
+	description: 18 by default. For symbols in rules text. You can try 
+
+styling field:
+	type: text
+	name: fluff font size
+	description: 16 by default. For the rules text.
+
+# 
+
+styling field:
+	type: text
+	name: title font size
+	description: 32 by default.
+
+styling field:
+	type: text
+	name: subtypes font size
+	description: 20 by default.
+
+styling field:
+	type: text
+	name: footer font size
+	description: 14 by default.
+
+# # # # # # # # # # # # # # # 
+
+styling field:
+	type: slider
+	name: line height percentage between rules text and fluff text
+
+	initial   : 180
+	increment : 001
+	minimum   : 100
+	maximum   : 300
+
+	description: How tall the spacing between rules & fluff text should be. 180% (1.8) by default.
+
+# # # # # # # # # # # # # # # 
+
+styling field:
+	type: text
+	name: unique symbol shrinkage
+	description: Defaults to 0.25. Smaller means less padding and a LARGER diamond.
+
+#styling field:
+#	type: text
+#	name: unique diamond size
+#	description: Defaults to 10 by default. 
+
+# # # # # # # # # # # # # # # 
+
+styling field:
+	type: slider
+	name: TODO opacity percentage
+	minimum: 0
+	maximum: 100
+	initial: 100

@@ -1,20 +1,95 @@
-﻿
+﻿# NB. Each field is either:
+#
+# * "editable": what the user sees & clicks on.
+#
+# * "logical": important but derived fields, that we can use in scripts (whenever a separate field is necessary).
+#
+#    e.g. if {card.cardtype} is "GLACE: ", {card.type} is still "ice".
+#
+# * "UI": for the Card-List, Search-bar, Statistics-tab, etc (whenever a separate field is necessary).
+#
+# * "display".   
+#
+# The logical fields are:
+#
+# * card.type:
+#
+#   a constant from the stylesheet.
+#   e.g. if the {card.stylesheet} is "netrunner-mnemic-runner-program.mse-style", {card.type} is "program".
+#
+# * card.name:
+#
+#   ≈ card.title + card.subtitle
+#
+# * card.faction:
+#
+#   = card.runner_faction | card.corp_faction
+#
+# * card.side
+#
+# The editable fields are:
+#
+# * card.art
+# * card.title
+# * card.subtitle
+# * card.runner_faction
+# * card.corp_faction
+# * card.influence
+# * card.cardtype
+# * card.subtypes
+# * card.text
+# * card.fluff
+# * card.unique
+# * card.cost
+# * card.trash
+# * card.memory
+# * card.strength
+# * card.requirement
+# * card.points
+# * card.id_min_deck_size
+# * card.id_max_influence
+# * card.id_link_strength
+# * card.id_pronouns
+# * card.index
+# * card.illustrator
+# * card.designer
+# * card.copyright
+#
+# The display fields include:
+#
+# * card.corners
+# * card.logo
+#
+# The UI fields include:
+#
+# * card.cardlist_<FIELD>:
+#
+#   for prettifying the Cards List (NB. Unicode looks good, Emojis don't).
+#   e.g. {card.cardlist_cost} prefixes a "$" to {card.cost}.
+#
+# * card.ascii_<FIELD>:
+# 
+#   for conveniencing the Search Bar.
+#   e.g. if {card.title} is "Brân 2.0", then {card.ascii_name} is "bran 20", so you can search it up with "name:bran" or "m:20".
+#
+# * card.error
+#
+# * card.subcount
+#
+# {card.textbox} is a combined_editor, of {card.text} (rules text) plus {card.fluff} (flavor text).
+# {card.footer} is a combined_editor too.
+#
+# 
+
 ############################## 
-
-card field:
-	type: image
-	name: art
-
-	card list allow: false
-	show statistics: false
-	description: The artwork/illustration. The dimensions / aspect ratio differ between card-types, but most are "horizontal rectangles".
-
-# # # # # # # # # # # # # # # 
 
 card field:
 	type: text
 	name: title
 
+	script:
+		stylesheet; styling;
+		format_card_name(value, subtitle: card.subtitle)
 	default: ""
 
 	card list allow: false
@@ -41,14 +116,9 @@ card field:
 	choice  : no
 	initial : no
 
-	card list name    : ◆
-	card list visible : true
-	card list column  : 0901
-	card list width   : 20
-
+	card list allow: false
 	show statistics: false
 	description: Whether the installable card is unique (⬩). (Identities/Events/Operations are neither unique nor non-unique.)
-#	sort script       : compare_boolean(value)
 
 ##############################
 
@@ -56,7 +126,7 @@ card field:
 	type: choice
 	name: faction
 
-	default: "neutral-{ this_side() }"
+	default: default_faction(this_side())
 	default name: Neutral
 
 	choice:
@@ -92,15 +162,15 @@ card field:
 	choice:
 		name: adam
 		type: radio
-		enabled: { set.enable_minifactions and is_card_runner() }
+		enabled: { is_card_runner() and (set.enable_minifactions or else true) }
 	choice:
 		name: apex
 		type: radio
-		enabled: { set.enable_minifactions and is_card_runner() }
+		enabled: { is_card_runner() and (set.enable_minifactions or else true) }
 	choice:
 		name: sunny
 		type: radio
-		enabled: { set.enable_minifactions and is_card_runner() }
+		enabled: { is_card_runner() and (set.enable_minifactions or else true) }
 
 	card list name      : faction
 	card list column    : 0401
@@ -163,12 +233,14 @@ card field:
 	type: text
 	name: cardtype
 
-	default : this_type()
-	script  : format_card_type(value, subtypes: card.subtypes)
+	default  : this_type()
+	script   : format_card_type(value, subtypes: card.subtypes)
+	editable : false
 
 	card list allow: false
 	show statistics: false
 	description: The card’s (single) card-type.
+#TODO	editable: false
 
 ##############################
 
@@ -176,27 +248,33 @@ card field:
 	type: text
 	name: subtypes
 
-	card list name      : sub-types
-	card list column    : 0302
-	card list width     : 400
+	script:
+		stylesheet; styling;
+		format_subtypes(value)
+
+	card list name    : sub-types
+	card list column  : 0302
+	card list width   : 200
+	card list visible : true
 
 	show statistics: false
 	description: The card’s (zero-or-more) subtypes; hyphen-separated (e.g. "Icebreaker - AI - Virus").
 
-	script: format_subtypes(value, type: card.type)
-#	script: subtypes_combined_editor()
-
-##############################
+# # # # # # # # # # # # # # # 
 
 card field:
 	type: text
 	name: text
 
+	alt name: rules text
+	alt name: abilities
+
 	multi line: true
 	script:
-		stylesheet
+		stylesheet; styling;
 		format_rules_text(value)
 
+	card list allow: true
 	show statistics: false
 	description: Rules text, sharing the textbox with any flavor text (press down/up arrows to move between them). You can search your set for fields with any abbreviation (e.g. "x:run", since "(te)x(t)" is a distinct subsequence).
 
@@ -204,13 +282,16 @@ card field:
 
 card field:
 	type: text
-	name: flavor
+	name: fluff
+
+	alt name: flavor text
 
 	multi line: true
 	script:
-		stylesheet
+		stylesheet; styling;
 		format_flavor_text(value)
 
+	card list allow: false
 	show statistics: false
 	description: Flavor text, sharing the textbox with any rules text (press up/down arrows to move between them).
 
@@ -220,10 +301,12 @@ card field:
 	type: text
 	name: box
 
-	save value: false
 	script: textbox_combined_editor()
-	multi line: true
 
+	multi line: true
+	save value: false
+
+	card list allow: false
 	show statistics: false
 	description: The textbox, containing both rules text and flavor text. You can search your set for fields with any abbreviation (e.g. "x:run", since "(te)x(t)" is a distinct subsequence).
 
@@ -235,15 +318,11 @@ card field:
 	type: text
 	name: cost
 
-	script      : only_numerals(value)
-	sort script : compare_numeral(value)
+	script:
+		stylesheet; styling;
+		only_numerals(value)
 
-	card list name      : $$$
-	card list visible   : true
-	card list column    : 0201
-	card list width     : 15
-	card list alignment : center middle
-
+	card list allow: false
 	show statistics: false
 	description: The play/rez/install cost (in credits).
 
@@ -255,14 +334,13 @@ card field:
 	type: text
 	name: trash
 
-	script      : only_numerals(value)
-	sort script : compare_numeral(value)
+	script:
+		stylesheet; styling;
+		only_numerals(value)
+	sort script: compare_numeral(value)
 
-	card list name    : 🗑️ Trash
-	card list visible : true
-	card list column  : 0501
-	card list width   : 40
-
+	card list allow: false
+	show statistics: false
 	description: Assets'/Upgrades' trash cost (in credits). Operations/ICE can have one too.
 
 ##############################
@@ -289,19 +367,20 @@ card field:
 # # # # # # # # # # # # # # # 
 
 card field:
-	type: text
+	type: slider
 	name: memory
 
-	default     : if is_card_program() then "1" else ""
+	alt name: memory usage
+
+	increment : 1
+	minimum   : 0
+	maximum   : 4
+
+	default     : default_memory(card.type)
 	script      : only_numerals(value)
 	sort script : compare_numeral(value)
 
-	card list name      : MU
-	card list visible   : true
-	card list column    : 0503
-	card list width     : 10
-	card list alignment : center middle
-
+	card list allow: false
 	show statistics: false
 	description: Programs’ memory usage (mostly 1, 2, or 0).
 
@@ -313,14 +392,20 @@ card field:
 	type: text
 	name: requirement
 
-	script      : only_numerals(value)
-	sort script : compare_numeral(value)
+	alt name: agenda advancement requirement
 
-	card list name    : Rq./_
-	card list visible : true
+	script:
+		stylesheet; styling;
+		only_numerals(value, digits: nil)
+	sort script: compare_numeral(value)
+
+	card list name    : Req.
+	card list visible : false
 	card list column  : 0504
 	card list width   : 40
 
+	card list allow: false
+	show statistics: false
 	description: Agendas’ advancement requirement (mostly 2, 3, 4, 5, or X).
 
 # # # # # # # # # # # # # # # 
@@ -329,14 +414,19 @@ card field:
 	type: text
 	name: points
 
-	script      : only_numerals(value)
-	sort script : compare_numeral(value)
+	alt name: agenda point value
 
-	card list name    : _/Pt.
-	card list visible : true
+	script:
+		stylesheet; styling;
+		only_numerals(value)
+	sort script: compare_numeral(value)
+
+	card list name    : Pnt.
+	card list visible : false
 	card list column  : 0505
 	card list width   : 40
 
+	show statistics: false
 	description: Agendas’ agenda-point value (mostly 1, 2, or 3).
 
 ##############################
@@ -349,6 +439,7 @@ card field:
 
 	default: 45
 
+	card list allow: false
 	show statistics: false
 	description: Identities’ minimum deck size. Corp decks with 40–44 cards need 18–19 agenda-points; 45–49 need 20–21, 50–54 need 22–23, and so on.
 
@@ -360,6 +451,7 @@ card field:
 
 	default: 15
 
+	card list allow: false
 	show statistics: false
 	description: Identities’ maximum influence limit
 
@@ -367,17 +459,9 @@ card field:
 
 card field:
 	type: text
-	name: id link strength
-
-	show statistics: false
-	description: Runner identities’ base link strength (mostly 0).
-
-# # # # # # # # # # # # # # # 
-
-card field:
-	type: text
 	name: subtitle
 
+	card list allow: false
 	show statistics: false
 	description: Identities’ subtitle. Cards can have the same title if they have different subtitles, which form a card’s name (e.g. "Haas-Bioroid: Precision Design").
 
@@ -385,8 +469,19 @@ card field:
 
 card field:
 	type: text
+	name: id link strength
+
+	card list allow: false
+	show statistics: false
+	description: Runner identities’ base link strength (mostly 0).
+
+# # # # # # # # # # # # # # # 
+
+card field:
+	type: text
 	name: id pronouns
 
+	card list allow: false
 	show statistics: false
 	description: Runner identities’ pronouns (e.g. "they/them").
 
@@ -394,23 +489,15 @@ card field:
 
 card field:
 	type: text
-	name: footer
-
-	multi line: false
-
-	show statistics: false
-	description: The set logo, the card’s code (number in set), and its illustrator, designer/copyright, and other information.
-#	script: footer_combined_editor()
-
-# # # # # # # # # # # # # # # 
-
-card field:
-	type: text
 	name: illustrator
 
-	script: if value!="" then "" else "<align:center>✎ des. { value }</align>"
+	alt name: artist
 
-	card list name      : art
+	script:
+		stylesheet; styling;
+		format_illustrator(value)
+
+	card list name      : artist
 	card list column    : 9900
 	card list visible   : false
 	card list width     : 200
@@ -424,37 +511,25 @@ card field:
 	type: text
 	name: designer
 
-	script: if set.designer=="" then "" else "<align:right>🖌 illus. { set.designer }</align>"
-
-	save value : false
-	editable   : true
+	script: format_designer()
+	editable: false
 
 	show statistics: false
 	description: Who designed the card.
 
 # # # # # # # # # # # # # # # 
 
+#TODO
 card field:
 	type: text
 	name: copyright
 
 	save value : false
-	editable   : true
-
-	show statistics: false
-	description: Under what will the released card be licensed.
-
-# # # # # # # # # # # # # # # 
-
-card field:
-	type: image
-	name: logo
-
-	save value : false
 	editable   : false
 
+	card list allow: false
 	show statistics: false
-	description: 
+	description: Under what will the released card be licensed.
 
 # # # # # # # # # # # # # # # 
 
@@ -462,12 +537,9 @@ card field:
 	type: text
 	name: index
 
-	script: if set.automatic_card_numbers then card_index_text() else value
+	script: format_index(value)
 
-	save value : false
-	editable   : true
-
-	card list name      : /
+	card list name      : #
 	card list visible   : true
 	card list column    : 10
 	card list width     : 50
@@ -475,13 +547,59 @@ card field:
 
 	show statistics: false
 	description: 
-#	script:      card_index() + " / " + number_of_items(in: set, filter: is_real_card)
 
-##############################
+# # # # # # # # # # # # # # # 
+
+card field:
+	type: text
+	name: footer
+
+	multi line: false
+	save value: false
+
+	card list allow: false
+	show statistics: false
+	description: The set logo, the card’s code (number in set), and its illustrator, designer/copyright, and other information.
+
+	script: footer_combined_editor()
+
+############################## 
+# Image Fields:
+# # # # # # # # # # # # # # #
 
 card field:
 	type: image
+	name: art
+
+	card list allow: false
+	show statistics: false
+	description: The artwork/illustration. Dimensions/aspect-ratios differ between card-types, but most are "horizontal rectangles".
+
+# # # # # # # # # # # # # # # 
+
+#TODO
+card field:
+	type: image
+	name: logo
+
+	alt name: set symbol
+
+	save value : false
+	editable   : false
+
+	card list allow: false
+	show statistics: false
+	description: 
+
+# # # # # # # # # # # # # # #
+
+card field:
+	type: choice
 	name: corners
+
+	initial: no
+	choice: rounded
+	choice: none
 
 	card list allow: false
 	show statistics: false
@@ -495,13 +613,15 @@ card field:
 	name: name
 
 	identifying: true
+	save value: true
+
 	script: name_of(title: card.title, subtitle: card.subtitle)
 
-	sort script         : compare_name(value)
 	card list name      : name
 	card list column    : 0101
 	card list visible   : true
 	card list width     : 1000
+	sort script         : compare_name(card.title)
 
 	show statistics: false
 
@@ -512,13 +632,9 @@ card field:
 	name: side
 
 	script: this_side()
+	save value: true
 
-	sort script         : compare_side(value)
-	card list name      : side
-	card list column    : 0403
-	card list visible   : false
-	card list width     : 100
-
+	card list allow: false
 	show statistics: false
 
 # # # # # # # # # # # # # # # 
@@ -528,36 +644,121 @@ card field:
 	name: type
 
 	script: this_type()
+	save value: true
 
-	sort script         : compare_type(value)
 	card list name      : card-type
 	card list visible   : true
 	card list column    : 0301
 	card list width     : 100
 	card list alignment : right
+	sort script         : compare_type(this_type(), side: card.side)
 
 	show statistics: false
 
-# # # # # # # # # # # # # # # 
-
-
-
 ##############################
-# Virtual "Search" Fields:
+# "Virtual" Search-Bar Fields:
 # # # # # # # # # # # # # # #
 
 card field:
 	type: text
 	name: card name ascii
+
 	script: asciify(card.name)
+
 	card list allow: false
 	show statistics: false
 
 card field:
 	type: text
 	name: card name acronym
+
 	script: acronymize(asciify(card.name))
+
 	card list allow: false
+	show statistics: false
+
+##############################
+# "Virtual" Card-List Fields:
+# # # # # # # # # # # # # # #
+
+card field:
+	type: text
+	name: cardlist unique
+
+	script: case card.unique of "unique": "◆", else: ""
+
+	card list name    : ◆
+	card list visible : true
+	card list column  : 0901
+	card list width   : 10
+
+	show statistics: false
+
+# # # # # # # # # # # # # # # 
+
+card field:
+	type: text
+	name: cardlist cost
+
+	script      : if card.cost!="" then "${ card.cost }" else ""
+	sort script : compare_numeral(card.cost)
+
+	card list name      : $ cost
+	card list visible   : true
+	card list column    : 0201
+	card list width     : 40
+	card list alignment : center middle
+
+	show statistics: false
+
+# # # # # # # # # # # # # # # 
+
+card field:
+	type: text
+	name: cardlist trash
+
+	script      : if card.trash!="" then "${ card.trash }" else ""
+	sort script : compare_numeral(card.trash)
+
+	card list name      : $ trash
+	card list visible   : true
+	card list column    : 0501
+	card list width     : 40
+	card list alignment : center middle
+
+	show statistics: false
+
+# # # # # # # # # # # # # # # 
+
+card field:
+	type: text
+	name: cardlist memory
+
+	script      : if card.memory!="" then "{ card.memory }mu" else ""
+	sort script : compare_numeral(card.memory)
+
+	card list name      : mu
+	card list visible   : true
+	card list column    : 0503
+	card list width     : 30
+	card list alignment : center middle
+
+	show statistics: false
+
+# # # # # # # # # # # # # # # 
+
+card field:
+	type: text
+	name: cardlist side
+
+	script      : cardlist_side(card.side)
+	sort script : compare_side(card.side)
+
+	card list name      : sd.
+	card list column    : 0403
+	card list visible   : true
+	card list width     : 20
+
 	show statistics: false
 
 ##############################

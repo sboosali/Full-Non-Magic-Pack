@@ -101,7 +101,7 @@ statistics dimension:
 
 	name: program strength
 	script:
-		if is_program()
+		if is_card_program()
 		then numeral_stat((card.strength or else ""), maximum: 4)
 		else ""
 	position hint: 110
@@ -130,7 +130,7 @@ statistics dimension:
 statistics dimension:
 	name: program memory
 	script:
-		if is_program()
+		if is_card_program()
 		then numeral_stat((card.memory or else ""), maximum: 2)
 		else ""
 	position hint: 111
@@ -150,7 +150,7 @@ statistics dimension:
 statistics dimension:
 	name: program type
 	script:
-		if is_program()
+		if is_card_program()
 		then subtypes_stat()
 		else ""
 	position hint: 112
@@ -186,3 +186,24 @@ statistics dimension:
 
 ##############################
 
+statistics dimension:
+	name: keywords
+	position hint: 500
+
+	split list: true
+	show empty: false
+	description: The keywords of a card.
+
+# # # # # # # # # # # # # # # 
+
+statistics dimension:
+	name: text length
+	position hint: 501
+
+	script: length(card.text)
+
+	numeric: true
+	bin size: 30
+	description: How long the text of a card is (in characters).
+
+##############################
