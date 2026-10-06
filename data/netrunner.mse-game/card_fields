@@ -170,10 +170,6 @@ card field:
 	show statistics: false
 	description: The card’s (single) card-type.
 
-# # # # # # # # # # # # # # # 
-
-
-
 ##############################
 
 card field:

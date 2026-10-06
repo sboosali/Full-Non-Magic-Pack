@@ -1,4 +1,4 @@
-mse version     : 2.5.6
+mse version     : 2.6.3
 version         : 2026-10
 game            : netrunner
 short name      : Asset
@@ -129,6 +129,6 @@ extra card style:
 		width  : { stylesheet; 86  *            parse_number(styling.trash_cost_scale, default: 1.0) }
 		height : { stylesheet; 78  *            parse_number(styling.trash_cost_scale, default: 1.0) }
 		z index: 2
-		default: { "/netrunner-mnemic-common.mse-include/TrashCost.png" }
+		default: { drop_shadow( "/netrunner-mnemic-common.mse-include/TrashCost.png", offset_x: 10, offset_y: 10, blur_radius: 0.01 ) }
 
 ##############################

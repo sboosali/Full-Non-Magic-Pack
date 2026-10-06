@@ -1,0 +1,144 @@
+mse version: 2.6.3
+full name: Netrunner Fonts
+version: 2026-10
+
+# Usage:
+#
+# include file: /netrunner-ffg.mse-include/fonts
+#
+#  FIELD:
+#    font:
+#      name: { FIELD_font.name }
+#      size: { FIELD_font.size }
+#
+
+##############################
+
+title_font := [
+	name  : "Trajan Pro Bold",
+	size  : 32,
+	color : "black",
+]
+
+subtitle_font := [
+	name  : "Trajan Pro",
+	size  : 24,
+	color : "black",
+]
+
+# # # # # # # # # # # # # # # 
+
+type_font := [
+	name  : "Monkirta Pursuit NC",
+	size  : 24,
+	color : "black",
+]
+
+subtype_font := [
+	name  : "Gill Sans",
+	size  : 20,
+	color : "black",
+]
+
+# # # # # # # # # # # # # # # 
+
+text_font := [
+	name   : "Minion Pro",
+	size   : 24,
+	color  : "black",
+	height : 1.4
+]
+
+fluff_font := [
+	name  : "Minion Pro Italic",
+	size  : 16,
+	color : "black",
+]
+
+# # # # # # # # # # # # # # # 
+
+# NB. "fonts/Bank Gothic Medium.otf" installs itself as "BankGothicBT-Medium".
+
+cost_font := [
+	name  : "BankGothicBT-Medium",
+	size  : 64,
+	color : "black",
+]
+
+strength_font := [
+	name  : "BankGothicBT-Medium",
+	size  : 64,
+	color : "black",
+]
+
+trash_cost_font := [
+	name  : "Impact",
+	size  : 64,
+	color : rgb(129, 119, 106),
+]
+
+memory_cost_font := [
+	name  : "BankGothicBT-Medium",
+	size  : 32,
+	color : rgb(102, 102, 102),
+]
+
+agenda_point_value := [
+	name  : "BankGothicBT-Medium",
+	size  : 72,
+	color : "white",
+]
+
+agenda_advancement_requirements := [
+	name  : "BankGothicBT-Medium",
+	size  : 72,
+	color : "white",
+]
+
+id_link_strength_font := [
+	name  : "BankGothicBT-Medium",
+	size  : 64,
+	color : "white",
+]
+
+id_min_deck_size_font := [
+	name  : "BankGothicBT-Medium",
+	size  : 32,
+	color : "black",
+]
+
+id_max_influence_font := [
+	name  : "BankGothicBT-Medium",
+	size  : 32,
+	color : "white",
+]
+
+# # # # # # # # # # # # # # # 
+
+illustrator_font := [
+	name  : "Arial",
+	size  : 14,
+	color : "white",
+]
+
+designer_font := [
+	name  : "Arial Narrow",
+	size  : 14,
+	color : "white",
+]
+
+card_index_font := [
+	name  : "Arial",
+	size  : 14,
+	color : "white",
+]
+
+# # # # # # # # # # # # # # # 
+
+xyz_font := [
+	name  : "",
+	size  : 24,
+	color : "black",
+]
+
+##############################

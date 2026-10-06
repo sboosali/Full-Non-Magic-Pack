@@ -561,9 +561,14 @@ add_ice_type_dropdown := {
 
 ##############################
 
+# 
+#
 # e.g. add_subtype_dropdowns(type: "program", "Icebreaker - Fracter - V")
 #   == "<word-list-program-type-en>Icebreaker</word-list-program-type-en> - <word-list-breaker-type-en>Fracter</word-list-breaker-type-en> - <word-list-program-type-en>V</word-list-program-type-en>"
 #
+# preserve trailing spaces / a trailing dash.
+#
+# 
 
 add_subtype_dropdowns := {
 
@@ -974,7 +979,7 @@ format_subtypes := {
 #		+ typing_over_subtypes
 #		+ remove_trailing_soft_tags
 #		+ replace_soft_tags_with_spaces
-#		+ add_subtype_dropdowns@(type: type)
+		+ add_subtype_dropdowns@(type: type)
 
 	f(input)
 
